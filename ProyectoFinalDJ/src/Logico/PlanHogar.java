@@ -1,22 +1,19 @@
 package Logico;
 
 public class PlanHogar extends Servicio {
-	private int numeroTelefonico;
+	private String numeroTelefonico;
 	private int velocidadInternet;
 	private String StreamingIncluido;
 	private int minutosTelefonoHogar;
-	public PlanHogar(int numeroTelefonico, int velocidadInternet, String streamingIncluido, int minutosTelefonoHogar) {
+	
+	
+	public PlanHogar(String numeroTelefonico, int velocidadInternet, String streamingIncluido,
+			int minutosTelefonoHogar) {
 		super();
-		this.numeroTelefonico = numeroTelefonico;
+		this.setNumeroTelefonico(numeroTelefonico);
 		this.velocidadInternet = velocidadInternet;
 		StreamingIncluido = streamingIncluido;
 		this.minutosTelefonoHogar = minutosTelefonoHogar;
-	}
-	public int getNumeroTelefonico() {
-		return numeroTelefonico;
-	}
-	public void setNumeroTelefonico(int numeroTelefonico) {
-		this.numeroTelefonico = numeroTelefonico;
 	}
 	public int getVelocidadInternet() {
 		return velocidadInternet;
@@ -35,6 +32,12 @@ public class PlanHogar extends Servicio {
 	}
 	public void setMinutosTelefonoHogar(int minutosTelefonoHogar) {
 		this.minutosTelefonoHogar = minutosTelefonoHogar;
+	}
+	public String getNumeroTelefonico() {
+		return numeroTelefonico;
+	}
+	public void setNumeroTelefonico(String numeroTelefonico) {
+		this.numeroTelefonico = numeroTelefonico;
 	}
 	
 	
