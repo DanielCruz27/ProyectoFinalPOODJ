@@ -10,5 +10,54 @@ public class Altice {
 	private ArrayList<Pago>historialPagos;
 	private ArrayList<Ticket>colaDeEspera;
 	private ArrayList<Contrato>listaContratos;
+	public Altice(ArrayList<Cliente> listaClientes, ArrayList<Personal> listaEmpleados,
+			ArrayList<Servicio> catalogoServicio, ArrayList<Pago> historialPagos, ArrayList<Ticket> colaDeEspera,
+			ArrayList<Contrato> listaContratos) {
+		super();
+		this.listaClientes = new ArrayList<>();
+		this.listaEmpleados =  new ArrayList<>();
+		this.catalogoServicio =  new ArrayList<>();
+		this.historialPagos =  new ArrayList<>();
+		this.colaDeEspera =  new ArrayList<>();
+		this.listaContratos =  new ArrayList<>();
+	}
+	public ArrayList<Cliente> getListaClientes() {
+		return listaClientes;
+	}
+	public void setListaClientes(ArrayList<Cliente> listaClientes) {
+		this.listaClientes = listaClientes;
+	}
+	public ArrayList<Personal> getListaEmpleados() {
+		return listaEmpleados;
+	}
+	public void setListaEmpleados(ArrayList<Personal> listaEmpleados) {
+		this.listaEmpleados = listaEmpleados;
+	}
+	public ArrayList<Servicio> getCatalogoServicio() {
+		return catalogoServicio;
+	}
+	public void setCatalogoServicio(ArrayList<Servicio> catalogoServicio) {
+		this.catalogoServicio = catalogoServicio;
+	}
+	public ArrayList<Pago> getHistorialPagos() {
+		return historialPagos;
+	}
+	public void setHistorialPagos(ArrayList<Pago> historialPagos) {
+		this.historialPagos = historialPagos;
+	}
+	public ArrayList<Ticket> getColaDeEspera() {
+		return colaDeEspera;
+	}
+	public void setColaDeEspera(ArrayList<Ticket> colaDeEspera) {
+		this.colaDeEspera = colaDeEspera;
+	}
+	public ArrayList<Contrato> getListaContratos() {
+		return listaContratos;
+	}
+	public void setListaContratos(ArrayList<Contrato> listaContratos) {
+		this.listaContratos = listaContratos;
+	}
+	
+	
 
 }
