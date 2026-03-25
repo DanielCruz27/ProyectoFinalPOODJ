@@ -10,5 +10,44 @@ public class Contrato {
 	private Personal vendedor;
 	private ArrayList<Pago>historialDePagos;
 	private LocalDate fechaFirma;
+	public Contrato(Cliente elTitular, Servicio planContratado, Personal vendedor, ArrayList<Pago> historialDePagos,
+			LocalDate fechaFirma) {
+		super();
+		this.elTitular = elTitular;
+		this.planContratado = planContratado;
+		this.vendedor = vendedor;
+		this.historialDePagos = historialDePagos;
+		this.fechaFirma = fechaFirma;
+	}
+	public Cliente getElTitular() {
+		return elTitular;
+	}
+	public void setElTitular(Cliente elTitular) {
+		this.elTitular = elTitular;
+	}
+	public Servicio getPlanContratado() {
+		return planContratado;
+	}
+	public void setPlanContratado(Servicio planContratado) {
+		this.planContratado = planContratado;
+	}
+	public Personal getVendedor() {
+		return vendedor;
+	}
+	public void setVendedor(Personal vendedor) {
+		this.vendedor = vendedor;
+	}
+	public ArrayList<Pago> getHistorialDePagos() {
+		return historialDePagos;
+	}
+	public void setHistorialDePagos(ArrayList<Pago> historialDePagos) {
+		this.historialDePagos = historialDePagos;
+	}
+	public LocalDate getFechaFirma() {
+		return fechaFirma;
+	}
+	public void setFechaFirma(LocalDate fechaFirma) {
+		this.fechaFirma = fechaFirma;
+	}
 
 }
