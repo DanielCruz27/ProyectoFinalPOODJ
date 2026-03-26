@@ -74,13 +74,37 @@ public class Altice {
 		}
 		numero = sufix + number;
 		
-		return numero;
+		return numero;	
+	}
+	
+	public boolean vincularMetodoPago(String idCliente) {
+		Cliente client = buscarCliente(idCliente);
+		boolean aux=false;
+		 
+		if(client != null) {
+			aux = true;
+			
+		}
 		
+		
+		return aux;		
+	}
+	
+	public Cliente buscarCliente(String idCliente) {
+		Cliente aux = null;
+		boolean finded = false;
+		int i=0;
+		while(!finded||i>listaClientes.size()) {
+			
+			if(listaClientes.get(i).getIdCliente().equalsIgnoreCase(idCliente)) {
+				aux = listaClientes.get(i);
+			}
+			i++;
+		}
+		
+		
+		return aux;
 	}
 	
 	
-	
-	
-	
-
 }
