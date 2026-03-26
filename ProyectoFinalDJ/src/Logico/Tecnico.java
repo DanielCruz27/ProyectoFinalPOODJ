@@ -6,6 +6,7 @@ public class Tecnico extends Personal {
 	private int horasExtra;
 	private boolean licencia;
 	private int cantidadInstalaciones;
+	
 	public Tecnico(String idEmpleado, String nombre, String cedula, float salarioBase, String tipoTecnico,
 			String zonAsignada, int horasExtra, boolean licencia, int cantidadInstalaciones) {
 		super(idEmpleado, nombre, cedula, salarioBase);

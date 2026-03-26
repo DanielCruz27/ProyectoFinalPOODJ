@@ -14,6 +14,7 @@ public class Pago {
 	private MetodoDePago metodoUtilizado;
 	private float itbis;
 	private Contrato elContrato;
+	
 	public Pago(String idFactura, LocalDate fechaEmision, float montoTotal, boolean estadoPago,
 			MetodoDePago metodoUtilizado, float itbis, Contrato elContrato) {
 		super();

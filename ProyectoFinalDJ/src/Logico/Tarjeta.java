@@ -8,6 +8,7 @@ public class Tarjeta extends MetodoDePago {
 	private LocalDate fechaVencimiento;
 	private String tipoTarjeta;
 	private int codigoSeguridad;
+	
 	public Tarjeta(String nombreTitular, String idMetodo, double numeroTarjeta, LocalDate fechaVencimiento,
 			String tipoTarjeta, int codigoSeguridad) {
 		super(nombreTitular, idMetodo);

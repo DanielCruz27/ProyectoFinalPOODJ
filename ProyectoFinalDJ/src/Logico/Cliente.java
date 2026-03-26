@@ -15,7 +15,7 @@ public class Cliente {
 	private MetodoDePago miMetodo;
 	private ArrayList<Pago>misPagos;
 	private ArrayList<Contrato>misContratos;
-	
+
 	public Cliente(String idCliente, String nombreCliente, String apellidoCliente, String emailCliente,
 			String direccionCliente, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
 			MetodoDePago miMetodo, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
@@ -29,8 +29,20 @@ public class Cliente {
 		this.puntosAcumulados = puntosAcumulados;
 		this.estadoCliente = estadoCliente;
 		this.miMetodo = miMetodo;
-		this.misPagos = misPagos;
-		this.misContratos = misContratos;
+
+		if (misPagos == null) {
+			this.misPagos = new ArrayList<Pago>();
+
+		} else {
+			this.misPagos = misPagos;
+		}
+
+		if (misContratos == null) {
+			this.misContratos = new ArrayList<Contrato>();
+
+		} else {
+			this.misContratos = misContratos;
+		}
 	}
 	public String getIdCliente() {
 		return idCliente;
@@ -98,7 +110,7 @@ public class Cliente {
 	public void setMisContratos(ArrayList<Contrato> misContratos) {
 		this.misContratos = misContratos;
 	}
-	
-	
+
+
 
 }

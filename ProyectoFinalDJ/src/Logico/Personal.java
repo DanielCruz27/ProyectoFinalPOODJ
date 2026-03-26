@@ -5,6 +5,7 @@ public abstract class Personal {
 	private String nombre;
 	private String cedula;
 	private float salarioBase;
+	
 	public Personal(String idEmpleado, String nombre, String cedula, float salarioBase) {
 		super();
 		this.idEmpleado = idEmpleado;

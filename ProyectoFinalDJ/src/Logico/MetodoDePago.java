@@ -4,6 +4,7 @@ public abstract class MetodoDePago {
 	
 	protected String nombreTitular;
 	protected String idMetodo;
+	
 	public MetodoDePago(String nombreTitular, String idMetodo) {
 		super();
 		this.nombreTitular = nombreTitular;

@@ -3,6 +3,7 @@ package Logico;
 public class Comercial extends Personal {
 	private int ventasRealizadas;
 	private int comisiones;
+	
 	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, int ventasRealizadas,
 			int comisiones) {
 		super(idEmpleado, nombre, cedula, salarioBase);

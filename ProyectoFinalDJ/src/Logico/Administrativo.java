@@ -3,6 +3,7 @@ package Logico;
 public class Administrativo extends Personal {
 	private String departamento;
 	private String nivelAcceso;
+	
 	public Administrativo(String idEmpleado, String nombre, String cedula, float salarioBase, String departamento,
 			String nivelAcceso) {
 		super(idEmpleado, nombre, cedula, salarioBase);

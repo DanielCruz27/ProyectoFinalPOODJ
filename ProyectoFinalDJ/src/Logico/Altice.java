@@ -11,6 +11,7 @@ public class Altice {
 	private ArrayList<Pago>historialPagos;
 	private ArrayList<Ticket>colaDeEspera;
 	private ArrayList<Contrato>listaContratos;
+	
 	public Altice(ArrayList<Cliente> listaClientes, ArrayList<Personal> listaEmpleados,
 			ArrayList<Servicio> catalogoServicio, ArrayList<Pago> historialPagos, ArrayList<Ticket> colaDeEspera,
 			ArrayList<Contrato> listaContratos) {

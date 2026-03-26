@@ -4,19 +4,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Contrato {
-	
+
 	private Cliente elTitular;
 	private Servicio planContratado;
 	private Personal vendedor;
 	private ArrayList<Pago>historialDePagos;
 	private LocalDate fechaFirma;
+
 	public Contrato(Cliente elTitular, Servicio planContratado, Personal vendedor, ArrayList<Pago> historialDePagos,
 			LocalDate fechaFirma) {
 		super();
 		this.elTitular = elTitular;
 		this.planContratado = planContratado;
 		this.vendedor = vendedor;
-		this.historialDePagos = historialDePagos;
+
+		if (historialDePagos == null) {
+			this.historialDePagos = new ArrayList<Pago>();
+
+		} else {
+			this.historialDePagos = historialDePagos;
+		}
 		this.fechaFirma = fechaFirma;
 	}
 	public Cliente getElTitular() {
