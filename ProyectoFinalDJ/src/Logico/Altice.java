@@ -1,6 +1,7 @@
 package Logico;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Altice {
 
@@ -58,6 +59,26 @@ public class Altice {
 		this.listaContratos = listaContratos;
 	}
 	
+	private String generarNumeroTelefonico() {
+		String numero = "";
+		int opt = ThreadLocalRandom.current().nextInt(1,4);
+		int number = ThreadLocalRandom.current().nextInt(1000000,10000000);
+		String sufix = "";
+		
+		if(opt == 1) {
+			sufix = "809";
+		}else if(opt ==2) {
+			sufix = "849";
+		}else if(opt == 3) {
+			sufix = "829";
+		}
+		numero = sufix + number;
+		
+		return numero;
+		
+		
+		
+	}
 	
 
 }
