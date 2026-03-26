@@ -13,12 +13,14 @@ public class Cliente {
 	private int puntosAcumulados;
 	private boolean estadoCliente;
 	private MetodoDePago miMetodo;
+	private float deudaPendiente;
+	private int cantPagosAtrasados;
 	private ArrayList<Pago>misPagos;
 	private ArrayList<Contrato>misContratos;
 
 	public Cliente(String idCliente, String nombreCliente, String apellidoCliente, String emailCliente,
 			String direccionCliente, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
-			MetodoDePago miMetodo, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
+			MetodoDePago miMetodo,float deudaPendiente, int cantPagosAtrasados, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
 		super();
 		this.idCliente = idCliente;
 		this.nombreCliente = nombreCliente;
@@ -29,6 +31,8 @@ public class Cliente {
 		this.puntosAcumulados = puntosAcumulados;
 		this.estadoCliente = estadoCliente;
 		this.miMetodo = miMetodo;
+		this.deudaPendiente = deudaPendiente;
+		this.cantPagosAtrasados = cantPagosAtrasados;
 
 		if (misPagos == null) {
 			this.misPagos = new ArrayList<Pago>();
@@ -109,6 +113,18 @@ public class Cliente {
 	}
 	public void setMisContratos(ArrayList<Contrato> misContratos) {
 		this.misContratos = misContratos;
+	}
+	public float getDeudaPendiente() {
+		return deudaPendiente;
+	}
+	public void setDeudaPendiente(float deudaPendiente) {
+		this.deudaPendiente = deudaPendiente;
+	}
+	public int getCantPagosAtrasados() {
+		return cantPagosAtrasados;
+	}
+	public void setCantPagosAtrasados(int cantPagosAtrasados) {
+		this.cantPagosAtrasados = cantPagosAtrasados;
 	}
 
 
