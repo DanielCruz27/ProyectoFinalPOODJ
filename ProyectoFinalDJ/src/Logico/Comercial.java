@@ -4,6 +4,7 @@ public class Comercial extends Personal {
 	private int ventasRealizadas;
 	private int comisiones;
 	
+	
 	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, int ventasRealizadas,
 			int comisiones) {
 		super(idEmpleado, nombre, cedula, salarioBase);
@@ -21,6 +22,11 @@ public class Comercial extends Personal {
 	}
 	public void setComisiones(int comisiones) {
 		this.comisiones = comisiones;
+	}
+	@Override
+	protected float calcularSueldoNeto() {
+		// TODO Auto-generated method stub
+		return getSalarioBase() + comisiones;
 	}
 	
 }

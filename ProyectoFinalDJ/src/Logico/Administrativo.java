@@ -22,5 +22,11 @@ public class Administrativo extends Personal {
 	public void setNivelAcceso(String nivelAcceso) {
 		this.nivelAcceso = nivelAcceso;
 	}
+	@Override
+	protected float calcularSueldoNeto() {
+		return getSalarioBase();
+	}
+	
+	
 	
 }

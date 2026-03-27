@@ -3,18 +3,20 @@ package Logico;
 public class Tecnico extends Personal {
 	private String tipoTecnico;
 	private String zonAsignada;
-	private int horasExtra;
 	private boolean licencia;
 	private int cantidadInstalaciones;
+	private float bonoPorinstalaciones;
+	
+	
 	
 	public Tecnico(String idEmpleado, String nombre, String cedula, float salarioBase, String tipoTecnico,
-			String zonAsignada, int horasExtra, boolean licencia, int cantidadInstalaciones) {
+			String zonAsignada, boolean licencia, int cantidadInstalaciones, float bonoPorinstalaciones) {
 		super(idEmpleado, nombre, cedula, salarioBase);
 		this.tipoTecnico = tipoTecnico;
 		this.zonAsignada = zonAsignada;
-		this.horasExtra = horasExtra;
 		this.licencia = licencia;
 		this.cantidadInstalaciones = cantidadInstalaciones;
+		this.bonoPorinstalaciones = bonoPorinstalaciones;
 	}
 	public String getTipoTecnico() {
 		return tipoTecnico;
@@ -28,12 +30,7 @@ public class Tecnico extends Personal {
 	public void setZonAsignada(String zonAsignada) {
 		this.zonAsignada = zonAsignada;
 	}
-	public int getHorasExtra() {
-		return horasExtra;
-	}
-	public void setHorasExtra(int horasExtra) {
-		this.horasExtra = horasExtra;
-	}
+
 	public boolean isLicencia() {
 		return licencia;
 	}
@@ -45,6 +42,17 @@ public class Tecnico extends Personal {
 	}
 	public void setCantidadInstalaciones(int cantidadInstalaciones) {
 		this.cantidadInstalaciones = cantidadInstalaciones;
+	}
+	@Override
+	protected float calcularSueldoNeto() {
+		return getSalarioBase() + bonoPorinstalaciones;
+	}
+	
+	public float getBonoPorinstalaciones() {
+		return bonoPorinstalaciones;
+	}
+	public void setBonoPorinstalaciones(float bonoPorinstalaciones) {
+		this.bonoPorinstalaciones = bonoPorinstalaciones;
 	}
 	
 }

@@ -37,4 +37,8 @@ public abstract class Personal {
 	public void setSalarioBase(float salarioBase) {
 		this.salarioBase = salarioBase;
 	}
+	
+	protected abstract float calcularSueldoNeto();
+	
+	
 }

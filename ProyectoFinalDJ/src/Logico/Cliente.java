@@ -126,7 +126,9 @@ public class Cliente {
 	public void setCantPagosAtrasados(int cantPagosAtrasados) {
 		this.cantPagosAtrasados = cantPagosAtrasados;
 	}
-
+		
+	
+	
 
 
 }
