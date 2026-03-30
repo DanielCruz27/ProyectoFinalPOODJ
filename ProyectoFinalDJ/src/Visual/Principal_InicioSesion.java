@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 
 public class Principal_InicioSesion extends JFrame {
 
@@ -49,6 +51,7 @@ public class Principal_InicioSesion extends JFrame {
         setTitle("Altice - Inicio de Sesión");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 903, 536);
+        
         Dimension dim = getToolkit().getScreenSize();
 		setSize(dim.width, dim.height-38);
         setLocationRelativeTo(null); 
@@ -65,49 +68,50 @@ public class Principal_InicioSesion extends JFrame {
         panelPrincipal.setLayout(null);
         
         JPanel panelLogin = new JPanel();
-        panelLogin.setBorder(new LineBorder(new Color(0, 0, 255), 2, true)); 
+        panelLogin.setBorder(new LineBorder(new Color(0, 0, 255), 4)); 
         panelLogin.setBackground(new Color(255, 255, 255, 240)); 
-        panelLogin.setBounds(301, 47, 301, 387);
+        panelLogin.setBounds(698, 172, 526, 557);
         panelPrincipal.add(panelLogin);
         panelLogin.setLayout(null);
         
         ImageIcon iconoOriginal = new ImageIcon(Principal_InicioSesion.class.getResource("/Recursos/LogoAltice.jpg"));
-        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(200, 101, Image.SCALE_SMOOTH);
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(250, 200, Image.SCALE_SMOOTH);
         JLabel lblLogo = new JLabel("");
+        lblLogo.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 128)));
         lblLogo.setIcon(new ImageIcon(imagenEscalada));
-        lblLogo.setBounds(50, 11, 200, 101);
+        lblLogo.setBounds(135, 28, 250, 141);
         panelLogin.add(lblLogo);
         
         JLabel lblTitulo = new JLabel("Iniciar Sesión");
-        lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 16));
-        lblTitulo.setBounds(88, 123, 135, 25);
+        lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
+        lblTitulo.setBounds(187, 194, 154, 25);
         panelLogin.add(lblTitulo);
         
         JLabel lblUser = new JLabel("Usuario:");
-        lblUser.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-        lblUser.setBounds(34, 170, 102, 14);
+        lblUser.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+        lblUser.setBounds(71, 244, 102, 14);
         panelLogin.add(lblUser);
         
         textField = new JTextField();
         textField.setBorder(new LineBorder(new Color(0, 0, 255)));
-        textField.setBounds(34, 195, 216, 25);
+        textField.setBounds(71, 268, 329, 25);
         panelLogin.add(textField);
         
         JLabel lblPass = new JLabel("Contraseña:");
-        lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-        lblPass.setBounds(34, 235, 135, 14);
+        lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+        lblPass.setBounds(68, 317, 135, 14);
         panelLogin.add(lblPass);
         
         passwordField = new JPasswordField();
         passwordField.setBorder(new LineBorder(new Color(0, 0, 255)));
-        passwordField.setBounds(34, 255, 216, 25);
+        passwordField.setBounds(71, 341, 329, 25);
         panelLogin.add(passwordField);
         
         JButton btnAcceder = new JButton("Acceder");
         btnAcceder.setBackground(new Color(0, 128, 255));
         btnAcceder.setForeground(Color.WHITE);
-        btnAcceder.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-        btnAcceder.setBounds(95, 300, 111, 30);
+        btnAcceder.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
+        btnAcceder.setBounds(206, 404, 135, 30);
         panelLogin.add(btnAcceder);
         
         JLabel lblOlvido = new JLabel("<html><u>¿Se te ha olvidado la contraseña?</u></html>");
@@ -127,13 +131,21 @@ public class Principal_InicioSesion extends JFrame {
             }
         });
         lblOlvido.setForeground(new Color(0, 128, 255));
-        lblOlvido.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
-        lblOlvido.setBounds(50, 349, 216, 14);
+        lblOlvido.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+        lblOlvido.setBounds(146, 461, 292, 25);
         panelLogin.add(lblOlvido);
         
         JLabel lblFondo = new JLabel("");
         lblFondo.setIcon(new ImageIcon(Principal_InicioSesion.class.getResource("/Recursos/Altice_Inicio.png")));
         lblFondo.setBounds(0, 0, 888, 489);
         panelPrincipal.add(lblFondo);
+        
+        int ancho = getWidth(); 
+        int alto = getHeight();
+
+        Image imgEscalada = ((ImageIcon)lblFondo.getIcon()).getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+
+        lblFondo.setIcon(new ImageIcon(imgEscalada));
+        lblFondo.setBounds(0, 0, ancho, alto);
     }
 }
