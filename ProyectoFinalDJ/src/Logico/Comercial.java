@@ -4,13 +4,13 @@ public class Comercial extends Personal {
 	private int ventasRealizadas;
 	private int comisiones;
 	
-	
-	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, int ventasRealizadas,
-			int comisiones) {
-		super(idEmpleado, nombre, cedula, salarioBase);
+	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario,
+			String contraseña, int ventasRealizadas, int comisiones) {
+		super(idEmpleado, nombre, cedula, salarioBase, usuario, contraseña);
 		this.ventasRealizadas = ventasRealizadas;
 		this.comisiones = comisiones;
 	}
+	
 	public int getVentasRealizadas() {
 		return ventasRealizadas;
 	}
@@ -28,5 +28,6 @@ public class Comercial extends Personal {
 		// TODO Auto-generated method stub
 		return getSalarioBase() + comisiones;
 	}
+
 	
 }

@@ -1,17 +1,22 @@
 package Logico;
 
 public abstract class Personal {
-	private String idEmpleado;
-	private String nombre;
-	private String cedula;
-	private float salarioBase;
+	protected String idEmpleado;
+	protected String nombre;
+	protected String cedula;
+	protected float salarioBase;
+	protected String usuario;
+	protected String contraseña;
 	
-	public Personal(String idEmpleado, String nombre, String cedula, float salarioBase) {
+	
+	public Personal(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario, String contraseña) {
 		super();
 		this.idEmpleado = idEmpleado;
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.salarioBase = salarioBase;
+		this.usuario = usuario;
+		this.contraseña = contraseña;
 	}
 	public String getIdEmpleado() {
 		return idEmpleado;
@@ -37,8 +42,21 @@ public abstract class Personal {
 	public void setSalarioBase(float salarioBase) {
 		this.salarioBase = salarioBase;
 	}
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+	public String getContraseña() {
+		return contraseña;
+	}
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
+	}
 	
 	protected abstract float calcularSueldoNeto();
+	
 	
 	
 }

@@ -8,16 +8,17 @@ public class Tecnico extends Personal {
 	private float bonoPorinstalaciones;
 	
 	
-	
-	public Tecnico(String idEmpleado, String nombre, String cedula, float salarioBase, String tipoTecnico,
-			String zonAsignada, boolean licencia, int cantidadInstalaciones, float bonoPorinstalaciones) {
-		super(idEmpleado, nombre, cedula, salarioBase);
+	public Tecnico(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario,
+			String contraseña, String tipoTecnico, String zonAsignada, boolean licencia, int cantidadInstalaciones,
+			float bonoPorinstalaciones) {
+		super(idEmpleado, nombre, cedula, salarioBase, usuario, contraseña);
 		this.tipoTecnico = tipoTecnico;
 		this.zonAsignada = zonAsignada;
 		this.licencia = licencia;
 		this.cantidadInstalaciones = cantidadInstalaciones;
 		this.bonoPorinstalaciones = bonoPorinstalaciones;
 	}
+	
 	public String getTipoTecnico() {
 		return tipoTecnico;
 	}
@@ -54,5 +55,6 @@ public class Tecnico extends Personal {
 	public void setBonoPorinstalaciones(float bonoPorinstalaciones) {
 		this.bonoPorinstalaciones = bonoPorinstalaciones;
 	}
+	
 	
 }
