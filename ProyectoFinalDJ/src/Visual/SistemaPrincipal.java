@@ -13,7 +13,6 @@ public class SistemaPrincipal extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldHora;
 	
-	// Declaramos los botones como globales para poder manipularlos por Rol
 	private JToggleButton tglbtnAdmin, tglbtnTecnico, tglbtnComercial, tglbtnCliente;
 
 	/**
@@ -23,8 +22,7 @@ public class SistemaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					// Simulación de inicio con rol de Administrador
-					SistemaPrincipal frame = new SistemaPrincipal("Administrador");
+					SistemaPrincipal frame = new SistemaPrincipal("Administrador");//Cambiar esto cuando funcione el log in
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,13 +51,11 @@ public class SistemaPrincipal extends JFrame {
 	    setContentPane(contentPane);
 	    contentPane.setLayout(null); 
 	    
-	    // --- 1. PANEL LATERAL ---
 	    JPanel panelLateral = new JPanel();
 	    panelLateral.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 	    panelLateral.setBounds(0, 0, 223, altoPantalla); 
 	    contentPane.add(panelLateral);
 	    
-	    // --- 2. PANEL SUPERIOR ---
 	    JPanel panelSuperior = new JPanel();
 	    panelSuperior.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 	    int anchoBarraSuperior = anchoPantalla - 223;
@@ -67,50 +63,69 @@ public class SistemaPrincipal extends JFrame {
 	    contentPane.add(panelSuperior);
 	    panelSuperior.setLayout(null);
 	    
-	    // GRUPO DE BOTONES (Lógica de Roles)
 	    ButtonGroup grupoRoles = new ButtonGroup();
 
 	    tglbtnAdmin = new JToggleButton("Administrador");
-	    tglbtnAdmin.setBounds(10, 20, 160, 30);
+	    tglbtnAdmin.setBounds(10, 20, 150, 30);
 	    estilarBotonSuperior(tglbtnAdmin);
 	    grupoRoles.add(tglbtnAdmin);
 	    panelSuperior.add(tglbtnAdmin);
 
 	    tglbtnTecnico = new JToggleButton("Técnico");
-	    tglbtnTecnico.setBounds(180, 20, 135, 30);
+	    tglbtnTecnico.setBounds(165, 20, 110, 30);
 	    estilarBotonSuperior(tglbtnTecnico);
 	    grupoRoles.add(tglbtnTecnico);
 	    panelSuperior.add(tglbtnTecnico);
 
 	    tglbtnComercial = new JToggleButton("Comercial");
-	    tglbtnComercial.setBounds(325, 20, 140, 30);
+	    tglbtnComercial.setBounds(280, 20, 120, 30);
 	    estilarBotonSuperior(tglbtnComercial);
 	    grupoRoles.add(tglbtnComercial);
 	    panelSuperior.add(tglbtnComercial);
 
 	    tglbtnCliente = new JToggleButton("Cliente");
-	    tglbtnCliente.setBounds(475, 20, 135, 30);
+	    tglbtnCliente.setBounds(405, 20, 100, 30);
 	    estilarBotonSuperior(tglbtnCliente);
 	    grupoRoles.add(tglbtnCliente);
 	    panelSuperior.add(tglbtnCliente);
-	    
-	    // --- RELOJ ---
+
+	    JSeparator separator = new JSeparator();
+	    separator.setOrientation(SwingConstants.VERTICAL);
+	    separator.setForeground(new Color(255, 255, 255, 100)); 
+	    separator.setBounds(520, 15, 2, 40);
+	    panelSuperior.add(separator);
+
+	
+	    ImageIcon iconoRedOriginal = new ImageIcon(SistemaPrincipal.class.getResource("/Recursos/IconoRed.png"));
+	    Image redEscalada = iconoRedOriginal.getImage().getScaledInstance(88, 43, Image.SCALE_SMOOTH);
+	    JLabel lblEstadoRed = new JLabel("Red: Operacional");
+	    lblEstadoRed.setIcon(new ImageIcon(redEscalada)); 
+	    lblEstadoRed.setForeground(new Color(144, 238, 144)); 
+	    lblEstadoRed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+
+	    lblEstadoRed.setBounds(599, 15, 216, 43); 
+	    panelSuperior.add(lblEstadoRed);
+
+	    JLabel lblSede = new JLabel("Sede: Santiago, RD");
+	    lblSede.setHorizontalAlignment(SwingConstants.RIGHT);
+	    lblSede.setForeground(new Color(200, 200, 200));
+	    lblSede.setFont(new Font("Arial", Font.ITALIC, 13));
+	    lblSede.setBounds(anchoBarraSuperior - 450, 26, 150, 19);
+	    panelSuperior.add(lblSede);
+
 	    textFieldHora = new JTextField();
 	    textFieldHora.setEditable(false); 
 	    textFieldHora.setHorizontalAlignment(SwingConstants.CENTER); 
 	    textFieldHora.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-	    textFieldHora.setBounds(anchoBarraSuperior - 280, 26, 135, 19); // Posición responsiva
+	    textFieldHora.setBounds(anchoBarraSuperior - 280, 26, 135, 19); 
 	    panelSuperior.add(textFieldHora);
-	    textFieldHora.setColumns(10);
 	    
-	    // --- LOGO DE USUARIO ---
 	    ImageIcon iconoOriginal = new ImageIcon(SistemaPrincipal.class.getResource("/Recursos/LogoUsuario.png"));
 	    Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(95, 48, Image.SCALE_SMOOTH);
 	    JLabel lblNewLabelLogo = new JLabel(new ImageIcon(imagenEscalada));
 	    lblNewLabelLogo.setBounds(anchoBarraSuperior - 120, 10, 95, 48); 
 	    panelSuperior.add(lblNewLabelLogo);
 	    
-	    // --- FONDO BARRA SUPERIOR (Debe ir de último para no tapar lo anterior) ---
 	    JLabel lblNewLabelFondoBarraSuperior = new JLabel("");
 	    ImageIcon imgBarra = new ImageIcon(SistemaPrincipal.class.getResource("/Recursos/FondoBarraSuperior.jpg"));
 	    Image imgBarraEscalada = imgBarra.getImage().getScaledInstance(anchoBarraSuperior, 68, Image.SCALE_SMOOTH);
@@ -118,7 +133,6 @@ public class SistemaPrincipal extends JFrame {
 	    lblNewLabelFondoBarraSuperior.setBounds(0, 0, anchoBarraSuperior, 68);
 	    panelSuperior.add(lblNewLabelFondoBarraSuperior);
 	    
-	    // INICIAR RELOJ
 	    Timer timerHora = new Timer(1000, new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -127,54 +141,60 @@ public class SistemaPrincipal extends JFrame {
 	    });
 	    timerHora.start();
 	    
-	    // --- ACTIVAR ROL LOGUEADO ---
 	    configurarVistaSegunRol(rolUsuario);
 	}
+	
+	//USar al final cuando terminemos proyecto
+		/*private ImageIcon obtenerIconoEscalado(String ruta, int ancho, int alto) {
+		    ImageIcon iconoOriginal = new ImageIcon(SistemaPrincipal.class.getResource(ruta));
+		    Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+		    return new ImageIcon(imagenEscalada);
+		}*/
 	
 	private void estilarBotonSuperior(JToggleButton btn) {
 	    btn.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 	    btn.setForeground(Color.WHITE);
+	    
+	    btn.setEnabled(false); 
+	    
+	    UIManager.put("ToggleButton.disabledText", Color.WHITE);
+	    
 	    btn.setFocusPainted(false);
 	    btn.setBorderPainted(false);
 	    btn.setContentAreaFilled(false);
-	    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-	    // Este listener mantiene el borde inferior si el botón está seleccionado
-	    btn.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            actualizarBordesBotones();
-	        }
-	    });
+	    btn.setOpaque(false);
+	    
+	    btn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	private void actualizarBordesBotones() {
-		JToggleButton[] botones = {tglbtnAdmin, tglbtnTecnico, tglbtnComercial, tglbtnCliente};
-		for (JToggleButton b : botones) {
-			if (b.isSelected()) {
-				b.setBorder(new MatteBorder(0, 0, 3, 0, Color.WHITE));
-				b.setBorderPainted(true);
-			} else {
-				b.setBorder(null);
-			}
-		}
+	    JToggleButton[] botones = {tglbtnAdmin, tglbtnTecnico, tglbtnComercial, tglbtnCliente};
+	    for (JToggleButton b : botones) {
+	        if (b.isSelected()) {
+	            b.setBorder(new MatteBorder(0, 0, 3, 0, Color.WHITE));
+	            b.setBorderPainted(true);
+	        } else {
+	            b.setBorder(null);
+	        }
+	    }
 	}
 
 	private void configurarVistaSegunRol(String rol) {
+	    tglbtnAdmin.setSelected(false);
+	    tglbtnTecnico.setSelected(false);
+	    tglbtnComercial.setSelected(false);
+	    tglbtnCliente.setSelected(false);
+
 	    if (rol.equalsIgnoreCase("Administrador")) {
 	        tglbtnAdmin.setSelected(true);
 	    } else if (rol.equalsIgnoreCase("Técnico")) {
 	        tglbtnTecnico.setSelected(true);
-	        tglbtnAdmin.setEnabled(false);
 	    } else if (rol.equalsIgnoreCase("Comercial")) {
 	        tglbtnComercial.setSelected(true);
-	        tglbtnAdmin.setEnabled(false);
 	    } else if (rol.equalsIgnoreCase("Cliente")) {
 	        tglbtnCliente.setSelected(true);
-	        tglbtnAdmin.setVisible(false);
-	        tglbtnTecnico.setVisible(false);
-	        tglbtnComercial.setVisible(false);
 	    }
+	    
 	    actualizarBordesBotones();
 	}
 }
