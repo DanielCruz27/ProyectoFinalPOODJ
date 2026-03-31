@@ -13,9 +13,7 @@ public class Altice {
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
 
-	public Altice(ArrayList<Cliente> listaClientes, ArrayList<Personal> listaEmpleados,
-			ArrayList<Servicio> catalogoServicio, ArrayList<Pago> historialPagos, ArrayList<Ticket> colaDeEspera,
-			ArrayList<Contrato> listaContratos) {
+	public Altice() {
 		super();
 		this.listaClientes = new ArrayList<>();
 		this.listaEmpleados = new ArrayList<>();
@@ -92,10 +90,64 @@ public class Altice {
 		return numero;
 	}
 	
-	public void contratarServicio() {
+	public void contratarServicio(String idCliente,String nombreServicio) {
+		
+		
+		
 		
 	}
+	public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
+		boolean done =  false;
+		
+		Contrato contrato = findContratByNumber(numeroTelefonico);
+		if(contrato !=null) {
+			if(contrato.getPlanContratado() instanceof PlanHogar) {
+				PlanHogar planh = (PlanHogar) contrato.getPlanContratado();
+				int saldo = planh.getMinutosTelefonoHogar() + saldoAgregar;
+				planh.setMinutosTelefonoHogar(saldo);
+				done =true;
+				}
+			else if(contrato.getPlanContratado() instanceof PlanMovil) {
+				PlanMovil planm = (PlanMovil) contrato.getPlanContratado();
+				int saldo = planm.getMinutosLibres() + saldoAgregar;
+				planm.setMinutosLibres(saldo);
+				done =true;
+				}
+		}
+		
+		return done;
+		
+	}
+	private Contrato findContratByNumber(String numeroTelefonico) {
+		  
+		    Contrato contract = null; 
+		    boolean finded = false; 
+		    int i = 0;
+
+		    while (!finded && i < listaContratos.size()) {
+		        Servicio s = listaContratos.get(i).getPlanContratado();
+		        
+		        if (s instanceof PlanHogar) {
+		            PlanHogar planh = (PlanHogar) s;
+		            if (planh.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+		                contract = listaContratos.get(i);
+		                finded = true;
+		            }
+		        } else if (s instanceof PlanMovil) {
+		            PlanMovil planm = (PlanMovil) s;
+		            if (planm.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+		                contract = listaContratos.get(i);
+		                finded = true;
+		            }
+		        }
+		        
+		        i++;
+		    }
+		    
+		    return contract; 
+		}
 	
+
 	public boolean vincularMetodoPago(String idCliente,MetodoDePago metPago) {
 		Cliente client = buscarCliente(idCliente);
 		boolean aux = false;
@@ -112,10 +164,11 @@ public class Altice {
 		Cliente aux = null;
 		boolean finded = false;
 		int i = 0;
-		while (!finded || i > listaClientes.size()) {
+		while (!finded && i < listaClientes.size()) {
 
 			if (listaClientes.get(i).getIdCliente().equalsIgnoreCase(idCliente)) {
 				aux = listaClientes.get(i);
+				finded = true;
 			}
 			i++;
 		}
@@ -127,10 +180,11 @@ public class Altice {
 		Cliente aux = null;
 		boolean finded = false;
 		int i = 0;
-		while (!finded || i > listaClientes.size()) {
+		while (!finded && i < listaClientes.size()) {
 
 			if (listaClientes.get(i).getEmailCliente().equalsIgnoreCase(email)) {
 				aux = listaClientes.get(i);
+				finded =  true;
 			}
 			i++;
 		}
@@ -140,7 +194,7 @@ public class Altice {
 
 	public void registrarCliente(Cliente cliente) {
 
-		if (buscarClienteByEmail(cliente.getEmailCliente()) != null) {
+		if (buscarClienteByEmail(cliente.getEmailCliente()) == null) {
 
 			listaClientes.add(cliente);
 		}
