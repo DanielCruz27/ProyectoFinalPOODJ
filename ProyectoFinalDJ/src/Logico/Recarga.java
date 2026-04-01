@@ -5,8 +5,8 @@ public class Recarga extends Servicio {
 	private int vigencia;
 	private float MontoARecargar;
 	
-	public Recarga(String idServicio, String nombreServicio, float precioBase, int vigencia, float montoARecargar) {
-		super(idServicio, nombreServicio, precioBase);
+	public Recarga(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio,  int vigencia, float montoARecargar) {
+		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
 		this.vigencia = vigencia;
 		MontoARecargar = montoARecargar;
 	}

@@ -5,9 +5,9 @@ public class PlanMovil extends Servicio {
 	private int minutosLibres;
 	private String redesLibresIncluidas;
 	
-	public PlanMovil(String idServicio, String nombreServicio, float precioBase, String numeroTelefonico,
+	public PlanMovil(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio, String numeroTelefonico,
 			int minutosLibres, String redesLibresIncluidas) {
-		super(idServicio, nombreServicio, precioBase);
+		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
 		this.numeroTelefonico = numeroTelefonico;
 		this.minutosLibres = minutosLibres;
 		this.redesLibresIncluidas = redesLibresIncluidas;

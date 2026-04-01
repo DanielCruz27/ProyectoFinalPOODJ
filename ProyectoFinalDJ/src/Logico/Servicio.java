@@ -5,12 +5,14 @@ public abstract class Servicio {
 	protected String idServicio;
 	protected String nombreServicio;
 	protected float precioBase;
+	protected boolean estadoDelServicio;
 	
-	public Servicio(String idServicio, String nombreServicio, float precioBase) {
+	public Servicio(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio) {
 		super();
 		this.idServicio = idServicio;
 		this.nombreServicio = nombreServicio;
 		this.precioBase = precioBase;
+		this.estadoDelServicio = estadoDelServicio;
 	}
 
 	public String getIdServicio() {
@@ -35,6 +37,14 @@ public abstract class Servicio {
 
 	public void setPrecioBase(float precioBase) {
 		this.precioBase = precioBase;
+	}
+
+	public boolean isEstadoDelServicio() {
+		return estadoDelServicio;
+	}
+
+	public void setEstadoDelServicio(boolean estadoDelServicio) {
+		this.estadoDelServicio = estadoDelServicio;
 	}
 
 }

@@ -96,7 +96,7 @@ public class Altice {
 		
 		
 	}
-	public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
+	/*public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
 		boolean done =  false;
 		
 		Contrato contrato = findContratByNumber(numeroTelefonico);
@@ -117,8 +117,8 @@ public class Altice {
 		
 		return done;
 		
-	}
-	private Contrato findContratByNumber(String numeroTelefonico) {
+	}*/
+	/*private Contrato findContratByNumber(String numeroTelefonico) {
 		  
 		    Contrato contract = null; 
 		    boolean finded = false; 
@@ -146,7 +146,7 @@ public class Altice {
 		    
 		    return contract; 
 		}
-	
+	*/
 
 	public boolean vincularMetodoPago(String idCliente,MetodoDePago metPago) {
 		Cliente client = buscarCliente(idCliente);

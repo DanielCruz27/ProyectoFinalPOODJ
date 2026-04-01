@@ -6,17 +6,23 @@ import java.util.ArrayList;
 public class Contrato {
 
 	private Cliente elTitular;
-	private Servicio planContratado;
+	private ArrayList<Servicio>misServicios;
 	private Personal vendedor;
 	private ArrayList<Pago>historialDePagos;
 	private LocalDate fechaFirma;
 
-	public Contrato(Cliente elTitular, Servicio planContratado, Personal vendedor, ArrayList<Pago> historialDePagos,
+	public Contrato(Cliente elTitular, ArrayList<Servicio>misServicios, Personal vendedor, ArrayList<Pago> historialDePagos,
 			LocalDate fechaFirma) {
 		super();
 		this.elTitular = elTitular;
-		this.planContratado = planContratado;
 		this.vendedor = vendedor;
+
+		if (misServicios == null) {
+			this.misServicios = new ArrayList<Servicio>();
+
+		} else {
+			this.misServicios = misServicios;
+		}
 
 		if (historialDePagos == null) {
 			this.historialDePagos = new ArrayList<Pago>();
@@ -32,12 +38,7 @@ public class Contrato {
 	public void setElTitular(Cliente elTitular) {
 		this.elTitular = elTitular;
 	}
-	public Servicio getPlanContratado() {
-		return planContratado;
-	}
-	public void setPlanContratado(Servicio planContratado) {
-		this.planContratado = planContratado;
-	}
+
 	public Personal getVendedor() {
 		return vendedor;
 	}
@@ -55,6 +56,12 @@ public class Contrato {
 	}
 	public void setFechaFirma(LocalDate fechaFirma) {
 		this.fechaFirma = fechaFirma;
+	}
+	public ArrayList<Servicio> getMisServicios() {
+		return misServicios;
+	}
+	public void setMisServicios(ArrayList<Servicio> misServicios) {
+		this.misServicios = misServicios;
 	}
 
 }

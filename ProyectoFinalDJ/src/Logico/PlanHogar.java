@@ -8,9 +8,9 @@ public class PlanHogar extends Servicio {
 	
 	
 
-	public PlanHogar(String idServicio, String nombreServicio, float precioBase, String numeroTelefonico,
+	public PlanHogar(String idServicio, String nombreServicio, float precioBase,boolean estadoDelServicio, String numeroTelefonico,
 			int velocidadInternet, String streamingIncluido, int minutosTelefonoHogar) {
-		super(idServicio, nombreServicio, precioBase);
+		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
 		this.numeroTelefonico = numeroTelefonico;
 		this.velocidadInternet = velocidadInternet;
 		StreamingIncluido = streamingIncluido;
