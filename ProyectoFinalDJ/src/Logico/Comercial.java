@@ -4,9 +4,8 @@ public class Comercial extends Personal {
 	private int ventasRealizadas;
 	private int comisiones;
 	
-	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario,
-			String contraseña, int ventasRealizadas, int comisiones) {
-		super(idEmpleado, nombre, cedula, salarioBase, usuario, contraseña);
+	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, Usuario miCuenta, int ventasRealizadas, int comisiones) {
+		super(idEmpleado, nombre, cedula, salarioBase, miCuenta);
 		this.ventasRealizadas = ventasRealizadas;
 		this.comisiones = comisiones;
 	}

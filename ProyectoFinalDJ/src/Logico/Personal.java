@@ -5,18 +5,18 @@ public abstract class Personal {
 	protected String nombre;
 	protected String cedula;
 	protected float salarioBase;
-	protected String usuario;
-	protected String contraseña;
+	protected Usuario miCuenta;
+
 	
 	
-	public Personal(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario, String contraseña) {
+	public Personal(String idEmpleado, String nombre, String cedula, float salarioBase, Usuario miCuenta) {
 		super();
 		this.idEmpleado = idEmpleado;
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.salarioBase = salarioBase;
-		this.usuario = usuario;
-		this.contraseña = contraseña;
+		this.miCuenta = miCuenta;
+	
 	}
 	public String getIdEmpleado() {
 		return idEmpleado;
@@ -42,20 +42,17 @@ public abstract class Personal {
 	public void setSalarioBase(float salarioBase) {
 		this.salarioBase = salarioBase;
 	}
-	public String getUsuario() {
-		return usuario;
+	
+	public Usuario getMiCuenta() {
+		return miCuenta;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-	public String getContraseña() {
-		return contraseña;
-	}
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setMiCuenta(Usuario miCuenta) {
+		this.miCuenta = miCuenta;
 	}
 	
+	
 	protected abstract float calcularSueldoNeto();
+	
 	
 	
 	

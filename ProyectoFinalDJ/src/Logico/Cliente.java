@@ -9,9 +9,8 @@ public class Cliente {
 	private String apellidoCliente;
 	private String emailCliente;
 	private String direccionCliente;
+	private Usuario miCuenta;
 	private String zonaVivienda;
-	private String usuario;
-	private String contraseña;
 	private int puntosAcumulados;
 	private boolean estadoCliente;
 	private MetodoDePago miMetodo;
@@ -21,7 +20,7 @@ public class Cliente {
 	private ArrayList<Contrato>misContratos;
 
 	public Cliente(String idCliente, String nombreCliente, String apellidoCliente, String emailCliente,
-			String direccionCliente, String zonaVivienda, String usuario, String contraseña, int puntosAcumulados, boolean estadoCliente,
+			String direccionCliente, Usuario miCuenta, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
 			MetodoDePago miMetodo,float deudaPendiente, int cantPagosAtrasados, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
 		super();
 		this.idCliente = idCliente;
@@ -30,8 +29,7 @@ public class Cliente {
 		this.emailCliente = emailCliente;
 		this.direccionCliente = direccionCliente;
 		this.zonaVivienda = zonaVivienda;
-		this.usuario = usuario;
-		this.contraseña = contraseña;
+		this.miCuenta = miCuenta;
 		this.puntosAcumulados = puntosAcumulados;
 		this.estadoCliente = estadoCliente;
 		this.miMetodo = miMetodo;
@@ -130,18 +128,13 @@ public class Cliente {
 	public void setCantPagosAtrasados(int cantPagosAtrasados) {
 		this.cantPagosAtrasados = cantPagosAtrasados;
 	}
-	public String getUsuario() {
-		return usuario;
+	public Usuario getMiCuenta() {
+		return miCuenta;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setMiCuenta(Usuario miCuenta) {
+		this.miCuenta = miCuenta;
 	}
-	public String getContraseña() {
-		return contraseña;
-	}
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
-	}
+	
 		
 	
 	

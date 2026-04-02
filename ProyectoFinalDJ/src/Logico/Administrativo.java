@@ -4,9 +4,8 @@ public class Administrativo extends Personal {
 	private String departamento;
 	private String nivelAcceso;
 	
-	public Administrativo(String idEmpleado, String nombre, String cedula, float salarioBase, String usuario,
-			String contraseña, String departamento, String nivelAcceso) {
-		super(idEmpleado, nombre, cedula, salarioBase, usuario, contraseña);
+	public Administrativo(String idEmpleado, String nombre, String cedula, float salarioBase, Usuario miCuenta, String departamento, String nivelAcceso) {
+		super(idEmpleado, nombre, cedula, salarioBase, miCuenta);
 		this.departamento = departamento;
 		this.nivelAcceso = nivelAcceso;
 	}

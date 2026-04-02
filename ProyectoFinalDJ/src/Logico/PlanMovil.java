@@ -2,14 +2,14 @@ package Logico;
 
 public class PlanMovil extends Servicio {
 	private String numeroTelefonico;
-	private int minutosLibres;
+	private int minutosIncluidos;
 	private String redesLibresIncluidas;
 	
 	public PlanMovil(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio, String numeroTelefonico,
-			int minutosLibres, String redesLibresIncluidas) {
+			int minutosIncluidos, String redesLibresIncluidas) {
 		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
 		this.numeroTelefonico = numeroTelefonico;
-		this.minutosLibres = minutosLibres;
+		this.minutosIncluidos = minutosIncluidos;
 		this.redesLibresIncluidas = redesLibresIncluidas;
 	}
 
@@ -21,12 +21,12 @@ public class PlanMovil extends Servicio {
 		this.numeroTelefonico = numeroTelefonico;
 	}
 
-	public int getMinutosLibres() {
-		return minutosLibres;
+	public int getMinutosIncluidos() {
+		return minutosIncluidos;
 	}
 
-	public void setMinutosLibres(int minutosLibres) {
-		this.minutosLibres = minutosLibres;
+	public void setMinutosLibres(int minutosIncluidos) {
+		this.minutosIncluidos = minutosIncluidos;
 	}
 
 	public String getRedesLibresIncluidas() {
