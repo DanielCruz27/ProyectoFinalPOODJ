@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Altice {
-
+	public static Altice altice = null;
 	private ArrayList<Cliente> listaClientes;
 	private ArrayList<Personal> listaEmpleados;
 	private ArrayList<Servicio> catalogoServicio;
 	private ArrayList<Pago> historialPagos;
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
+	public static int codigoPersonal = 1;
+	public static int codigoCliente = 1;
+	public static int codigoontrato = 1;
 
 	public Altice() {
 		super();
@@ -22,7 +25,12 @@ public class Altice {
 		this.colaDeEspera = new ArrayList<>();
 		this.listaContratos = new ArrayList<>();
 	}
-
+	public static Altice getInstance() {
+		if(altice==null) {
+			altice = new Altice();
+		}
+		return altice;
+	}
 	public ArrayList<Cliente> getListaClientes() {
 		return listaClientes;
 	}
@@ -228,5 +236,11 @@ public class Altice {
 		
 		return ZoneClients;
 	}
+	public void RegistarPersonal(Personal empleado) {
+		// TODO Auto-generated method stub
+		listaEmpleados.add(empleado);
+		codigoPersonal++;
+	}
+	
 
 }
