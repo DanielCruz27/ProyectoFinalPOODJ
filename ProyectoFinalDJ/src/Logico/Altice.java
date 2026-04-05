@@ -15,6 +15,7 @@ public class Altice {
 	public static int codigoPersonal = 1;
 	public static int codigoCliente = 1;
 	public static int codigoContrato = 1;
+	public static int codigoFactura = 1;
 
 	public Altice() {
 		super();
@@ -119,6 +120,7 @@ public class Altice {
 					if(ph.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
 						ph.setMinutosTelefonoHogar(ph.getMinutosTelefonoHogar() +saldoAgregar);
 						done =  true;
+						
 					}
 				}
 				else if(service instanceof PlanMovil) {
@@ -127,6 +129,12 @@ public class Altice {
 						pm.setMinutosLibres(pm.getMinutosIncluidos() + saldoAgregar);
 						done = true;
 					}
+				}
+				if(done) {
+					Pago nuevoPago = new Pago("F-" +codigoFactura,LocalDate.now(),saldoAgregar +(saldoAgregar*0.18f),true,contrato.getElTitular().getMiMetodo(),0.18f,contrato);
+					this.historialPagos.add(nuevoPago);
+					contrato.getElTitular().getMisPagos().add(nuevoPago);
+					codigoContrato++;
 				}
 			i++;
 			}
