@@ -14,7 +14,7 @@ public class Altice {
 	private ArrayList<Contrato> listaContratos;
 	public static int codigoPersonal = 1;
 	public static int codigoCliente = 1;
-	public static int codigoontrato = 1;
+	public static int codigoContrato = 1;
 
 	public Altice() {
 		super();
@@ -104,58 +104,53 @@ public class Altice {
 		
 		
 	}
-	/*public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
-		boolean done =  false;
-		
-		Contrato contrato = findContratByNumber(numeroTelefonico);
-		if(contrato !=null) {
-			if(contrato.getPlanContratado() instanceof PlanHogar) {
-				PlanHogar planh = (PlanHogar) contrato.getPlanContratado();
-				int saldo = planh.getMinutosTelefonoHogar() + saldoAgregar;
-				planh.setMinutosTelefonoHogar(saldo);
-				done =true;
+	
+	public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
+		boolean done = false;
+		Contrato contrato = findContractByNumber(numeroTelefonico);
+		if(contrato != null) {
+			ArrayList<Servicio> servicios = contrato.getMisServicios();
+			int i = 0;
+			while (!done && i < servicios.size()) {
+				Servicio service = servicios.get(i);
+				
+				if(service instanceof PlanHogar) {
+					PlanHogar ph = (PlanHogar)service;
+					if(ph.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+						ph.setMinutosTelefonoHogar(ph.getMinutosTelefonoHogar() +saldoAgregar);
+						done =  true;
+					}
 				}
-			else if(contrato.getPlanContratado() instanceof PlanMovil) {
-				PlanMovil planm = (PlanMovil) contrato.getPlanContratado();
-				int saldo = planm.getMinutosLibres() + saldoAgregar;
-				planm.setMinutosLibres(saldo);
-				done =true;
+				else if(service instanceof PlanMovil) {
+					PlanMovil pm = (PlanMovil) service;
+					if(pm.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+						pm.setMinutosLibres(pm.getMinutosIncluidos() + saldoAgregar);
+						done = true;
+					}
 				}
+			i++;
+			}
+			
 		}
-		
 		return done;
-		
-	}*/
-	/*private Contrato findContratByNumber(String numeroTelefonico) {
-		  
-		    Contrato contract = null; 
-		    boolean finded = false; 
-		    int i = 0;
-
-		    while (!finded && i < listaContratos.size()) {
-		        Servicio s = listaContratos.get(i).getPlanContratado();
-		        
-		        if (s instanceof PlanHogar) {
-		            PlanHogar planh = (PlanHogar) s;
-		            if (planh.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
-		                contract = listaContratos.get(i);
-		                finded = true;
-		            }
-		        } else if (s instanceof PlanMovil) {
-		            PlanMovil planm = (PlanMovil) s;
-		            if (planm.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
-		                contract = listaContratos.get(i);
-		                finded = true;
-		            }
-		        }
-		        
-		        i++;
-		    }
-		    
-		    return contract; 
+	}
+	
+	
+	private Contrato findContractByNumber(String numeroTelefonico) {
+		Contrato aux = null;
+		for (Contrato contract : listaContratos) {
+			for(Servicio service : contract.getMisServicios()) {
+				if(service instanceof PlanHogar && ((PlanHogar)service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+					aux = contract;
+				}
+				if(service instanceof PlanMovil && ((PlanMovil)service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)){
+					aux = contract;
+				}
+			}
 		}
-	*/
-
+		return aux;
+	
+	}
 	public boolean vincularMetodoPago(String idCliente,MetodoDePago metPago) {
 		Cliente client = buscarCliente(idCliente);
 		boolean aux = false;
