@@ -340,6 +340,8 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subListPers);
 		panelContenedorMenu.add(subZonas);
 
+		
+		
 		btnGPers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -349,6 +351,16 @@ public class SistemaPrincipal extends JFrame {
 				subListPers.setVisible(menuPersonalAbierto);
 				subZonas.setVisible(menuPersonalAbierto);
 				panelContenedorMenu.revalidate();
+			}
+		});
+		subRegPers.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				RegistrarPersonal aux = new RegistrarPersonal();
+				aux.setModal(true);
+				aux.setVisible(true);
 			}
 		});
 
