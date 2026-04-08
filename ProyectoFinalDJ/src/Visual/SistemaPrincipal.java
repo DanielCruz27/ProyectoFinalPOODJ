@@ -34,7 +34,7 @@ public class SistemaPrincipal extends JFrame {
 					SistemaPrincipal frame = new SistemaPrincipal("administrador");
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -47,14 +47,14 @@ public class SistemaPrincipal extends JFrame {
 				FileOutputStream altice;
 				ObjectOutputStream alticeWrite;
 				try {
-					altice = new FileOutputStream("Altice.dat");
+					altice = new FileOutputStream("Alticee.dat");
 					alticeWrite = new ObjectOutputStream(altice);
 					alticeWrite.writeObject(Altice.getInstance());
 					alticeWrite.close();
 				}catch (FileNotFoundException e1) {
-					e1.printStackTrace();
+                	//JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
 				}catch (IOException e1 ) {
-					e1.printStackTrace();
+                	//JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
 				}
  
 			}
@@ -401,6 +401,17 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subAlertas);
 		panelContenedorMenu.add(subHistorial);
 
+		subRegCli.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				RegistrarCliente aux = new RegistrarCliente();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+		});
+		
 		btnGCli.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

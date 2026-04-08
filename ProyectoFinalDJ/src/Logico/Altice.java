@@ -31,6 +31,7 @@ public class Altice implements Serializable{
 		this.colaDeEspera = new ArrayList<>();
 		this.listaContratos = new ArrayList<>();
 	}
+	
 	public static Altice getInstance() {
 		if(altice==null) {
 			altice = new Altice();
@@ -331,6 +332,23 @@ public class Altice implements Serializable{
 		// TODO Auto-generated method stub
 		listaEmpleados.add(empleado);
 		codigoPersonal++;
+	}
+	public void InsertaCliente(Cliente client) {
+		listaClientes.add(client);
+		codigoCliente++;
+		
+	}
+	public boolean buscarUsuario(String nombreUsuario) {
+		boolean finded = false;
+		
+		for(Cliente aux : listaClientes) {
+			if(aux.getMiCuenta().getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
+				finded = true;
+			}
+		}
+		
+		return finded;
+		
 	}
 	
 

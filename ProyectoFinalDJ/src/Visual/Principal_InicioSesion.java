@@ -39,7 +39,7 @@ public class Principal_InicioSesion extends JFrame {
                     Principal_InicioSesion frame = new Principal_InicioSesion();
                     frame.setVisible(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });

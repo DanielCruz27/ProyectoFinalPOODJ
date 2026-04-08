@@ -205,7 +205,7 @@ public class RegistrarPersonal extends JDialog {
 
 		cmbZona = new JComboBox();
 		cmbZona.setModel(
-				new DefaultComboBoxModel(new String[] { "<<Selecionar>>", "Metropolitana", "Norte", "Sur", "Este" }));
+				new DefaultComboBoxModel(new String[] {"<<Selecionar>>", "Metropolitana", "Norte", "Sur", "Este"}));
 		cmbZona.setBounds(141, 31, 114, 22);
 		panel_Tecnico.add(cmbZona);
 
