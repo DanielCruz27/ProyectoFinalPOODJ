@@ -1,7 +1,13 @@
 package Logico;
 
-public abstract class MetodoDePago {
+import java.io.Serializable;
+
+public abstract class MetodoDePago implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String nombreTitular;
 	protected String idMetodo;
 	

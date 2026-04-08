@@ -214,7 +214,7 @@ public class RegistrarPersonal extends JDialog {
 		panel_Tecnico.add(lblZona);
 
 		chkbxLicencia = new JCheckBox("Licencia");
-		chkbxLicencia.setBounds(284, 31, 72, 22);
+		chkbxLicencia.setBounds(284, 31, 132, 22);
 		panel_Tecnico.add(chkbxLicencia);
 
 		panel_Usuario = new JPanel();

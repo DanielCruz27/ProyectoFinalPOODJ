@@ -2,6 +2,10 @@ package Logico;
 
 public class Cuenta extends MetodoDePago {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double numeroCuenta;
 	private String tipoDeCuenta;
 	private String banco;

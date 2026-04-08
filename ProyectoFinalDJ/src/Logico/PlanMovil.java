@@ -1,6 +1,10 @@
 package Logico;
 
 public class PlanMovil extends Servicio {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String numeroTelefonico;
 	private int minutosIncluidos;
 	private String redesLibresIncluidas;

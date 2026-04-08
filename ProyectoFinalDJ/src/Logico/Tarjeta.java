@@ -4,6 +4,10 @@ import java.time.LocalDate;
 
 public class Tarjeta extends MetodoDePago {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double numeroTarjeta;
 	private LocalDate fechaVencimiento;
 	private String tipoTarjeta;

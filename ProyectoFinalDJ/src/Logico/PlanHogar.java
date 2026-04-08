@@ -1,6 +1,10 @@
 package Logico;
 
 public class PlanHogar extends Servicio {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String numeroTelefonico;
 	private int velocidadInternet;
 	private String StreamingIncluido;

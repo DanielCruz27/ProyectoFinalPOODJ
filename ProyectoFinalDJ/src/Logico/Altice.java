@@ -1,10 +1,15 @@
 package Logico;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Altice {
+public class Altice implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static Altice altice = null;
 	private ArrayList<Cliente> listaClientes;
 	private ArrayList<Personal> listaEmpleados;

@@ -1,6 +1,10 @@
 package Logico;
 
 public class Comercial extends Personal {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int ventasRealizadas;
 	private int comisiones;
 	

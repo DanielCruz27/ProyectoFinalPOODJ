@@ -2,6 +2,10 @@ package Logico;
 
 public class Efectivo extends MetodoDePago {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String moneda;
 	private float montoPagado;
 	

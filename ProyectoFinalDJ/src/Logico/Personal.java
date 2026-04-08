@@ -1,6 +1,12 @@
 package Logico;
 
-public abstract class Personal {
+import java.io.Serializable;
+
+public abstract class Personal implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String idEmpleado;
 	protected String nombre;
 	protected String cedula;

@@ -1,6 +1,10 @@
 package Logico;
 
 public class Tecnico extends Personal {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tipoTecnico;
 	private String zonAsignada;
 	private boolean licencia;

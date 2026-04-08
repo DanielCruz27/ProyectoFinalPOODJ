@@ -2,10 +2,16 @@ package Visual;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import Logico.Altice;
 
 public class SistemaPrincipal extends JFrame {
 
@@ -35,6 +41,24 @@ public class SistemaPrincipal extends JFrame {
 	}
 
 	public SistemaPrincipal(String rolUsuario) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream altice;
+				ObjectOutputStream alticeWrite;
+				try {
+					altice = new FileOutputStream("Altice.dat");
+					alticeWrite = new ObjectOutputStream(altice);
+					alticeWrite.writeObject(Altice.getInstance());
+					alticeWrite.close();
+				}catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}catch (IOException e1 ) {
+					e1.printStackTrace();
+				}
+ 
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SistemaPrincipal.class.getResource("/Recursos/LogoAltice.jpg")));
 		setTitle("Altice - Sistema de Gestión");

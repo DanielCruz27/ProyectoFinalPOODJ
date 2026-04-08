@@ -1,12 +1,16 @@
 package Logico;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-public class Pago {
+public class Pago implements Serializable {
 
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String idFactura;
 	private LocalDate fechaEmision;
 	private float montoTotal;

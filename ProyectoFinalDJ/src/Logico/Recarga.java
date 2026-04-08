@@ -2,6 +2,10 @@ package Logico;
 
 public class Recarga extends Servicio {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int vigencia;
 	private float MontoARecargar;
 	
