@@ -122,62 +122,57 @@ public class RegistrarPersonal extends JDialog {
 
 		rbAdministrativo = new JRadioButton("Administrativo");
 		rbAdministrativo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (rbAdministrativo.isSelected()) {
-					rbComercial.setSelected(false);
-					rbTecnico.setSelected(false);
-					panel_Administrativo.setVisible(true);
-					btnRegistrar.setEnabled(true);
-				}
-				if (!rbAdministrativo.isSelected()) {
-					panel_Tecnico.setVisible(false);
-					rbAdministrativo.setSelected(false);
-					btnRegistrar.setEnabled(false);
-
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (rbAdministrativo.isSelected()) {
+		            rbComercial.setSelected(false);
+		            rbTecnico.setSelected(false);
+		            panel_Administrativo.setVisible(true);
+		            panel_Tecnico.setVisible(false);
+		            panel_Comercial.setVisible(false);
+		            btnRegistrar.setEnabled(true);
+		        } else {
+		            panel_Administrativo.setVisible(false);
+		            btnRegistrar.setEnabled(false);
+		        }
+		    }
 		});
 		rbAdministrativo.setBounds(6, 22, 110, 22);
 		panel.add(rbAdministrativo);
 
 		rbTecnico = new JRadioButton("Tecnico");
 		rbTecnico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (rbTecnico.isSelected()) {
-					rbComercial.setSelected(false);
-					rbAdministrativo.setSelected(false);
-					panel_Tecnico.setVisible(true);
-					btnRegistrar.setEnabled(true);
-
-				}
-				if (!rbTecnico.isSelected()) {
-					rbTecnico.setSelected(false);
-					btnRegistrar.setEnabled(false);
-
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (rbTecnico.isSelected()) {
+		            rbComercial.setSelected(false);
+		            rbAdministrativo.setSelected(false);
+		            panel_Tecnico.setVisible(true);
+		            panel_Administrativo.setVisible(false);
+		            panel_Comercial.setVisible(false);
+		            btnRegistrar.setEnabled(true);
+		        } else {
+		            panel_Tecnico.setVisible(false);
+		            btnRegistrar.setEnabled(false);
+		        }
+		    }
 		});
 		rbTecnico.setBounds(181, 22, 110, 22);
 		panel.add(rbTecnico);
 
 		rbComercial = new JRadioButton("Comercial");
 		rbComercial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (rbComercial.isSelected()) {
-					rbAdministrativo.setSelected(false);
-					rbTecnico.setSelected(false);
-					panel_Comercial.setVisible(true);
-					panel_Administrativo.setVisible(false);
-					panel_Tecnico.setVisible(false);
-					btnRegistrar.setEnabled(true);
-
-				}
-				if (!rbComercial.isSelected()) {
-					panel_Comercial.setVisible(false);
-					btnRegistrar.setEnabled(false);
-
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (rbComercial.isSelected()) {
+		            rbAdministrativo.setSelected(false);
+		            rbTecnico.setSelected(false);
+		            panel_Comercial.setVisible(true);
+		            panel_Administrativo.setVisible(false);
+		            panel_Tecnico.setVisible(false);
+		            btnRegistrar.setEnabled(true);
+		        } else {
+		            panel_Comercial.setVisible(false);
+		            btnRegistrar.setEnabled(false);
+		        }
+		    }
 		});
 		rbComercial.setBounds(315, 22, 95, 22);
 		panel.add(rbComercial);
