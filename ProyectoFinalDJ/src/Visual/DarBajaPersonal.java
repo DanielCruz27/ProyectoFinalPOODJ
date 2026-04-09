@@ -6,12 +6,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import Logico.*;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 public class DarBajaPersonal extends JDialog {
 
@@ -50,6 +44,7 @@ public class DarBajaPersonal extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
+		// --- CABECERA ROJA ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(204, 0, 0)); 
 		panelHeader.setBounds(0, 0, 850, 40);
@@ -67,34 +62,59 @@ public class DarBajaPersonal extends JDialog {
 
 		String[] columnas = {"ID", "Nombre", "Apellido", "Rol"};
 		model = new DefaultTableModel(null, columnas) {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
 		table = new JTable(model);
+		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setBackground(new Color(150, 150, 150));
+		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
 		// --- PANEL DE CONFIRMACIÓN ---
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBackground(new Color(250, 250, 250));
 		TitledBorder borde = BorderFactory.createTitledBorder(
-			new LineBorder(Color.GRAY, 1, true), " Confirmación de Baja ");
+			new LineBorder(Color.GRAY, 1, true), " Confirmación de Baja ", 
+			TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 13), Color.BLACK);
 		panelInfo.setBorder(borde);
 		panelInfo.setBounds(540, 60, 270, 350);
 		contentPanel.add(panelInfo);
 		panelInfo.setLayout(null);
 
-		lblID = new JLabel("ID: -"); lblID.setBounds(20, 40, 230, 20); panelInfo.add(lblID);
-		lblNombreCompleto = new JLabel("Nombre: -"); lblNombreCompleto.setBounds(20, 80, 230, 20); panelInfo.add(lblNombreCompleto);
-		lblCedula = new JLabel("Cédula: -"); lblCedula.setBounds(20, 120, 230, 20); panelInfo.add(lblCedula);
-		lblRol = new JLabel("Rol: -"); lblRol.setBounds(20, 160, 230, 20); panelInfo.add(lblRol);
+		lblID = new JLabel("ID: -"); 
+		lblID.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblID.setBounds(20, 40, 230, 20); 
+		panelInfo.add(lblID);
+		
+		lblNombreCompleto = new JLabel("Nombre: -"); 
+		lblNombreCompleto.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblNombreCompleto.setBounds(20, 80, 230, 20); 
+		panelInfo.add(lblNombreCompleto);
+		
+		lblCedula = new JLabel("Cédula: -"); 
+		lblCedula.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblCedula.setBounds(20, 120, 230, 20); 
+		panelInfo.add(lblCedula);
+		
+		lblRol = new JLabel("Rol: -"); 
+		lblRol.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblRol.setBounds(20, 160, 230, 20); 
+		panelInfo.add(lblRol);
 
 		JButton btnConfirmar = new JButton("CONFIRMAR BAJA");
 		btnConfirmar.setBackground(new Color(220, 53, 69));
 		btnConfirmar.setForeground(Color.WHITE);
-		btnConfirmar.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnConfirmar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnConfirmar.setBounds(35, 250, 200, 40);
+		btnConfirmar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ejecutarBaja();
+			}
+		});
 		panelInfo.add(btnConfirmar);
 
 		// --- EVENTOS ---
@@ -105,19 +125,18 @@ public class DarBajaPersonal extends JDialog {
 			}
 		});
 
-		btnConfirmar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ejecutarBaja();
-			}
-		});
-
 		// Botón cerrar en la parte inferior
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+		
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnCerrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { dispose(); }
+			@Override
+			public void actionPerformed(ActionEvent e) { 
+				dispose(); 
+			}
 		});
 		buttonPane.add(btnCerrar);
 
@@ -126,7 +145,6 @@ public class DarBajaPersonal extends JDialog {
 
 	private void cargarTablaActivos() {
 		model.setRowCount(0);
-		// Solo mostramos los que tienen estado == 1 (Activos)
 		for (Personal p : Altice.getInstance().getListaEmpleados()) {
 			if (p.getEstado() == 1) { 
 				String rol = p.getClass().getSimpleName();
@@ -160,13 +178,11 @@ public class DarBajaPersonal extends JDialog {
 			"Confirmar Desactivación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 		if (confirm == JOptionPane.YES_OPTION) {
-			// USAMOS EL SETTER QUE CREAMOS
-			seleccionado.setEstado(0); // 0 = Inactivo
+			seleccionado.setEstado(0); 
 			JOptionPane.showMessageDialog(this, "El empleado ha sido desactivado con éxito.");
 			seleccionado = null;
 			lblID.setText("ID: -"); lblNombreCompleto.setText("Nombre: -"); lblCedula.setText("Cédula: -"); lblRol.setText("Rol: -");
 			cargarTablaActivos();
 		}
 	}
-
 }

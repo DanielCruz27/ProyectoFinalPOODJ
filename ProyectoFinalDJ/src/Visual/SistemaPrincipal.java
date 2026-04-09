@@ -45,7 +45,7 @@ public class SistemaPrincipal extends JFrame {
 
 	            // --- LANZAMIENTO DEL SISTEMA ---
 	            try {
-	                SistemaPrincipal frame = new SistemaPrincipal("Administrador");
+	                SistemaPrincipal frame = new SistemaPrincipal("administrador");
 	                frame.setVisible(true);
 	            } catch (Exception e) {
 	                JOptionPane.showMessageDialog(null, "Error al iniciar la interfaz", "Error", JOptionPane.WARNING_MESSAGE);
@@ -474,6 +474,14 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subListarMod);
 		panelContenedorMenu.add(subDesactivar);
 		panelContenedorMenu.add(subRecarga);
+		
+		subCrearPlanes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CrearPlanes aux = new CrearPlanes();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}});
 
 		final boolean[] menuServOpen = {false}; 
 		btnGServ.addActionListener(new ActionListener() {

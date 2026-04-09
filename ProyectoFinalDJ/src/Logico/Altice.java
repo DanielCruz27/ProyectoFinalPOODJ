@@ -21,6 +21,7 @@ public class Altice implements Serializable{
 	public  int codigoCliente = 1;
 	public  int codigoContrato = 1;
 	public  int codigoFactura = 1;
+	public int codigoServicio = 1;
 
 	public Altice() {
 		super();
@@ -345,6 +346,16 @@ public class Altice implements Serializable{
     	codigoCliente++;
     	}
     
+public int getCodigoServicio() { 
+    	
+    	return codigoServicio;
+    	}
+
+public void incrementarServicio() { 
+	
+	codigoServicio++;
+	}
+    
     
 	public void RegistarPersonal(Personal empleado) {
         // Usamos el contador interno del objeto Altice
@@ -375,5 +386,10 @@ public class Altice implements Serializable{
         altice = temp;
     }
 	
+	public void RegistarServicio(Servicio service) {
+	    service.setIdServicio("S-" + codigoServicio);
+	    catalogoServicio.add(service);
+	    codigoServicio++;
+	}
 
 }
