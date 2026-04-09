@@ -2,9 +2,11 @@ package Visual;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,16 +30,28 @@ public class SistemaPrincipal extends JFrame {
 	private boolean menuReportesAbierto = false;
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SistemaPrincipal frame = new SistemaPrincipal("administrador");
-					frame.setVisible(true);
-				} catch (Exception e) {
-                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
+	    EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            // --- LECTURA INICIAL ---
+	            try {
+	                FileInputStream fileIn = new FileInputStream("Alticee.dat");
+	                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+	                Altice.setInstance((Altice) objectIn.readObject());
+	                objectIn.close();
+	            } catch (Exception e) {
+	                // Si falla, simplemente iniciamos con una instancia vacía
+	                System.out.println("Iniciando sin datos previos...");
+	            }
+
+	            // --- LANZAMIENTO DEL SISTEMA ---
+	            try {
+	                SistemaPrincipal frame = new SistemaPrincipal("Administrador");
+	                frame.setVisible(true);
+	            } catch (Exception e) {
+	                JOptionPane.showMessageDialog(null, "Error al iniciar la interfaz", "Error", JOptionPane.WARNING_MESSAGE);
+	            }
+	        }
+	    });
 	}
 
 	public SistemaPrincipal(String rolUsuario) {
@@ -353,39 +367,64 @@ public class SistemaPrincipal extends JFrame {
 		JButton btnDash = crearBotonMenu("Dashboard", 203, 40, false);
 		panelContenedorMenu.add(btnDash);
 
-		// --- 2. GESTIÓN DE PERSONAL ---
+		// --- 2. GESTIÓN DE PERSONAL (MODIFICADO) ---
 		final JButton btnGPers = crearBotonMenu("> Gestión de Personal", 203, 40, false);
 		final JButton subRegPers = crearBotonMenu("   Registrar Personal", 203, 30, true);
-		final JButton subListPers = crearBotonMenu("   Listado de Personal", 203, 30, true);
-		final JButton subZonas = crearBotonMenu("   Asignación de Zonas", 203, 30, true);
+		// Cambio de nombre según tu requerimiento
+		final JButton subListModPers = crearBotonMenu("   Listar y Modificar Personal", 203, 30, true); 
+		// Nuevo submenú solicitado
+		final JButton subBajaPers = crearBotonMenu("   Dar de Baja Personal", 203, 30, true); 
 
 		panelContenedorMenu.add(btnGPers);
 		panelContenedorMenu.add(subRegPers);
-		panelContenedorMenu.add(subListPers);
-		panelContenedorMenu.add(subZonas);
+		panelContenedorMenu.add(subListModPers);
+		panelContenedorMenu.add(subBajaPers);
 
-		
-		
 		btnGPers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				menuPersonalAbierto = !menuPersonalAbierto;
 				btnGPers.setText(menuPersonalAbierto ? "v Gestión de Personal" : "> Gestión de Personal");
 				subRegPers.setVisible(menuPersonalAbierto);
-				subListPers.setVisible(menuPersonalAbierto);
-				subZonas.setVisible(menuPersonalAbierto);
+				subListModPers.setVisible(menuPersonalAbierto);
+				subBajaPers.setVisible(menuPersonalAbierto); // Control de visibilidad del nuevo botón
 				panelContenedorMenu.revalidate();
 			}
 		});
+
+		// Acción para abrir Registrar Personal (ya la tenías)
 		subRegPers.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				RegistrarPersonal aux = new RegistrarPersonal();
 				aux.setModal(true);
 				aux.setVisible(true);
 			}
+		});
+
+		// Acción para Listar y Modificar (abre el diálogo que ya tienes)
+		subListModPers.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ListarPersonal aux = new ListarPersonal();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+			
+		
+			
+		});
+		
+		subBajaPers.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DarBajaPersonal aux = new DarBajaPersonal();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+			
+		
+			
 		});
 
 		// --- 3. GESTIÓN DE CLIENTES ---
@@ -402,10 +441,8 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subHistorial);
 
 		subRegCli.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				RegistrarCliente aux = new RegistrarCliente();
 				aux.setModal(true);
 				aux.setVisible(true);
@@ -451,40 +488,41 @@ public class SistemaPrincipal extends JFrame {
 				panelContenedorMenu.revalidate();
 			}
 		});
+
 		// --- 5. REPORTES DE LA EMPRESA (BI) ---
-				final JButton btnReportes = crearBotonMenu("> Reportes Empresa", 203, 40, false);
-				final JButton subFinanzas = crearBotonMenu("   Finanzas", 203, 30, true);
-				final JButton subCalidad = crearBotonMenu("   Métricas de Calidad", 203, 30, true);
-				final JButton subTickets = crearBotonMenu("   Panel de Tickets", 203, 30, true);
-				final JButton subRanking = crearBotonMenu("   Ranking de Personal", 203, 30, true);
-				final JButton subTopServ = crearBotonMenu("   Plan más contratado", 203, 30, true);
-				final JButton subZonasInst = crearBotonMenu("   Instalaciones por Zona", 203, 30, true);
-				final JButton subValoraciones = crearBotonMenu("   Valoraciones de Clientes", 203, 30, true); // <--- NUEVO
+		final JButton btnReportes = crearBotonMenu("> Reportes Empresa", 203, 40, false);
+		final JButton subFinanzas = crearBotonMenu("   Finanzas", 203, 30, true);
+		final JButton subCalidad = crearBotonMenu("   Métricas de Calidad", 203, 30, true);
+		final JButton subTickets = crearBotonMenu("   Panel de Tickets", 203, 30, true);
+		final JButton subRanking = crearBotonMenu("   Ranking de Personal", 203, 30, true);
+		final JButton subTopServ = crearBotonMenu("   Plan más contratado", 203, 30, true);
+		final JButton subZonasInst = crearBotonMenu("   Instalaciones por Zona", 203, 30, true);
+		final JButton subValoraciones = crearBotonMenu("   Valoraciones de Clientes", 203, 30, true);
 
-				panelContenedorMenu.add(btnReportes);
-				panelContenedorMenu.add(subFinanzas);
-				panelContenedorMenu.add(subCalidad);
-				panelContenedorMenu.add(subTickets);
-				panelContenedorMenu.add(subRanking);
-				panelContenedorMenu.add(subTopServ);
-				panelContenedorMenu.add(subZonasInst);
-				panelContenedorMenu.add(subValoraciones); // <--- AGREGADO AL PANEL
+		panelContenedorMenu.add(btnReportes);
+		panelContenedorMenu.add(subFinanzas);
+		panelContenedorMenu.add(subCalidad);
+		panelContenedorMenu.add(subTickets);
+		panelContenedorMenu.add(subRanking);
+		panelContenedorMenu.add(subTopServ);
+		panelContenedorMenu.add(subZonasInst);
+		panelContenedorMenu.add(subValoraciones);
 
-				btnReportes.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						menuReportesAbierto = !menuReportesAbierto;
-						btnReportes.setText(menuReportesAbierto ? "v Reportes Empresa" : "> Reportes Empresa");
-						subFinanzas.setVisible(menuReportesAbierto);
-						subCalidad.setVisible(menuReportesAbierto);
-						subTickets.setVisible(menuReportesAbierto);
-						subRanking.setVisible(menuReportesAbierto);
-						subTopServ.setVisible(menuReportesAbierto);
-						subZonasInst.setVisible(menuReportesAbierto);
-						subValoraciones.setVisible(menuReportesAbierto); // <--- CONTROL DE VISIBILIDAD
-						panelContenedorMenu.revalidate();
-					}
-				});
+		btnReportes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuReportesAbierto = !menuReportesAbierto;
+				btnReportes.setText(menuReportesAbierto ? "v Reportes Empresa" : "> Reportes Empresa");
+				subFinanzas.setVisible(menuReportesAbierto);
+				subCalidad.setVisible(menuReportesAbierto);
+				subTickets.setVisible(menuReportesAbierto);
+				subRanking.setVisible(menuReportesAbierto);
+				subTopServ.setVisible(menuReportesAbierto);
+				subZonasInst.setVisible(menuReportesAbierto);
+				subValoraciones.setVisible(menuReportesAbierto);
+				panelContenedorMenu.revalidate();
+			}
+		});
 
 		// --- BOTÓN CERRAR SESIÓN ---
 		JButton btnLogout = new JButton("Cerrar Sesión");

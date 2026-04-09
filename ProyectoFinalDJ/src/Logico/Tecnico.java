@@ -12,9 +12,9 @@ public class Tecnico extends Personal {
 	private float bonoPorinstalaciones;
 	private int horasExtrasTrabajadas;
 	
-	public Tecnico(String idEmpleado, String nombre, String cedula, float salarioBase, Usuario miCuenta, String tipoTecnico, String zonAsignada, boolean licencia, int cantidadInstalaciones,
+	public Tecnico(String idEmpleado, String nombre, String apellido, String cedula, float salarioBase, Usuario miCuenta, String tipoTecnico, String zonAsignada, boolean licencia, int cantidadInstalaciones,
 			float bonoPorinstalaciones,int horasextras) {
-		super(idEmpleado, nombre, cedula, salarioBase, miCuenta);
+		super(idEmpleado, nombre, apellido, cedula, salarioBase, miCuenta);
 		this.tipoTecnico = tipoTecnico;
 		this.zonAsignada = zonAsignada;
 		this.licencia = licencia;
@@ -48,10 +48,6 @@ public class Tecnico extends Personal {
 	public void setCantidadInstalaciones(int cantidadInstalaciones) {
 		this.cantidadInstalaciones = cantidadInstalaciones;
 	}
-	@Override
-	protected float calcularSueldoNeto() {
-		return getSalarioBase() + bonoPorinstalaciones;
-	}
 	
 	public float getBonoPorinstalaciones() {
 		return bonoPorinstalaciones;
@@ -68,5 +64,17 @@ public class Tecnico extends Personal {
 		this.horasExtrasTrabajadas = horasExtrasTrabajadas;
 	}
 	
+	@Override
+	protected float calcularSueldoNeto() {
+	    float pagoHorasExtras = horasExtrasTrabajadas * 150; // Ejemplo: 150 pesos por hora
+	    return getSalarioBase() + bonoPorinstalaciones + pagoHorasExtras;
+	}
+	
+	// Cambia el método setHorasExtrasTrabajadas por este o agrega este nuevo:
+	public void acumularHorasExtras(int horasNuevas) {
+	    if (horasNuevas > 0) {
+	        this.horasExtrasTrabajadas += horasNuevas;
+	    }
+	}
 	
 }

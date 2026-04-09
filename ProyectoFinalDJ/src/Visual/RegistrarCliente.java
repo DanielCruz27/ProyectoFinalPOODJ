@@ -65,7 +65,7 @@ public class RegistrarCliente extends JDialog {
 		contentPanel.add(IdCliente);
 		
 		txtCodigo = new JTextField();
-		txtCodigo.setText("C-"+ Altice.codigoCliente);
+		txtCodigo.setText("C-" + Altice.getInstance().getCodigoCliente());
 		txtCodigo.setEnabled(false);
 		txtCodigo.setBounds(15, 39, 146, 26);
 		contentPanel.add(txtCodigo);
@@ -167,8 +167,7 @@ public class RegistrarCliente extends JDialog {
 		txtEmail.setText("");
 		txtApellido.setText("");
 		cbxVivienda.setSelectedIndex(0);
-		txtCodigo.setText("C-"+Altice.codigoCliente);
-		
+		txtCodigo.setText("C-" + Altice.getInstance().getCodigoCliente());		
 		
 		
 	}

@@ -17,10 +17,10 @@ public class Altice implements Serializable{
 	private ArrayList<Pago> historialPagos;
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
-	public static int codigoPersonal = 1;
-	public static int codigoCliente = 1;
-	public static int codigoContrato = 1;
-	public static int codigoFactura = 1;
+	public  int codigoPersonal = 1;
+	public  int codigoCliente = 1;
+	public  int codigoContrato = 1;
+	public  int codigoFactura = 1;
 
 	public Altice() {
 		super();
@@ -165,7 +165,7 @@ public class Altice implements Serializable{
 		return aux;
 	}
 	
-	private Personal buscarEmpleadoPorId(String idVendedor) {
+	public Personal buscarEmpleadoPorId(String idVendedor) {
 		Personal aux = null;
 		boolean finded = false;
 		int i = 0;
@@ -328,11 +328,31 @@ public class Altice implements Serializable{
 		
 		return ZoneClients;
 	}
+	
+	public int getCodigotPersonal() { 
+		
+		return codigoPersonal; }
+    public void incrementarPersonal() { 
+    	
+    	codigoPersonal++; }
+    
+    public int getCodigoCliente() { 
+    	
+    	return codigoCliente; 
+    }
+    public void incrementarCliente() { 
+    	
+    	codigoCliente++;
+    	}
+    
+    
 	public void RegistarPersonal(Personal empleado) {
-		// TODO Auto-generated method stub
-		listaEmpleados.add(empleado);
-		codigoPersonal++;
-	}
+        // Usamos el contador interno del objeto Altice
+        empleado.setIdEmpleado("P-" + codigoPersonal); 
+        listaEmpleados.add(empleado);
+        codigoPersonal++; // Se incrementa y se guardará en el .dat
+    }
+	
 	public void InsertaCliente(Cliente client) {
 		listaClientes.add(client);
 		codigoCliente++;
@@ -350,6 +370,10 @@ public class Altice implements Serializable{
 		return finded;
 		
 	}
+
+	public static void setInstance(Altice temp) {
+        altice = temp;
+    }
 	
 
 }

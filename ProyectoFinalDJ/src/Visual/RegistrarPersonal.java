@@ -1,63 +1,25 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.border.SoftBevelBorder;
-
-import Logico.Administrativo;
-import Logico.Altice;
-import Logico.Comercial;
-import Logico.Tecnico;
-import Logico.Usuario;
-
-import javax.swing.border.BevelBorder;
-import javax.swing.JRadioButton;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPasswordField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import Logico.*;
 
 public class RegistrarPersonal extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JTextField txtNombre;
-	private JTextField txtIdentificador;
-	private JTextField txtCedula;
-	private JRadioButton rbAdministrativo;
-	private JRadioButton rbTecnico;
-	private JRadioButton rbComercial;
-	private JComboBox cmbTipo;
-	private JPanel panel_Tecnico;
-	private JPasswordField txtPassword;
-	private JPanel panel_Comercial;
-	private JPanel panel_Administrativo;
-	private JPanel panel_Usuario;
-	private JButton btnRegistrar;
-	private JComboBox cmbZona;
-	private JSpinner spnSalarioBase;
-	private JComboBox cmbDepartamento;
-	private JCheckBox chkbxLicencia;
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
+    private JTextField txtNombre, txtApellido, txtCedula, txtIdentificador;
+    private JPasswordField txtPassword;
+    private JSpinner spnSalarioBase;
+    private JRadioButton rbAdministrativo, rbTecnico, rbComercial;
+    private JComboBox<String> cmbTipo, cmbZona, cmbDepartamento;
+    private JCheckBox chkbxLicencia;
+    private JPanel panelEspecializado;
+    private JButton btnRegistrar;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		try {
 			RegistrarPersonal dialog = new RegistrarPersonal();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -66,261 +28,292 @@ public class RegistrarPersonal extends JDialog {
 			e.printStackTrace();
 		}
 	}
+    public RegistrarPersonal() {
+        setTitle("Altice - Registro de Personal");
+        setResizable(false);
+        setModal(true);
+        setSize(500, 600);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(new BorderLayout());
+        
+        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        contentPanel.setLayout(null);
 
-	/**
-	 * Create the dialog.
-	 */
-	public RegistrarPersonal() {
-		setTitle("Registrar Personal");
-		setResizable(false);
-		setBounds(100, 100, 456, 470);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
+        // --- CABECERA AZUL ---
+        JPanel panelHeader = new JPanel();
+        panelHeader.setBackground(new Color(0, 102, 204));
+        panelHeader.setBounds(0, 0, 500, 40);
+        contentPanel.add(panelHeader);
+        
+        JLabel lblTitulo = new JLabel("REGISTRO DE NUEVO EMPLEADO");
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+        panelHeader.add(lblTitulo);
 
-		txtNombre = new JTextField();
-		txtNombre.setBounds(10, 74, 96, 20);
-		contentPanel.add(txtNombre);
-		txtNombre.setColumns(10);
+        // --- CAMPOS GENERALES ---
+        JLabel lblId = new JLabel("ID Empleado:");
+        lblId.setBounds(30, 60, 100, 14);
+        contentPanel.add(lblId);
 
-		JLabel lblNewLabel = new JLabel("Nombre");
-		lblNewLabel.setBounds(10, 59, 48, 14);
-		contentPanel.add(lblNewLabel);
+        txtIdentificador = new JTextField("P-" + Altice.getInstance().getCodigotPersonal());     
+        txtIdentificador.setEditable(false);
+        txtIdentificador.setBounds(30, 80, 120, 25);
+        txtIdentificador.setBackground(new Color(245, 245, 245));
+        contentPanel.add(txtIdentificador);
 
-		txtIdentificador = new JTextField();
-		txtIdentificador.setText("P-" + Altice.codigoPersonal);
-		txtIdentificador.setEnabled(false);
-		txtIdentificador.setColumns(10);
-		txtIdentificador.setBounds(10, 28, 96, 20);
-		contentPanel.add(txtIdentificador);
+        JLabel lblCed = new JLabel("Cédula:");
+        lblCed.setBounds(240, 60, 100, 14);
+        contentPanel.add(lblCed);
 
-		JLabel Codigo = new JLabel("Codigo");
-		Codigo.setBounds(10, 11, 48, 14);
-		contentPanel.add(Codigo);
+        txtCedula = new JTextField();
+        txtCedula.setBounds(240, 80, 200, 25);
+        contentPanel.add(txtCedula);
 
-		txtCedula = new JTextField();
-		txtCedula.setColumns(10);
-		txtCedula.setBounds(127, 28, 96, 20);
-		contentPanel.add(txtCedula);
+        JLabel lblNom = new JLabel("Nombre:");
+        lblNom.setBounds(30, 120, 100, 14);
+        contentPanel.add(lblNom);
 
-		JLabel lblCedula = new JLabel("Cedula");
-		lblCedula.setBounds(127, 11, 48, 14);
-		contentPanel.add(lblCedula);
+        txtNombre = new JTextField();
+        txtNombre.setBounds(30, 140, 200, 25);
+        contentPanel.add(txtNombre);
 
-		spnSalarioBase = new JSpinner();
-		spnSalarioBase.setModel(new SpinnerNumberModel(Float.valueOf(1), Float.valueOf(1), null, Float.valueOf(1)));
-		spnSalarioBase.setBounds(127, 74, 96, 20);
-		contentPanel.add(spnSalarioBase);
+        JLabel lblApe = new JLabel("Apellido:");
+        lblApe.setBounds(240, 120, 100, 14);
+        contentPanel.add(lblApe);
 
-		JPanel panel = new JPanel();
-		panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel.setBounds(10, 105, 416, 66);
-		contentPanel.add(panel);
-		panel.setLayout(null);
+        txtApellido = new JTextField();
+        txtApellido.setBounds(240, 140, 200, 25);
+        contentPanel.add(txtApellido);
 
-		rbAdministrativo = new JRadioButton("Administrativo");
-		rbAdministrativo.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (rbAdministrativo.isSelected()) {
-		            rbComercial.setSelected(false);
-		            rbTecnico.setSelected(false);
-		            panel_Administrativo.setVisible(true);
-		            panel_Tecnico.setVisible(false);
-		            panel_Comercial.setVisible(false);
-		            btnRegistrar.setEnabled(true);
-		        } else {
-		            panel_Administrativo.setVisible(false);
-		            btnRegistrar.setEnabled(false);
-		        }
-		    }
-		});
-		rbAdministrativo.setBounds(6, 22, 110, 22);
-		panel.add(rbAdministrativo);
+        JLabel lblSal = new JLabel("Salario Base:");
+        lblSal.setBounds(30, 180, 100, 14);
+        contentPanel.add(lblSal);
 
-		rbTecnico = new JRadioButton("Tecnico");
-		rbTecnico.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (rbTecnico.isSelected()) {
-		            rbComercial.setSelected(false);
-		            rbAdministrativo.setSelected(false);
-		            panel_Tecnico.setVisible(true);
-		            panel_Administrativo.setVisible(false);
-		            panel_Comercial.setVisible(false);
-		            btnRegistrar.setEnabled(true);
-		        } else {
-		            panel_Tecnico.setVisible(false);
-		            btnRegistrar.setEnabled(false);
-		        }
-		    }
-		});
-		rbTecnico.setBounds(181, 22, 110, 22);
-		panel.add(rbTecnico);
+        spnSalarioBase = new JSpinner(new SpinnerNumberModel(27489.60, 15000.0, 500000.0, 500.0));
+        spnSalarioBase.setBounds(30, 200, 120, 25);
+        contentPanel.add(spnSalarioBase);
 
-		rbComercial = new JRadioButton("Comercial");
-		rbComercial.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (rbComercial.isSelected()) {
-		            rbAdministrativo.setSelected(false);
-		            rbTecnico.setSelected(false);
-		            panel_Comercial.setVisible(true);
-		            panel_Administrativo.setVisible(false);
-		            panel_Tecnico.setVisible(false);
-		            btnRegistrar.setEnabled(true);
-		        } else {
-		            panel_Comercial.setVisible(false);
-		            btnRegistrar.setEnabled(false);
-		        }
-		    }
-		});
-		rbComercial.setBounds(315, 22, 95, 22);
-		panel.add(rbComercial);
+        // --- SELECTOR DE ROL ---
+        JPanel panelRoles = new JPanel();
+        panelRoles.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192)), "Tipo de Empleado", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 102, 204)));
+        panelRoles.setBackground(Color.WHITE);
+        panelRoles.setBounds(30, 240, 420, 60);
+        contentPanel.add(panelRoles);
+        panelRoles.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
 
-		JLabel lblSalariobase = new JLabel("SalarioBase");
-		lblSalariobase.setBounds(127, 59, 110, 14);
-		contentPanel.add(lblSalariobase);
+        rbAdministrativo = new JRadioButton("Administrativo");
+        rbTecnico = new JRadioButton("Técnico");
+        rbComercial = new JRadioButton("Comercial");
+        rbAdministrativo.setBackground(Color.WHITE);
+        rbTecnico.setBackground(Color.WHITE);
+        rbComercial.setBackground(Color.WHITE);
+        
+        ButtonGroup grupo = new ButtonGroup();
+        grupo.add(rbAdministrativo); grupo.add(rbTecnico); grupo.add(rbComercial);
+        panelRoles.add(rbAdministrativo); panelRoles.add(rbTecnico); panelRoles.add(rbComercial);
 
-		panel_Tecnico = new JPanel();
-		panel_Tecnico.setVisible(false);
-		panel_Tecnico.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_Tecnico.setBounds(10, 199, 416, 78);
-		contentPanel.add(panel_Tecnico);
-		panel_Tecnico.setLayout(null);
+     // --- PANEL DINÁMICO (ESTILIZADO) ---
+        panelEspecializado = new JPanel();
+        panelEspecializado.setBackground(new Color(252, 252, 252)); // Blanco humo
+        
+        // Creamos un borde con título azul para que sepa qué está llenando
+        TitledBorder bordeTitulo = BorderFactory.createTitledBorder(
+            new LineBorder(new Color(0, 102, 204), 1, true), " Datos Específicos según Rol ");
+        bordeTitulo.setTitleFont(new Font("Arial", Font.BOLD, 12));
+        bordeTitulo.setTitleColor(new Color(0, 102, 204));
+        
+        panelEspecializado.setBorder(bordeTitulo);
+        panelEspecializado.setBounds(30, 310, 420, 100); // Un poco más alto para que respire
+        contentPanel.add(panelEspecializado);
+        panelEspecializado.setLayout(null);
+        panelEspecializado.setVisible(false);
 
-		cmbTipo = new JComboBox();
-		cmbTipo.setModel(new DefaultComboBoxModel(new String[] { "<<Seleccionar>>", "Instalacion ", "Planta externa",
-				"Infraestructura", "Soporte Tecnico" }));
-		cmbTipo.setBounds(10, 31, 114, 22);
-		panel_Tecnico.add(cmbTipo);
+        // --- COMPONENTES DEL PANEL (CON ESTILO) ---
+        cmbTipo = new JComboBox<>(new String[]{"<<Tipo de Técnico>>", "Instalacion", "Planta externa", "Infraestructura", "Soporte tecnico"});
+        cmbZona = new JComboBox<>(new String[]{"<<Zona Asignada>>", "Metropolitana", "Norte", "Sur", "Este"});
+        chkbxLicencia = new JCheckBox("Licencia al día");
+        chkbxLicencia.setBackground(new Color(252, 252, 252));
+        chkbxLicencia.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        cmbDepartamento = new JComboBox<>(new String[]{"<<Departamento>>", "Base de Datos", "Redes", "Finanzas", "Seguridad"});
 
-		JLabel Tipo = new JLabel("Tipo");
-		Tipo.setBounds(10, 11, 86, 14);
-		panel_Tecnico.add(Tipo);
+        // --- EVENTOS (FORMA TRADICIONAL) ---
+        ActionListener rolListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelEspecializado.removeAll();
+                
+                if(rbTecnico.isSelected()){
+                    panelEspecializado.setVisible(true);
+                    // Los posicionamos con cuidado dentro del panel
+                    cmbTipo.setBounds(15, 30, 180, 25);
+                    cmbZona.setBounds(210, 30, 180, 25);
+                    chkbxLicencia.setBounds(15, 65, 150, 25);
+                    
+                    panelEspecializado.add(cmbTipo);
+                    panelEspecializado.add(cmbZona);
+                    panelEspecializado.add(chkbxLicencia);
+                } 
+                else if(rbAdministrativo.isSelected()){
+                    panelEspecializado.setVisible(true);
+                    JLabel lblDepto = new JLabel("Seleccione el área de trabajo:");
+                    lblDepto.setBounds(15, 25, 200, 14);
+                    lblDepto.setFont(new Font("Arial", Font.ITALIC, 11));
+                    
+                    cmbDepartamento.setBounds(15, 45, 375, 25);
+                    
+                    panelEspecializado.add(lblDepto);
+                    panelEspecializado.add(cmbDepartamento);
+                } 
+                else if(rbComercial.isSelected()) {
+                    // El comercial no tiene datos extra, pero ponemos un mensaje de info
+                    panelEspecializado.setVisible(true);
+                    JLabel lblInfo = new JLabel("No se requiere información adicional para el área comercial.");
+                    lblInfo.setBounds(15, 40, 380, 14);
+                    lblInfo.setForeground(Color.GRAY);
+                    panelEspecializado.add(lblInfo);
+                }
 
-		cmbZona = new JComboBox();
-		cmbZona.setModel(
-				new DefaultComboBoxModel(new String[] {"<<Selecionar>>", "Metropolitana", "Norte", "Sur", "Este"}));
-		cmbZona.setBounds(141, 31, 114, 22);
-		panel_Tecnico.add(cmbZona);
+                // Forzamos a Java a que vuelva a dibujar el panel
+                panelEspecializado.revalidate();
+                panelEspecializado.repaint();
+            }
+        };
 
-		JLabel lblZona = new JLabel("Zona");
-		lblZona.setBounds(138, 11, 86, 14);
-		panel_Tecnico.add(lblZona);
+        rbAdministrativo.addActionListener(rolListener);
+        rbTecnico.addActionListener(rolListener);
+        rbComercial.addActionListener(rolListener);
 
-		chkbxLicencia = new JCheckBox("Licencia");
-		chkbxLicencia.setBounds(284, 31, 132, 22);
-		panel_Tecnico.add(chkbxLicencia);
+        // --- PANEL USUARIO ---
+        JLabel lblPass = new JLabel("Contraseña inicial:");
+        lblPass.setBounds(30, 420, 150, 14);
+        contentPanel.add(lblPass);
 
-		panel_Usuario = new JPanel();
-		panel_Usuario.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_Usuario.setBounds(10, 288, 416, 83);
-		contentPanel.add(panel_Usuario);
-		panel_Usuario.setLayout(null);
+        txtPassword = new JPasswordField();
+        txtPassword.setBounds(30, 445, 200, 25);
+        contentPanel.add(txtPassword);
 
-		txtPassword = new JPasswordField();
-		txtPassword.setBounds(10, 36, 144, 20);
-		panel_Usuario.add(txtPassword);
+        // --- BOTONES ---
+        JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JLabel lblContrasea = new JLabel("Contraseña");
-		lblContrasea.setBounds(10, 11, 131, 14);
-		panel_Usuario.add(lblContrasea);
+        btnRegistrar = new JButton("Registrar Empleado");
+        btnRegistrar.setBackground(new Color(0, 153, 51));
+        btnRegistrar.setForeground(Color.WHITE);
+        btnRegistrar.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                realizarRegistro();
+            }
+        });
+        buttonPane.add(btnRegistrar);
 
-		panel_Administrativo = new JPanel();
-		panel_Administrativo.setVisible(false);
-		panel_Administrativo.setBounds(10, 199, 416, 78);
-		contentPanel.add(panel_Administrativo);
-		panel_Administrativo.setLayout(null);
-		panel_Administrativo.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        JButton btnCancel = new JButton("Cancelar");
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        buttonPane.add(btnCancel);
+    }
 
-		cmbDepartamento = new JComboBox();
-		cmbDepartamento.setModel(new DefaultComboBoxModel(
-				new String[] { "<<Seleccionar>>", "Base de Datos", "Redes", "Finanzas", "Seguridad" }));
-		cmbDepartamento.setBounds(10, 31, 231, 22);
-		panel_Administrativo.add(cmbDepartamento);
+    private void realizarRegistro() {
+        try {
+            // 1. VALIDACIÓN DE CAMPOS VACÍOS
+            if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
+                txtCedula.getText().trim().isEmpty() || new String(txtPassword.getPassword()).isEmpty()) {
+                throw new Exception("Todos los campos obligatorios deben estar llenos.");
+            }
 
-		JLabel Departamento_1 = new JLabel("Departamento");
-		Departamento_1.setBounds(10, 11, 86, 14);
-		panel_Administrativo.add(Departamento_1);
+            // 2. VALIDACIÓN DE NOMBRE Y APELLIDO (Solo letras)
+            if (!txtNombre.getText().trim().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                throw new Exception("El nombre solo debe contener letras.");
+            }
+            if (!txtApellido.getText().trim().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                throw new Exception("El apellido solo debe contener letras.");
+            }
 
-		panel_Comercial = new JPanel();
-		panel_Comercial.setVisible(false);
-		panel_Comercial.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_Comercial.setBounds(10, 199, 416, 71);
-		contentPanel.add(panel_Comercial);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				btnRegistrar = new JButton("Registrar");
-				btnRegistrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						String nombreUsuario = txtNombre.getText() + "_" + Altice.codigoPersonal;
-						Usuario user = new Usuario(nombreUsuario, new String(txtPassword.getPassword()));
-						if (rbAdministrativo.isSelected()) {
-							Administrativo admin = new Administrativo(txtIdentificador.getText(), txtNombre.getText(),
-									txtCedula.getText(), ((float) spnSalarioBase.getValue()), user,
-									cmbDepartamento.getSelectedItem().toString());
-							Altice.getInstance().RegistarPersonal(admin);
-						} else if (rbTecnico.isSelected()) {
+            // 3. VALIDACIÓN DE CÉDULA (Solo números)
+            if (!txtCedula.getText().trim().matches("\\d+")) {
+                throw new Exception("La cédula debe contener solo números (sin guiones).");
+            }
 
-							Tecnico tec = new Tecnico(txtIdentificador.getText(), txtNombre.getText(),
-									txtCedula.getText(), ((float) spnSalarioBase.getValue()), user,
-									cmbTipo.getSelectedItem().toString(), cmbZona.getSelectedItem().toString(),
-									chkbxLicencia.isSelected(), 0, 0, 0);
-							Altice.getInstance().RegistarPersonal(tec);
-						} else if (rbComercial.isSelected()) {
-							Comercial comercial = new Comercial(txtIdentificador.getText(), txtNombre.getText(),
-									txtCedula.getText(), ((float) spnSalarioBase.getValue()), user, 0, 0);
-							Altice.getInstance().RegistarPersonal(comercial);
-						}
+            // 4. VALIDACIÓN DE ROL
+            if (!rbAdministrativo.isSelected() && !rbTecnico.isSelected() && !rbComercial.isSelected()) {
+                throw new Exception("Debe seleccionar un tipo de empleado.");
+            }
 
-						JOptionPane.showMessageDialog(null, "Nombre de usuario es: " + nombreUsuario, "Confirmacion",
-								JOptionPane.INFORMATION_MESSAGE);
-						clean();
-					}
-				});
-				btnRegistrar.setEnabled(false);
-				btnRegistrar.setActionCommand("OK");
-				buttonPane.add(btnRegistrar);
-				getRootPane().setDefaultButton(btnRegistrar);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
-	}
+            // Datos ya validados
+            String nombre = txtNombre.getText().trim();
+            String apellido = txtApellido.getText().trim();
+            String cedula = txtCedula.getText().trim();
+            
+            // 5. VALIDACIÓN DE SALARIO
+            float salario;
+            try {
+                salario = Float.parseFloat(spnSalarioBase.getValue().toString());
+                if (salario <= 0) throw new Exception();
+            } catch (Exception e) {
+                throw new Exception("El salario base debe ser un monto numérico positivo.");
+            }
 
-	protected void clean() {
-		txtNombre.setText("");
-		txtCedula.setText("");
-		txtPassword.setText("");
+            // --- PROCESO DE REGISTRO ---
+            String userStr = nombre.toLowerCase() + "." + apellido.toLowerCase();
+            Usuario nuevoUser = new Usuario(userStr, new String(txtPassword.getPassword()));
+            Personal nuevoEmp = null;
 
-		txtIdentificador.setText("P-" + Altice.codigoPersonal);
+            if (rbAdministrativo.isSelected()) {
+                if (cmbDepartamento.getSelectedIndex() == 0) throw new Exception("Seleccione un departamento.");
+                nuevoEmp = new Administrativo(txtIdentificador.getText(), nombre, apellido, cedula, salario, nuevoUser, 
+                                              cmbDepartamento.getSelectedItem().toString());
+                
+            } else if (rbTecnico.isSelected()) {
+                if (cmbTipo.getSelectedIndex() == 0 || cmbZona.getSelectedIndex() == 0) throw new Exception("Complete los datos del técnico.");
+                nuevoEmp = new Tecnico(txtIdentificador.getText(), nombre, apellido, cedula, salario, nuevoUser, 
+                                       cmbTipo.getSelectedItem().toString(), cmbZona.getSelectedItem().toString(), 
+                                       chkbxLicencia.isSelected(), 0, 0.0f, 0);
+                
+            } else if (rbComercial.isSelected()) {
+                nuevoEmp = new Comercial(txtIdentificador.getText(), nombre, apellido, cedula, salario, nuevoUser, 0, 0);
+            }
 
-		spnSalarioBase.setValue(Float.valueOf(1));
-		rbAdministrativo.setSelected(false);
-		rbTecnico.setSelected(false);
-		rbComercial.setSelected(false);
-		btnRegistrar.setEnabled(false);
+            if (nuevoEmp != null) {
+                Altice.getInstance().RegistarPersonal(nuevoEmp);
+                JOptionPane.showMessageDialog(this, "Empleado registrado con éxito.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                
+                // --- LIMPIEZA PARA SEGUIR REGISTRANDO ---
+                limpiarCampos();
+            }
 
-		cmbDepartamento.setSelectedIndex(0);
-		cmbTipo.setSelectedIndex(0);
-		cmbZona.setSelectedIndex(0);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-		chkbxLicencia.setSelected(false);
-
-		panel_Administrativo.setVisible(false);
-		panel_Tecnico.setVisible(false);
-		panel_Comercial.setVisible(false);
-	}
-
+    private void limpiarCampos() {
+        // Limpiamos los textos
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCedula.setText("");
+        txtPassword.setText("");
+        
+        txtIdentificador.setText("P-" + Altice.getInstance().getCodigotPersonal());        
+        spnSalarioBase.setValue(27489.6);
+        cmbDepartamento.setSelectedIndex(0);
+        cmbTipo.setSelectedIndex(0);
+        cmbZona.setSelectedIndex(0);
+        chkbxLicencia.setSelected(false);
+        
+        rbAdministrativo.setSelected(false);
+        rbTecnico.setSelected(false);
+        rbComercial.setSelected(false);
+        panelEspecializado.setVisible(false);
+        
+        txtCedula.requestFocus();
+    }
 }

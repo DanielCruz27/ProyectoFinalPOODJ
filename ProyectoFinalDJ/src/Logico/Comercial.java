@@ -7,13 +7,13 @@ public class Comercial extends Personal {
 	private static final long serialVersionUID = 1L;
 	private int ventasRealizadas;
 	private int comisiones;
-	
-	public Comercial(String idEmpleado, String nombre, String cedula, float salarioBase, Usuario miCuenta, int ventasRealizadas, int comisiones) {
-		super(idEmpleado, nombre, cedula, salarioBase, miCuenta);
+
+	public Comercial(String idEmpleado, String nombre, String apellido, String cedula, float salarioBase, Usuario miCuenta, int ventasRealizadas, int comisiones) {
+		super(idEmpleado, nombre,apellido, cedula, salarioBase, miCuenta);
 		this.ventasRealizadas = ventasRealizadas;
 		this.comisiones = comisiones;
 	}
-	
+
 	public int getVentasRealizadas() {
 		return ventasRealizadas;
 	}
@@ -32,5 +32,5 @@ public class Comercial extends Personal {
 		return getSalarioBase() + comisiones;
 	}
 
-	
+
 }
