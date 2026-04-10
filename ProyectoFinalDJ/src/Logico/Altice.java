@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Visual.ListarServicios;
+
 public class Altice implements Serializable{
 	/**
 	 * 
@@ -442,4 +444,52 @@ public void incrementarServicio() {
 	    return tieneDeuda;
 	}
 
+	public Cliente buscarClienteByCedula(String cedula) {
+		Cliente aux = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded && i < listaClientes.size()) {
+
+			if (listaClientes.get(i).getCedula().equalsIgnoreCase(cedula)) {
+				aux = listaClientes.get(i);
+				finded =  true;
+			}
+			i++;
+		}
+
+		return aux;
+	}
+/*
+	public Servicio buscarServicioPorTelefono(String numeroTelefonico) {
+	    Servicio aux = null;
+	    boolean encontrado = false;
+	    int i = 0;
+
+	    while (!encontrado && i < listaClientes.size()) {
+	        ArrayList<Contrato> contratos = listaClientes.get(i).getMisContratos();
+	        int j = 0;
+
+	        while (!encontrado && j < contratos.size()) {
+	            Contrato contract = contratos.get(j);
+	            String telContrato = null;
+
+	            if (contract instanceof PlanHogar) {
+	                telContrato = ((PlanHogar) contract).getNumeroTelefonico();
+	            } else if (contract instanceof PlanMovil) {
+	                telContrato = ((PlanMovil) contract).getNumeroTelefonico();
+	            }
+
+	            if (telContrato != null && telContrato.equalsIgnoreCase(numeroTelefonico)) {
+
+	                aux = contract; 
+	                encontrado = true;
+	            }
+	            j++;
+	        }
+	        i++; 
+	    }
+
+	    return aux;
+	}
+	*/
 }

@@ -66,9 +66,9 @@ public class SistemaPrincipal extends JFrame {
 					alticeWrite.writeObject(Altice.getInstance());
 					alticeWrite.close();
 				}catch (FileNotFoundException e1) {
-                	//JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
+                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
 				}catch (IOException e1 ) {
-                	//JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
+                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
 				}
  
 			}
@@ -494,6 +494,27 @@ public class SistemaPrincipal extends JFrame {
 		    }
 		});
 
+		subAlertas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ClientesEnAlerta aux = new ClientesEnAlerta();
+				aux.setModal(true);
+				aux.setVisible(true);
+				
+			}
+		});
+		subHistorial.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				HistorialCliente histo = new HistorialCliente();
+				
+				histo.setModal(true);
+				histo.setVisible(true);
+				
+			}
+		});
 		// --- 4. GESTIÓN DE SERVICIOS Y PLANES ---
 		final JButton btnGServ = crearBotonMenu("> Gestión de Servicios", 203, 40, false);
 		final JButton subCrearPlanes = crearBotonMenu("   Crear Planes", 203, 30, true);
@@ -544,7 +565,9 @@ public class SistemaPrincipal extends JFrame {
 				panelContenedorMenu.revalidate();
 			}
 		});
-
+		
+		
+		
 		// --- 5. REPORTES DE LA EMPRESA (BI) ---
 		final JButton btnReportes = crearBotonMenu("> Reportes Empresa", 203, 40, false);
 		final JButton subFinanzas = crearBotonMenu("   Finanzas", 203, 30, true);
@@ -555,6 +578,8 @@ public class SistemaPrincipal extends JFrame {
 		final JButton subZonasInst = crearBotonMenu("   Instalaciones por Zona", 203, 30, true);
 		final JButton subValoraciones = crearBotonMenu("   Valoraciones de Clientes", 203, 30, true);
 
+		
+		
 		panelContenedorMenu.add(btnReportes);
 		panelContenedorMenu.add(subFinanzas);
 		panelContenedorMenu.add(subCalidad);

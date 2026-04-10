@@ -142,7 +142,7 @@ public class Cliente implements Serializable {
 	public void setMiCuenta(Usuario miCuenta) {
 		this.miCuenta = miCuenta;
 	}
-	public Object getCantidadAtrasos() {
+	public int getCantidadAtrasos() {
 		int atrasos = 0;
 	    LocalDate hoy = LocalDate.now();
 
