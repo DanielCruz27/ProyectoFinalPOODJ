@@ -551,7 +551,15 @@ public class SistemaPrincipal extends JFrame {
 				aux.setModal(true);
 				aux.setVisible(true);
 			}});
-
+		subRecarga.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RegRecarga recarga = new RegRecarga();
+				recarga.setModal(true);
+				recarga.setVisible(true);
+			}
+		});
 		final boolean[] menuServOpen = {false}; 
 		btnGServ.addActionListener(new ActionListener() {
 			@Override

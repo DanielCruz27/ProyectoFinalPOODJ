@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import Visual.ListarServicios;
 
-public class Altice implements Serializable{
+public class Altice implements Serializable {
 	/**
 	 * 
 	 */
@@ -20,10 +20,10 @@ public class Altice implements Serializable{
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
 	private Personal usuarioLogueado;
-	public  int codigoPersonal = 1;
-	public  int codigoCliente = 1;
-	public  int codigoContrato = 1;
-	public  int codigoFactura = 1;
+	public int codigoPersonal = 1;
+	public int codigoCliente = 1;
+	public int codigoContrato = 1;
+	public int codigoFactura = 1;
 	public int codigoServicio = 1;
 
 	public Altice() {
@@ -34,15 +34,16 @@ public class Altice implements Serializable{
 		this.historialPagos = new ArrayList<>();
 		this.colaDeEspera = new ArrayList<>();
 		this.listaContratos = new ArrayList<>();
-		this.usuarioLogueado =usuarioLogueado;
+		this.usuarioLogueado = usuarioLogueado;
 	}
-	
+
 	public static Altice getInstance() {
-		if(altice==null) {
+		if (altice == null) {
 			altice = new Altice();
 		}
 		return altice;
 	}
+
 	public ArrayList<Cliente> getListaClientes() {
 		return listaClientes;
 	}
@@ -90,8 +91,7 @@ public class Altice implements Serializable{
 	public void setListaContratos(ArrayList<Contrato> listaContratos) {
 		this.listaContratos = listaContratos;
 	}
-	
-	
+
 	private String generarNumeroTelefonico() {
 		String numero = "";
 		int opt = ThreadLocalRandom.current().nextInt(1, 4);
@@ -109,51 +109,50 @@ public class Altice implements Serializable{
 
 		return numero;
 	}
-	
-	public void contratarServicio(String idCliente,String idServicio, String idVendedor) {
-		
+
+	public void contratarServicio(String idCliente, String idServicio, String idVendedor) {
+
 		Cliente client = buscarCliente(idCliente);
-		Servicio service  = buscarServicioById(idServicio);
+		Servicio service = buscarServicioById(idServicio);
 		Personal vendedor = buscarEmpleadoPorId(idVendedor);
-		
-		if(client != null && service != null) {
-			
+
+		if (client != null && service != null) {
+
 			Servicio servicioReal = null;
-			
-			if(service instanceof PlanMovil) {
+
+			if (service instanceof PlanMovil) {
 				PlanMovil p = (PlanMovil) service;
-				servicioReal = new PlanMovil(p.getIdServicio(),p.getNombreServicio(), p.getPrecioBase(), true, generarNumeroTelefonico(), p.getMinutosIncluidos(),p.getRedesLibresIncluidas());
-				
+				servicioReal = new PlanMovil(p.getIdServicio(), p.getNombreServicio(), p.getPrecioBase(), true,
+						generarNumeroTelefonico(), p.getMinutosIncluidos(), p.getRedesLibresIncluidas());
+
+			} else if (service instanceof PlanHogar) {
+				PlanHogar h = (PlanHogar) service;
+				servicioReal = new PlanHogar(h.getIdServicio(), h.getNombreServicio(), h.getPrecioBase(), true,
+						generarNumeroTelefonico(), h.getVelocidadInternet(), h.getStreamingIncluido(),
+						h.getMinutosTelefonoHogar());
+
 			}
-			else if(service instanceof PlanHogar) {
-				PlanHogar h =(PlanHogar) service;
-				servicioReal = new PlanHogar(h.getIdServicio(), h.getNombreServicio(), h.getPrecioBase(), true,generarNumeroTelefonico(), h.getVelocidadInternet(), h.getStreamingIncluido(), h.getMinutosTelefonoHogar());
-				
-			}
-			
+
 			Contrato contratoExistente = buscarContratoPorCliente(idCliente);
-			if(contratoExistente != null) {
-				
+			if (contratoExistente != null) {
+
 				contratoExistente.getMisServicios().add(servicioReal);
-				
-			}
-			else 
-			{
+
+			} else {
 				ArrayList<Servicio> listaInicial = new ArrayList<>();
 				listaInicial.add(servicioReal);
-				
-				Contrato nuevo = new Contrato(client, listaInicial, vendedor,null, LocalDate.now());
-				
+
+				Contrato nuevo = new Contrato(client, listaInicial, vendedor, null, LocalDate.now());
+
 				listaContratos.add(nuevo);
 				client.getMisContratos().add(nuevo);
-				
+
 				codigoContrato++;
-				
-				
+
 			}
-		}	
+		}
 	}
-	
+
 	private Contrato buscarContratoPorCliente(String idCliente) {
 		Contrato aux = null;
 		boolean finded = false;
@@ -169,7 +168,7 @@ public class Altice implements Serializable{
 
 		return aux;
 	}
-	
+
 	public Personal buscarEmpleadoPorId(String idVendedor) {
 		Personal aux = null;
 		boolean finded = false;
@@ -185,6 +184,7 @@ public class Altice implements Serializable{
 
 		return aux;
 	}
+
 	public Servicio buscarServicioById(String idServicio) {
 		Servicio aux = null;
 		boolean finded = false;
@@ -200,60 +200,82 @@ public class Altice implements Serializable{
 
 		return aux;
 	}
-	public boolean realizarRecarga(String numeroTelefonico, int saldoAgregar) {
+
+	public Servicio realizarRecarga(String numeroTelefonico, int saldoAgregar) {
 		boolean done = false;
+		Servicio service=null;
 		Contrato contrato = findContractByNumber(numeroTelefonico);
-		if(contrato != null) {
+		if (contrato != null) {
 			ArrayList<Servicio> servicios = contrato.getMisServicios();
 			int i = 0;
 			while (!done && i < servicios.size()) {
-				Servicio service = servicios.get(i);
-				
-				if(service instanceof PlanHogar) {
-					PlanHogar ph = (PlanHogar)service;
-					if(ph.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
-						ph.setMinutosTelefonoHogar(ph.getMinutosTelefonoHogar() +saldoAgregar);
-						done =  true;
-						
+				 service = servicios.get(i);
+
+				if (service instanceof PlanHogar) {
+					PlanHogar ph = (PlanHogar) service;
+					if (ph.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+						ph.setMinutosTelefonoHogar(ph.getMinutosTelefonoHogar() + saldoAgregar);
+						done = true;
+
 					}
-				}
-				else if(service instanceof PlanMovil) {
+				} else if (service instanceof PlanMovil) {
 					PlanMovil pm = (PlanMovil) service;
-					if(pm.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+					if (pm.getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
 						pm.setMinutosLibres(pm.getMinutosIncluidos() + saldoAgregar);
 						done = true;
 					}
 				}
-				
-			i++;
+
+				i++;
 			}
-			if(done) {
-				Pago nuevoPago = new Pago("F-" +codigoFactura,LocalDate.now(),saldoAgregar +(saldoAgregar*0.18f),true,contrato.getElTitular().getMiMetodo(), saldoAgregar* 0.18f,contrato);
+			if (done) {
+				Pago nuevoPago = new Pago("F-" + codigoFactura, LocalDate.now(), saldoAgregar + (saldoAgregar * 0.18f),
+						true, contrato.getElTitular().getMiMetodo(), saldoAgregar * 0.18f, contrato);
 				this.historialPagos.add(nuevoPago);
 				contrato.getElTitular().getMisPagos().add(nuevoPago);
 				codigoFactura++;
 			}
 		}
-		return done;
+		return service;
 	}
-	
-	
+
 	private Contrato findContractByNumber(String numeroTelefonico) {
-		Contrato aux = null;
-		for (Contrato contract : listaContratos) {
-			for(Servicio service : contract.getMisServicios()) {
-				if(service instanceof PlanHogar && ((PlanHogar)service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
-					aux = contract;
-				}
-				else if(service instanceof PlanMovil && ((PlanMovil)service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)){
-					aux = contract;
-				}
-			}
-		}
-		return aux;
-	
+	    Contrato aux = null;
+	    int i = 0;
+
+	    while (i < listaContratos.size() && aux == null) {
+	        if (tieneElServicioBuscado(listaContratos.get(i), numeroTelefonico)) {
+	            aux = listaContratos.get(i);
+	        }
+	        i++;
+	    }
+
+	    return aux;
 	}
-	public boolean vincularMetodoPago(String idCliente,MetodoDePago metPago) {
+
+	private boolean tieneElServicioBuscado(Contrato contrato, String numeroTelefonico) {
+		boolean encontrado = false;
+	    ArrayList<Servicio> servicios = contrato.getMisServicios();
+	    int j = 0;
+
+	    while (j < servicios.size() && !encontrado) {
+	        Servicio service = servicios.get(j);
+	        
+	        if (service instanceof PlanHogar && ((PlanHogar) service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+	            encontrado = true;
+	        } 
+	        else if (service instanceof PlanMovil && ((PlanMovil) service).getNumeroTelefonico().equalsIgnoreCase(numeroTelefonico)) {
+	            encontrado = true;
+	        }
+	        
+	        j++;
+	    }
+
+	    return encontrado;
+	}		
+	
+
+	public boolean vincularMetodoPago(String idCliente, MetodoDePago metPago) {
 		Cliente client = buscarCliente(idCliente);
 		boolean aux = false;
 
@@ -289,7 +311,7 @@ public class Altice implements Serializable{
 
 			if (listaClientes.get(i).getEmailCliente().equalsIgnoreCase(email)) {
 				aux = listaClientes.get(i);
-				finded =  true;
+				finded = true;
 			}
 			i++;
 		}
@@ -304,105 +326,106 @@ public class Altice implements Serializable{
 			listaClientes.add(cliente);
 		}
 
-		
-		
 	}
-	public float  reporteGanancias(LocalDate inicio, LocalDate fin) {
+
+	public float reporteGanancias(LocalDate inicio, LocalDate fin) {
 		float total = 0;
-		
-		for(Pago pago: historialPagos) {
-			if(pago.getFechaEmision().isAfter(inicio)&&pago.getFechaEmision().isBefore(fin)) { 
-				
-				
+
+		for (Pago pago : historialPagos) {
+			if (pago.getFechaEmision().isAfter(inicio) && pago.getFechaEmision().isBefore(fin)) {
+
 				total += pago.getMontoTotal();
 			}
 		}
-		
-		
+
 		return total;
 	}
-	
+
 	public ArrayList<Cliente> reporteClientePorZona(String areaZone) {
 		ArrayList<Cliente> ZoneClients = new ArrayList<>();
-		
-		for(Cliente client: listaClientes) {
-			if(client.getZonaVivienda().equalsIgnoreCase(areaZone)) {
+
+		for (Cliente client : listaClientes) {
+			if (client.getZonaVivienda().equalsIgnoreCase(areaZone)) {
 				ZoneClients.add(client);
 			}
 		}
-		
+
 		return ZoneClients;
 	}
-	
-	public int getCodigotPersonal() { 
-		
-		return codigoPersonal; }
-    public void incrementarPersonal() { 
-    	
-    	codigoPersonal++; }
-    
-    public int getCodigoCliente() { 
-    	
-    	return codigoCliente; 
-    }
-    public void incrementarCliente() { 
-    	
-    	codigoCliente++;
-    	}
-    
-public int getCodigoServicio() { 
-    	
-    	return codigoServicio;
-    	}
 
-public void incrementarServicio() { 
-	
-	codigoServicio++;
+	public int getCodigotPersonal() {
+
+		return codigoPersonal;
 	}
-    
-    
+
+	public void incrementarPersonal() {
+
+		codigoPersonal++;
+	}
+
+	public int getCodigoCliente() {
+
+		return codigoCliente;
+	}
+
+	public void incrementarCliente() {
+
+		codigoCliente++;
+	}
+
+	public int getCodigoServicio() {
+
+		return codigoServicio;
+	}
+
+	public void incrementarServicio() {
+
+		codigoServicio++;
+	}
+
 	public void RegistarPersonal(Personal empleado) {
-        // Usamos el contador interno del objeto Altice
-        empleado.setIdEmpleado("P-" + codigoPersonal); 
-        listaEmpleados.add(empleado);
-        codigoPersonal++; // Se incrementa y se guardará en el .dat
-    }
-	
+		// Usamos el contador interno del objeto Altice
+		empleado.setIdEmpleado("P-" + codigoPersonal);
+		listaEmpleados.add(empleado);
+		codigoPersonal++; // Se incrementa y se guardará en el .dat
+	}
+
 	public void InsertaCliente(Cliente client) {
 		listaClientes.add(client);
 		codigoCliente++;
-		
+
 	}
+
 	public boolean buscarUsuario(String nombreUsuario) {
 		boolean finded = false;
-		
-		for(Cliente aux : listaClientes) {
-			if(aux.getMiCuenta().getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
+
+		for (Cliente aux : listaClientes) {
+			if (aux.getMiCuenta().getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
 				finded = true;
 			}
 		}
-		
+
 		return finded;
-		
+
 	}
 
 	public static void setInstance(Altice temp) {
-        altice = temp;
-    }
-	
-	public void RegistarServicio(Servicio service) {
-	    service.setIdServicio("S-" + codigoServicio);
-	    catalogoServicio.add(service);
-	    codigoServicio++;
+		altice = temp;
 	}
-	
+
+	public void RegistarServicio(Servicio service) {
+		service.setIdServicio("S-" + codigoServicio);
+		catalogoServicio.add(service);
+		codigoServicio++;
+	}
+
 	// Método para cambiar el estado de un servicio (Activar/Desactivar)
 	public void cambiarEstadoServicio(String idServicio) {
-	    Servicio s = buscarServicioById(idServicio);
-	    if (s != null) {
-	        // Si está true lo pone false, y viceversa
-	        s.setEstadoDelServicio(!s.isEstadoDelServicio());
-	    }
+		Servicio s = buscarServicioById(idServicio);
+		if (s != null) {
+			// Si está true lo pone false, y viceversa
+			s.setEstadoDelServicio(!s.isEstadoDelServicio());
+		}
 	}
 
 	public Personal getUsuarioLogueado() {
@@ -412,36 +435,37 @@ public void incrementarServicio() {
 	public void setUsuarioLogueado(Personal usuarioLogueado) {
 		this.usuarioLogueado = usuarioLogueado;
 	}
-	
-	// Método para contar servicios totales de un cliente sumando todos sus contratos
+
+	// Método para contar servicios totales de un cliente sumando todos sus
+	// contratos
 	public int contarCantServiciosDeCliente(String idCliente) {
-	    int total = 0;
-	    Cliente client = buscarCliente(idCliente);
-	    if (client != null && client.getMisContratos() != null) {
-	        for (Contrato con : client.getMisContratos()) {
-	            total += con.getMisServicios().size();
-	        }
-	    }
-	    return total;
+		int total = 0;
+		Cliente client = buscarCliente(idCliente);
+		if (client != null && client.getMisContratos() != null) {
+			for (Contrato con : client.getMisContratos()) {
+				total += con.getMisServicios().size();
+			}
+		}
+		return total;
 	}
 
 	// Método para verificar si el cliente tiene facturas sin pagar
 	public String comprobarSiHayDeuda(String idCliente) {
-	    String tieneDeuda = "No";
-	    Cliente client = buscarCliente(idCliente);
-	    
-	    if (client != null && client.getMisPagos() != null) {
-	        boolean encontrado = false;
-	        int i = 0;
-	        while (i < client.getMisPagos().size() && !encontrado) {
-	            if (!client.getMisPagos().get(i).isEstadoPago()) { // Si el pago no está realizado
-	                tieneDeuda = "Si";
-	                encontrado = true;
-	            }
-	            i++;
-	        }
-	    }
-	    return tieneDeuda;
+		String tieneDeuda = "No";
+		Cliente client = buscarCliente(idCliente);
+
+		if (client != null && client.getMisPagos() != null) {
+			boolean encontrado = false;
+			int i = 0;
+			while (i < client.getMisPagos().size() && !encontrado) {
+				if (!client.getMisPagos().get(i).isEstadoPago()) { // Si el pago no está realizado
+					tieneDeuda = "Si";
+					encontrado = true;
+				}
+				i++;
+			}
+		}
+		return tieneDeuda;
 	}
 
 	public Cliente buscarClienteByCedula(String cedula) {
@@ -452,44 +476,13 @@ public void incrementarServicio() {
 
 			if (listaClientes.get(i).getCedula().equalsIgnoreCase(cedula)) {
 				aux = listaClientes.get(i);
-				finded =  true;
+				finded = true;
 			}
 			i++;
 		}
 
 		return aux;
 	}
-/*
-	public Servicio buscarServicioPorTelefono(String numeroTelefonico) {
-	    Servicio aux = null;
-	    boolean encontrado = false;
-	    int i = 0;
 
-	    while (!encontrado && i < listaClientes.size()) {
-	        ArrayList<Contrato> contratos = listaClientes.get(i).getMisContratos();
-	        int j = 0;
-
-	        while (!encontrado && j < contratos.size()) {
-	            Contrato contract = contratos.get(j);
-	            String telContrato = null;
-
-	            if (contract instanceof PlanHogar) {
-	                telContrato = ((PlanHogar) contract).getNumeroTelefonico();
-	            } else if (contract instanceof PlanMovil) {
-	                telContrato = ((PlanMovil) contract).getNumeroTelefonico();
-	            }
-
-	            if (telContrato != null && telContrato.equalsIgnoreCase(numeroTelefonico)) {
-
-	                aux = contract; 
-	                encontrado = true;
-	            }
-	            j++;
-	        }
-	        i++; 
-	    }
-
-	    return aux;
-	}
-	*/
+	
 }

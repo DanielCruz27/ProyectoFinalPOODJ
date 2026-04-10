@@ -9,11 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Logico.Altice;
+import Logico.PlanHogar;
+import Logico.PlanMovil;
+import Logico.Servicio;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -40,7 +44,9 @@ public class RegRecarga extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegRecarga() {
-		setBounds(100, 100, 450, 300);
+		setTitle("Recarga");
+		setBounds(100, 100, 257, 293);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -58,11 +64,11 @@ public class RegRecarga extends JDialog {
 		}
 		
 		JSpinner spnMinutos = new JSpinner();
-		spnMinutos.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		spnMinutos.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 		spnMinutos.setBounds(10, 80, 45, 20);
 		contentPanel.add(spnMinutos);
 		
-		JLabel lblMinutosARecarga = new JLabel("Minutos a Recarga");
+		JLabel lblMinutosARecarga = new JLabel("Agregar Saldo");
 		lblMinutosARecarga.setBounds(10, 65, 137, 14);
 		contentPanel.add(lblMinutosARecarga);
 		{
@@ -73,7 +79,14 @@ public class RegRecarga extends JDialog {
 				JButton btnRecarga = new JButton("Recargar");
 				btnRecarga.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Altice.getInstance().buscarServicioPorTelefono(txtNumeroTelefonico.getText());
+						Servicio service = Altice.getInstance().realizarRecarga(txtNumeroTelefonico.getText(), new Integer(spnMinutos.getValue().toString()));
+						
+						if(service instanceof PlanHogar) {
+						JOptionPane.showMessageDialog(null, "Saldo de "+ txtNumeroTelefonico.getText()+"es de RD$" +((PlanHogar)service).getMinutosTelefonoHogar(), getTitle(), ABORT);
+						}else if(service instanceof PlanMovil) {
+							JOptionPane.showMessageDialog(null, "Saldo de "+ txtNumeroTelefonico.getText()+"es de RD$" +((PlanMovil)service).getMinutosIncluidos(), getTitle(), ABORT);
+
+						}
 					}
 				});
 				btnRecarga.setActionCommand("OK");
