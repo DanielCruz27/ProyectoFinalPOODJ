@@ -14,7 +14,6 @@ public class ListarClientes extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableClientes;
 	private DefaultTableModel modelClientes;
-	// Agregado txtCedula a la lista de componentes
 	private JTextField txtNombre, txtApellido, txtEmail, txtDireccion, txtUsuarioAuto, txtCedula;
 	private JComboBox<String> cbxZona, cbxNuevosPlanes;
 	private JList<String> listPlanes;
@@ -99,7 +98,6 @@ public class ListarClientes extends JDialog {
 		txtApellido = new JTextField(); txtApellido.setEditable(false);
 		txtApellido.setBounds(175, 48, 140, 25); panelEditar.add(txtApellido);
 
-		// --- NUEVO: CÉDULA (Solo Lectura) ---
 		JLabel lCed = new JLabel("Cédula:");
 		lCed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
 		lCed.setBounds(20, 78, 100, 14); panelEditar.add(lCed);
@@ -132,7 +130,6 @@ public class ListarClientes extends JDialog {
 		txtEmail = new JTextField();
 		txtEmail.setBounds(175, 240, 140, 25); panelEditar.add(txtEmail);
 
-		// --- SECCIÓN PLANES ---
 		JSeparator sep = new JSeparator();
 		sep.setBounds(20, 275, 300, 2); panelEditar.add(sep);
 
@@ -148,7 +145,10 @@ public class ListarClientes extends JDialog {
 		btnEliminarPlan = new JButton("Quitar Plan Seleccionado");
 		btnEliminarPlan.setFont(new Font("Arial Narrow", Font.BOLD, 11));
 		btnEliminarPlan.setBounds(20, 385, 295, 23);
-		btnEliminarPlan.addActionListener(e -> quitarPlan());
+		btnEliminarPlan.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { quitarPlan(); }
+		});
 		panelEditar.add(btnEliminarPlan);
 
 		JLabel l7 = new JLabel("Vender Nuevo Plan:");
@@ -161,7 +161,10 @@ public class ListarClientes extends JDialog {
 
 		btnAgregarPlan = new JButton("Añadir");
 		btnAgregarPlan.setBounds(230, 432, 85, 25);
-		btnAgregarPlan.addActionListener(e -> agregarNuevoPlan());
+		btnAgregarPlan.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { agregarNuevoPlan(); }
+		});
 		panelEditar.add(btnAgregarPlan);
 
 		btnGuardar = new JButton("GUARDAR CAMBIOS");
@@ -169,76 +172,85 @@ public class ListarClientes extends JDialog {
 		btnGuardar.setBackground(new Color(0, 153, 51));
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBounds(65, 490, 200, 35);
-		btnGuardar.addActionListener(e -> guardarCambios());
+		btnGuardar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { guardarCambios(); }
+		});
 		panelEditar.add(btnGuardar);
 
-		// BOTONES PIE
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.addActionListener(e -> dispose());
+		btnCerrar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { dispose(); }
+		});
 		buttonPane.add(btnCerrar);
 
 		toggleCampos(false);
 		tableClientes.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) { cargarDatosSeleccionado(); }
 		});
 		cargarTabla();
 	}
 
-	// Dentro de cargarTabla() en ListarClientes.java
 	private void cargarTabla() {
-	    modelClientes.setRowCount(0);
-	    for (Cliente c : Altice.getInstance().getListaClientes()) {
-	        int totalServ = Altice.getInstance().contarCantServiciosDeCliente(c.getIdCliente());
-	        String deuda = Altice.getInstance().comprobarSiHayDeuda(c.getIdCliente());
-	        int atrasos = (int) c.getCantidadAtrasos(); 
-	        
-	        // --- CORRECCIÓN AQUÍ ---
-	        // Si tiene más de 2 atrasos O si el booleano estadoCliente es true (suspensión manual)
-	        String estado = (atrasos > 2 || c.isEstadoCliente()) ? "Suspendido" : "Activo";
+		modelClientes.setRowCount(0);
+		for (Cliente c : Altice.getInstance().getListaClientes()) {
+			int totalServ = Altice.getInstance().contarCantServiciosDeCliente(c.getIdCliente());
+			String deuda = Altice.getInstance().comprobarSiHayDeuda(c.getIdCliente());
+			int atrasos = (int) c.getCantidadAtrasos(); 
+			String estado = (atrasos > 2 || c.isEstadoCliente()) ? "Suspendido" : "Activo";
 
-	        modelClientes.addRow(new Object[]{
-	            c.getIdCliente(), 
-	            c.getNombreCliente() + " " + c.getApellidoCliente(), 
-	            c.getZonaVivienda(), 
-	            totalServ,
-	            c.getPuntosAcumulados(),
-	            deuda,
-	            atrasos,
-	            estado
-	        });
-	    }
+			modelClientes.addRow(new Object[]{
+				c.getIdCliente(), 
+				c.getNombreCliente() + " " + c.getApellidoCliente(), 
+				c.getZonaVivienda(), 
+				totalServ,
+				c.getPuntosAcumulados(),
+				deuda,
+				atrasos,
+				estado
+			});
+		}
 	}
 
 	private void cargarDatosSeleccionado() {
-	    int fila = tableClientes.getSelectedRow();
-	    if (fila >= 0) {
-	        String id = (String) tableClientes.getValueAt(fila, 0);
-	        seleccionado = Altice.getInstance().buscarCliente(id);
+		int fila = tableClientes.getSelectedRow();
+		if (fila >= 0) {
+			String id = (String) tableClientes.getValueAt(fila, 0);
+			seleccionado = Altice.getInstance().buscarCliente(id);
 
-	        if (seleccionado != null) {
-	            toggleCampos(true);
-	            
-	            txtNombre.setText(seleccionado.getNombreCliente());
-	            txtApellido.setText(seleccionado.getApellidoCliente());
-	            
-	            // --- CADA COSA EN SU SITIO AHORA ---
-	            txtEmail.setText(seleccionado.getEmailCliente());      // Email con Email
-	            txtDireccion.setText(seleccionado.getDireccionCliente()); // Direccion con Direccion
-	            txtCedula.setText(seleccionado.getCedula());           // Cedula con Cedula
-	            
-	            txtUsuarioAuto.setText(seleccionado.getMiCuenta().getNombreUsuario());
-	            cbxZona.setSelectedItem(seleccionado.getZonaVivienda());
+			if (seleccionado != null) {
+				// --- VALIDACIÓN DE SEGURIDAD ---
+				// Si el cliente está suspendido (manual o por atrasos), bloqueamos edición
+				boolean estaSuspendido = seleccionado.isEstadoCliente() || (int)seleccionado.getCantidadAtrasos() > 2;
+				
+				// Cargamos datos
+				txtNombre.setText(seleccionado.getNombreCliente());
+				txtApellido.setText(seleccionado.getApellidoCliente());
+				txtEmail.setText(seleccionado.getEmailCliente());
+				txtDireccion.setText(seleccionado.getDireccionCliente());
+				txtCedula.setText(seleccionado.getCedula());
+				txtUsuarioAuto.setText(seleccionado.getMiCuenta().getNombreUsuario());
+				cbxZona.setSelectedItem(seleccionado.getZonaVivienda());
 
-	            actualizarListaPlanes();
-	        }
-	    }
+				actualizarListaPlanes();
+				
+				// Bloqueamos o habilitamos según el estado
+				if (estaSuspendido) {
+					toggleCampos(false);
+					JOptionPane.showMessageDialog(this, "CLIENTE SUSPENDIDO: No se permiten modificaciones ni contrataciones hasta que la cuenta esté activa.", "Aviso de Seguridad", JOptionPane.WARNING_MESSAGE);
+				} else {
+					toggleCampos(true);
+				}
+			}
+		}
 	}
 
-	// ... (Los métodos llenarComboPlanes, actualizarListaPlanes, agregarNuevoPlan, quitarPlan y toggleCampos se mantienen igual)
-    private void llenarComboPlanes() {
+	private void llenarComboPlanes() {
 		cbxNuevosPlanes.removeAllItems();
 		cbxNuevosPlanes.addItem("<< Planes >>");
 		for (Servicio s : Altice.getInstance().getCatalogoServicio()) {
@@ -261,13 +273,21 @@ public class ListarClientes extends JDialog {
 	}
 
 	private void agregarNuevoPlan() {
-		if (seleccionado != null && cbxNuevosPlanes.getSelectedIndex() > 0) {
-			String idPlan = cbxNuevosPlanes.getSelectedItem().toString().split(" - ")[0];
-			String idVend = (Altice.getInstance().getUsuarioLogueado() != null) ? Altice.getInstance().getUsuarioLogueado().getIdEmpleado() : "V-000";
-			Altice.getInstance().contratarServicio(seleccionado.getIdCliente(), idPlan, idVend);
-			JOptionPane.showMessageDialog(this, "Nuevo plan contratado.");
-			actualizarListaPlanes();
-			cargarTabla();
+		// Doble validación por si acaso
+		if (seleccionado != null) {
+			if (Altice.getInstance().comprobarSiHayDeuda(seleccionado.getIdCliente()).equalsIgnoreCase("Si")) {
+				JOptionPane.showMessageDialog(this, "Error: El cliente tiene deuda pendiente. No se pueden vender nuevos planes.");
+				return;
+			}
+			
+			if (cbxNuevosPlanes.getSelectedIndex() > 0) {
+				String idPlan = cbxNuevosPlanes.getSelectedItem().toString().split(" - ")[0];
+				String idVend = (Altice.getInstance().getUsuarioLogueado() != null) ? Altice.getInstance().getUsuarioLogueado().getIdEmpleado() : "V-000";
+				Altice.getInstance().contratarServicio(seleccionado.getIdCliente(), idPlan, idVend);
+				JOptionPane.showMessageDialog(this, "Nuevo plan contratado.");
+				actualizarListaPlanes();
+				cargarTabla();
+			}
 		}
 	}
 

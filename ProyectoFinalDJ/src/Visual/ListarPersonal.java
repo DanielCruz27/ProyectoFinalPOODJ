@@ -13,13 +13,14 @@ public class ListarPersonal extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
-	private JTextField txtNombre, txtApellido, txtSalario, txtCedula, txtUsuario; // <--- Agregado txtUsuario
+	private JTextField txtNombre, txtApellido, txtSalario, txtCedula, txtUsuario; 
 	private JComboBox<String> cmbEspecial; 
 	private JComboBox<String> cmbZona;     
 	private JCheckBox chkLicencia;         
 	private JLabel lblEspecial, lblZ; 
 	private JPanel panelEditar; 
 	private Personal seleccionado = null;
+	private JButton btnGuardar; // Lo volvemos variable de clase para controlarlo
 
 	private JLabel lblDatoExtra1, lblDatoExtra2, lblDatoExtra3;
 
@@ -36,7 +37,7 @@ public class ListarPersonal extends JDialog {
 
 	public ListarPersonal() {
 		setTitle("Altice - Gestión de Personal");
-		setSize(900, 720); // Aumentamos un poco más el alto para que quepa todo nítido
+		setSize(900, 720); 
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
@@ -100,7 +101,6 @@ public class ListarPersonal extends JDialog {
 		txtCedula = new JTextField(); txtCedula.setEditable(false); txtCedula.setBackground(new Color(245, 245, 245));
 		txtCedula.setBounds(20, 136, 240, 25); panelEditar.add(txtCedula);
 
-		// --- CAMPO USUARIO (Solo lectura) ---
 		JLabel lUser = new JLabel("Usuario del Sistema:"); lUser.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		lUser.setBounds(20, 166, 150, 14); panelEditar.add(lUser);
 		txtUsuario = new JTextField(); 
@@ -126,7 +126,6 @@ public class ListarPersonal extends JDialog {
 		chkLicencia.setBackground(Color.WHITE);
 		chkLicencia.setBounds(20, 354, 200, 25); panelEditar.add(chkLicencia);
 
-		// ETIQUETAS DE RENDIMIENTO
 		lblDatoExtra1 = new JLabel("Extra 1"); lblDatoExtra1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		lblDatoExtra1.setBounds(25, 385, 240, 20); lblDatoExtra1.setVisible(false); panelEditar.add(lblDatoExtra1);
 
@@ -136,7 +135,7 @@ public class ListarPersonal extends JDialog {
 		lblDatoExtra3 = new JLabel("Extra 3"); lblDatoExtra3.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		lblDatoExtra3.setBounds(25, 435, 240, 20); lblDatoExtra3.setVisible(false); panelEditar.add(lblDatoExtra3);
 
-		JButton btnGuardar = new JButton("Guardar Cambios");
+		btnGuardar = new JButton("Guardar Cambios");
 		btnGuardar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnGuardar.setBackground(new Color(0, 153, 51));
 		btnGuardar.setForeground(Color.WHITE);
@@ -154,7 +153,10 @@ public class ListarPersonal extends JDialog {
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.addActionListener(e -> dispose());
+		btnCerrar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { dispose(); }
+		});
 		buttonPane.add(btnCerrar);
 
 		table.addMouseListener(new MouseAdapter() {
@@ -164,11 +166,7 @@ public class ListarPersonal extends JDialog {
 			}
 		});
 
-		lblEspecial.setVisible(false);
-		cmbEspecial.setVisible(false);
-		lblZ.setVisible(false);
-		cmbZona.setVisible(false);
-		chkLicencia.setVisible(false);
+		toggleCamposEdicion(false); // Iniciar bloqueado
 		cargarTabla();
 	}
 
@@ -176,7 +174,7 @@ public class ListarPersonal extends JDialog {
 	    model.setRowCount(0);
 	    for (Personal p : Altice.getInstance().getListaEmpleados()) {
 	        String rol = p.getClass().getSimpleName();
-	        String estadoTexto = (p.getEstado() == 1) ? "Activo" : "Inactivo";
+	        String estadoTexto = (p.getEstado() == 1) ? "Activo" : "De Baja";
 	        model.addRow(new Object[]{p.getIdEmpleado(), p.getNombre(), p.getApellido(), rol, p.getSalarioBase(), estadoTexto});
 	    }
 	}
@@ -188,17 +186,19 @@ public class ListarPersonal extends JDialog {
 	        seleccionado = Altice.getInstance().buscarEmpleadoPorId(id);
 	        
 	        if (seleccionado != null) {
+	            // --- PROTECCIÓN DE SEGURIDAD ---
+	            boolean estaActivo = (seleccionado.getEstado() == 1);
+	            
 	            txtNombre.setText(seleccionado.getNombre());
 	            txtApellido.setText(seleccionado.getApellido());
 	            txtCedula.setText(seleccionado.getCedula());
-	            txtUsuario.setText(seleccionado.getMiCuenta().getNombreUsuario()); // <--- Mostrar el usuario
+	            txtUsuario.setText(seleccionado.getMiCuenta().getNombreUsuario());
 	            txtSalario.setText(String.valueOf(seleccionado.getSalarioBase()));
+	            
 	            cmbEspecial.removeAllItems();
+	            lblDatoExtra1.setVisible(false); lblDatoExtra2.setVisible(false); lblDatoExtra3.setVisible(false);
 
-	            lblDatoExtra1.setVisible(false);
-	            lblDatoExtra2.setVisible(false);
-	            lblDatoExtra3.setVisible(false);
-
+	            // Lógica según ROL (Como ya la tenías)
 	            if (seleccionado instanceof Administrativo) {
 	                lblEspecial.setText("Departamento:");
 	                lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
@@ -212,11 +212,9 @@ public class ListarPersonal extends JDialog {
 	                lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
 	                cmbEspecial.setModel(new DefaultComboBoxModel<>(new String[]{"Instalacion", "Planta externa", "Infraestructura", "Soporte tecnico"}));
 	                cmbEspecial.setSelectedItem(t.getTipoTecnico());
-	                
 	                lblZ.setVisible(true); cmbZona.setVisible(true);
 	                cmbZona.setSelectedItem(t.getZonAsignada());
-	                chkLicencia.setVisible(true);
-	                chkLicencia.setSelected(t.isLicencia());
+	                chkLicencia.setVisible(true); chkLicencia.setSelected(t.isLicencia());
 
 	                lblDatoExtra1.setText("H. Extras Acum.: " + t.getHorasExtrasTrabajadas());
 	                lblDatoExtra2.setText("Cant. Instalaciones: " + t.getCantidadInstalaciones());
@@ -232,11 +230,28 @@ public class ListarPersonal extends JDialog {
 	                lblDatoExtra2.setText("Comisión Acum.: RD$ " + c.getComisiones());
 	                lblDatoExtra1.setVisible(true); lblDatoExtra2.setVisible(true);
 	            }
+
+	            // --- APLICAR BLOQUEO SI ESTÁ DE BAJA ---
+	            if (estaActivo) {
+	                toggleCamposEdicion(true);
+	            } else {
+	                toggleCamposEdicion(false);
+	                JOptionPane.showMessageDialog(this, "EMPLEADO DE BAJA: El expediente está congelado. Debe reactivarlo para modificar datos.", "Aviso de Seguridad", JOptionPane.WARNING_MESSAGE);
+	            }
 	            
 	            panelEditar.revalidate();
 	            panelEditar.repaint();
 	        }
 	    }
+	}
+
+	private void toggleCamposEdicion(boolean valor) {
+	    txtSalario.setEnabled(valor);
+	    cmbEspecial.setEnabled(valor);
+	    cmbZona.setEnabled(valor);
+	    chkLicencia.setEnabled(valor);
+	    btnGuardar.setEnabled(valor);
+	    // Nota: Nombre, Apellido, Cédula y Usuario son siempre FALSE por diseño previo
 	}
 
 	private void guardarCambios() {

@@ -28,6 +28,10 @@ public class SistemaPrincipal extends JFrame {
 	private boolean menuPersonalAbierto = false;
 	private boolean menuClientesAbierto = false;
 	private boolean menuReportesAbierto = false;
+	
+	// Variables para control del menú Comercial
+	private boolean menuVentasOpen = false;
+	private boolean menuServOpenCom = false;
 
 	public static void main(String[] args) {
 	    EventQueue.invokeLater(new Runnable() {
@@ -45,7 +49,8 @@ public class SistemaPrincipal extends JFrame {
 
 	            // --- LANZAMIENTO DEL SISTEMA ---
 	            try {
-	                SistemaPrincipal frame = new SistemaPrincipal("administrador");
+	                // CAMBIA "administrador" por "comercial" para probar el nuevo menú
+	                SistemaPrincipal frame = new SistemaPrincipal("comercial");
 	                frame.setVisible(true);
 	            } catch (Exception e) {
 	                JOptionPane.showMessageDialog(null, "Error al iniciar la interfaz", "Error", JOptionPane.WARNING_MESSAGE);
@@ -111,8 +116,11 @@ public class SistemaPrincipal extends JFrame {
 		panelLateral.add(panelContenedorMenu);
 		panelContenedorMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
+		// --- CARGA DINÁMICA DE MENÚS ---
 		if (rolUsuario.equalsIgnoreCase("Administrador")) {
 			crearMenuAdministrador(altoPantalla);
+		} else if (rolUsuario.equalsIgnoreCase("Comercial")) {
+			crearMenuComercial(altoPantalla);
 		}
 
 		JLabel lblFondoLateral = new JLabel("");
@@ -250,7 +258,6 @@ public class SistemaPrincipal extends JFrame {
 		panelContenidoFijo.add(txtNoticia);
 
 		// C. Sección de Valoraciones
-		// --- C. SECCIÓN DE VALORACIONES ---
         int yValoraciones = txtNoticia.getY() + txtNoticia.getHeight() + 40;
         JLabel lblTitVal = new JLabel("VALORACIONES DE NUESTROS CLIENTES");
         lblTitVal.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
@@ -258,10 +265,8 @@ public class SistemaPrincipal extends JFrame {
         lblTitVal.setBounds(30, yValoraciones, 500, 30);
         panelContenidoFijo.add(lblTitVal);
 
-        // --- LÓGICA PARA CARGAR EL LOGO DE PERSONA (REUTILIZADA) ---
         ImageIcon iconoPersona = null;
         try {
-            // Asegúrate de que el nombre del archivo coincida (ej: LogoPersona.png)
             ImageIcon imgOriginalPersona = new ImageIcon(SistemaPrincipal.class.getResource("/Recursos/LogoValoraciones.png")); 
             Image imgEscaladaPersona = imgOriginalPersona.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
             iconoPersona = new ImageIcon(imgEscaladaPersona);
@@ -269,12 +274,9 @@ public class SistemaPrincipal extends JFrame {
             System.out.println("No se pudo cargar el logo de persona, usando respaldo.");
         }
 
-        // --- NUEVA LÓGICA PARA CARGAR LA IMAGEN DE 5 ESTRELLAS ---
         ImageIcon iconoEstrellas = null;
         try {
-            // Reemplaza "Icono5Estrellas.png" con el nombre real de tu archivo de imagen
             ImageIcon imgOriginalEstrellas = new ImageIcon(SistemaPrincipal.class.getResource("/Recursos/Estrellas.jpg")); 
-            // Escalamos a 80x15 para que quepa bien en el diseño
             Image imgEscaladaEstrellas = imgOriginalEstrellas.getImage().getScaledInstance(80, 15, Image.SCALE_SMOOTH);
             iconoEstrellas = new ImageIcon(imgEscaladaEstrellas);
         } catch (Exception e) {
@@ -285,7 +287,7 @@ public class SistemaPrincipal extends JFrame {
         JPanel pVal1 = new JPanel(null);
         pVal1.setBackground(Color.WHITE);
         pVal1.setBorder(new LineBorder(new Color(235, 235, 235), 1));
-        pVal1.setBounds(30, yValoraciones + 45, anchoBarraSuperior - 80, 100); // Aumentamos la altura a 100
+        pVal1.setBounds(30, yValoraciones + 45, anchoBarraSuperior - 80, 100); 
         
         JLabel icon1 = new JLabel(iconoPersona); 
         if (iconoPersona == null) icon1.setText("👤"); 
@@ -294,20 +296,19 @@ public class SistemaPrincipal extends JFrame {
         JLabel nom1 = new JLabel("Leury Castillo"); nom1.setFont(new Font("Arial", Font.BOLD, 14));
         nom1.setBounds(75, 15, 200, 20); pVal1.add(nom1);
 
-        // --- AGREGAMOS LAS ESTRELLAS EN LUGAR DEL TEXTO ---
         JLabel lblEstrellas1 = new JLabel(iconoEstrellas);
-        lblEstrellas1.setBounds(75, 35, 80, 15); // Posicionamos debajo del nombre
+        lblEstrellas1.setBounds(75, 35, 80, 15); 
         pVal1.add(lblEstrellas1);
         
         JLabel com1 = new JLabel("<html><i>\"Sinceramente, la mejor empresa que existe. Tienen planes muy buenos precio-calidad. Altice es lo mejor.\"</i></html>");
-        com1.setBounds(75, 50, anchoBarraSuperior - 170, 45); pVal1.add(com1); // Movimos el comentario hacia abajo
+        com1.setBounds(75, 50, anchoBarraSuperior - 170, 45); pVal1.add(com1); 
         panelContenidoFijo.add(pVal1);
 
         // Valoración 2: José
         JPanel pVal2 = new JPanel(null);
         pVal2.setBackground(Color.WHITE);
         pVal2.setBorder(new LineBorder(new Color(235, 235, 235), 1));
-        pVal2.setBounds(30, pVal1.getY() + 115, anchoBarraSuperior - 80, 100); // Ajustamos la posición Y y altura
+        pVal2.setBounds(30, pVal1.getY() + 115, anchoBarraSuperior - 80, 100); 
         
         JLabel icon2 = new JLabel(iconoPersona); 
         if (iconoPersona == null) icon2.setText("👤");
@@ -328,7 +329,7 @@ public class SistemaPrincipal extends JFrame {
         JPanel pVal3 = new JPanel(null);
         pVal3.setBackground(Color.WHITE);
         pVal3.setBorder(new LineBorder(new Color(235, 235, 235), 1));
-        pVal3.setBounds(30, pVal2.getY() + 115, anchoBarraSuperior - 80, 100); // Ajustamos la posición Y y altura
+        pVal3.setBounds(30, pVal2.getY() + 115, anchoBarraSuperior - 80, 100); 
         
         JLabel icon3 = new JLabel(iconoPersona); 
         if (iconoPersona == null) icon3.setText("👤");
@@ -363,17 +364,13 @@ public class SistemaPrincipal extends JFrame {
 	}
 
 	private void crearMenuAdministrador(int altoPantalla) {
-		// --- 1. DASHBOARD ---
 		JButton btnDash = crearBotonMenu("Dashboard", 203, 40, false);
 		panelContenedorMenu.add(btnDash);
 
-		// --- 2. GESTIÓN DE PERSONAL (MODIFICADO) ---
 		final JButton btnGPers = crearBotonMenu("> Gestión de Personal", 203, 40, false);
 		final JButton subRegPers = crearBotonMenu("   Registrar Personal", 203, 30, true);
-		// Cambio de nombre según tu requerimiento
 		final JButton subListModPers = crearBotonMenu("   Listar y Modificar Personal", 203, 30, true); 
-		// Nuevo submenú solicitado
-		final JButton subBajaPers = crearBotonMenu("   Dar de Baja Personal", 203, 30, true); 
+		final JButton subBajaPers = crearBotonMenu("   Dar de Baja / Reactivar", 203, 30, true); 
 
 		panelContenedorMenu.add(btnGPers);
 		panelContenedorMenu.add(subRegPers);
@@ -387,98 +384,34 @@ public class SistemaPrincipal extends JFrame {
 				btnGPers.setText(menuPersonalAbierto ? "v Gestión de Personal" : "> Gestión de Personal");
 				subRegPers.setVisible(menuPersonalAbierto);
 				subListModPers.setVisible(menuPersonalAbierto);
-				subBajaPers.setVisible(menuPersonalAbierto); // Control de visibilidad del nuevo botón
+				subBajaPers.setVisible(menuPersonalAbierto); 
 				panelContenedorMenu.revalidate();
 			}
 		});
 
-		// Acción para abrir Registrar Personal (ya la tenías)
-		subRegPers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RegistrarPersonal aux = new RegistrarPersonal();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}
-		});
+		subRegPers.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarPersonal aux = new RegistrarPersonal(); aux.setModal(true); aux.setVisible(true); } });
+		subListModPers.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarPersonal aux = new ListarPersonal(); aux.setModal(true); aux.setVisible(true); } });
+		subBajaPers.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { DarBajaPersonal aux = new DarBajaPersonal(); aux.setModal(true); aux.setVisible(true); } });
 
-		// Acción para Listar y Modificar (abre el diálogo que ya tienes)
-		subListModPers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ListarPersonal aux = new ListarPersonal();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}
-			
-		
-			
-		});
-		
-		subBajaPers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DarBajaPersonal aux = new DarBajaPersonal();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}
-			
-		
-			
-		});
-
-		// --- 3. GESTIÓN DE CLIENTES ---
 		final JButton btnGCli = crearBotonMenu("> Gestión de Clientes", 203, 40, false);
 		final JButton subRegCli = crearBotonMenu("   Registrar Cliente / Contrato", 203, 30, true);
 		final JButton subListCli = crearBotonMenu("   Listar y Modificar", 203, 30, true);
-		final JButton subSuspender = crearBotonMenu("   Suspender Cliente", 203, 30, true); 
+		final JButton subSuspender = crearBotonMenu("   Suspender / Activar Cliente", 203, 30, true); 
 		final JButton subAlertas = crearBotonMenu("   Clientes en Alerta", 203, 30, true);
 		final JButton subHistorial = crearBotonMenu("   Historial Pagos/Contratos", 203, 30, true);
 
 		panelContenedorMenu.add(btnGCli);
 		panelContenedorMenu.add(subRegCli);
 		panelContenedorMenu.add(subListCli);
-		panelContenedorMenu.add(subSuspender); // Agregado al panel
+		panelContenedorMenu.add(subSuspender); 
 		panelContenedorMenu.add(subAlertas);
 		panelContenedorMenu.add(subHistorial);
 
-		// ACTION LISTENER PARA SUSPENDER (Debes crear la ventana SuspenderCliente luego)
-		subSuspender.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Aquí llamarías a la ventana que vayas a crear para suspender
-		        // SuspenderCliente aux = new SuspenderCliente();
-		        // aux.setModal(true);
-		        // aux.setVisible(true);
-		    }
-		});
-
-		subRegCli.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        RegistrarCliente aux = new RegistrarCliente();
-		        aux.setModal(true);
-		        aux.setVisible(true);
-		    }
-		});
-
-		subListCli.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        ListarClientes aux = new ListarClientes();
-		        aux.setModal(true);
-		        aux.setVisible(true);
-		    }
-		});
-		
-		subSuspender.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        SuspenderCliente aux = new SuspenderCliente();
-		        aux.setModal(true);
-		        aux.setVisible(true);
-		    }
-		});
+		subRegCli.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarCliente aux = new RegistrarCliente(); aux.setModal(true); aux.setVisible(true); } });
+		subListCli.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarClientes aux = new ListarClientes(); aux.setModal(true); aux.setVisible(true); } });
+		subSuspender.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { SuspenderCliente aux = new SuspenderCliente(); aux.setModal(true); aux.setVisible(true); } });
+		subAlertas.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ClientesEnAlerta aux = new ClientesEnAlerta(); aux.setModal(true); aux.setVisible(true); } });
+		subHistorial.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { HistorialCliente histo = new HistorialCliente(); histo.setModal(true); histo.setVisible(true); } });
 
 		btnGCli.addActionListener(new ActionListener() {
 		    @Override
@@ -487,35 +420,13 @@ public class SistemaPrincipal extends JFrame {
 		        btnGCli.setText(menuClientesAbierto ? "v Gestión de Clientes" : "> Gestión de Clientes");
 		        subRegCli.setVisible(menuClientesAbierto);
 		        subListCli.setVisible(menuClientesAbierto);
-		        subSuspender.setVisible(menuClientesAbierto); // Se controla con el menú principal
+		        subSuspender.setVisible(menuClientesAbierto); 
 		        subAlertas.setVisible(menuClientesAbierto);
 		        subHistorial.setVisible(menuClientesAbierto);
 		        panelContenedorMenu.revalidate();
 		    }
 		});
 
-		subAlertas.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ClientesEnAlerta aux = new ClientesEnAlerta();
-				aux.setModal(true);
-				aux.setVisible(true);
-				
-			}
-		});
-		subHistorial.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HistorialCliente histo = new HistorialCliente();
-				
-				histo.setModal(true);
-				histo.setVisible(true);
-				
-			}
-		});
-		// --- 4. GESTIÓN DE SERVICIOS Y PLANES ---
 		final JButton btnGServ = crearBotonMenu("> Gestión de Servicios", 203, 40, false);
 		final JButton subCrearPlanes = crearBotonMenu("   Crear Planes", 203, 30, true);
 		final JButton subListarMod = crearBotonMenu("   Listar y Modificar", 203, 30, true);
@@ -528,55 +439,24 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subDesactivar);
 		panelContenedorMenu.add(subRecarga);
 		
-		subCrearPlanes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CrearPlanes aux = new CrearPlanes();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}});
-		
-		subListarMod.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ListarServicios aux = new ListarServicios();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}});
-		
-		subDesactivar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DesactivarServicios aux = new DesactivarServicios();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}});
-		subRecarga.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RegRecarga recarga = new RegRecarga();
-				recarga.setModal(true);
-				recarga.setVisible(true);
-			}
-		});
-		final boolean[] menuServOpen = {false}; 
+		subCrearPlanes.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { CrearPlanes aux = new CrearPlanes(); aux.setModal(true); aux.setVisible(true); } });
+		subListarMod.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(); aux.setModal(true); aux.setVisible(true); } });
+		subDesactivar.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { DesactivarServicios aux = new DesactivarServicios(); aux.setModal(true); aux.setVisible(true); } });
+		subRecarga.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegRecarga recarga = new RegRecarga(); recarga.setModal(true); recarga.setVisible(true); } });
+
 		btnGServ.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				menuServOpen[0] = !menuServOpen[0];
-				btnGServ.setText(menuServOpen[0] ? "v Gestión de Servicios" : "> Gestión de Servicios");
-				subCrearPlanes.setVisible(menuServOpen[0]);
-				subListarMod.setVisible(menuServOpen[0]);
-				subDesactivar.setVisible(menuServOpen[0]);
-				subRecarga.setVisible(menuServOpen[0]);
+				menuReportesAbierto = !menuReportesAbierto; // Reusamos variable o creamos una específica
+				btnGServ.setText(menuReportesAbierto ? "v Gestión de Servicios" : "> Gestión de Servicios");
+				subCrearPlanes.setVisible(menuReportesAbierto);
+				subListarMod.setVisible(menuReportesAbierto);
+				subDesactivar.setVisible(menuReportesAbierto);
+				subRecarga.setVisible(menuReportesAbierto);
 				panelContenedorMenu.revalidate();
 			}
 		});
-		
-		
-		
-		// --- 5. REPORTES DE LA EMPRESA (BI) ---
+
 		final JButton btnReportes = crearBotonMenu("> Reportes Empresa", 203, 40, false);
 		final JButton subFinanzas = crearBotonMenu("   Finanzas", 203, 30, true);
 		final JButton subCalidad = crearBotonMenu("   Métricas de Calidad", 203, 30, true);
@@ -586,8 +466,6 @@ public class SistemaPrincipal extends JFrame {
 		final JButton subZonasInst = crearBotonMenu("   Instalaciones por Zona", 203, 30, true);
 		final JButton subValoraciones = crearBotonMenu("   Valoraciones de Clientes", 203, 30, true);
 
-		
-		
 		panelContenedorMenu.add(btnReportes);
 		panelContenedorMenu.add(subFinanzas);
 		panelContenedorMenu.add(subCalidad);
@@ -613,15 +491,91 @@ public class SistemaPrincipal extends JFrame {
 			}
 		});
 
-		// --- BOTÓN CERRAR SESIÓN ---
 		JButton btnLogout = new JButton("Cerrar Sesión");
 		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);
 		btnLogout.setBackground(new Color(220, 53, 69));
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
-		btnLogout.setFocusPainted(false);
-		btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
+	}
 
+	private void crearMenuComercial(int altoPantalla) {
+		// --- 1. GESTIÓN DE VENTAS ---
+		final JButton btnVentas = crearBotonMenu("> Gestión de Ventas", 203, 40, false);
+		final JButton subNuevaVenta = crearBotonMenu("   Registrar Cliente / Contrato", 203, 30, true);
+		final JButton subVentasRealizadas = crearBotonMenu("   Ventas Realizadas", 203, 30, true);
+		final JButton subMisComisiones = crearBotonMenu("   Mis Comisiones", 203, 30, true);
+
+		panelContenedorMenu.add(btnVentas);
+		panelContenedorMenu.add(subNuevaVenta);
+		panelContenedorMenu.add(subVentasRealizadas);
+		panelContenedorMenu.add(subMisComisiones);
+
+		btnVentas.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuVentasOpen = !menuVentasOpen;
+				btnVentas.setText(menuVentasOpen ? "v Gestión de Ventas" : "> Gestión de Ventas");
+				subNuevaVenta.setVisible(menuVentasOpen);
+				subVentasRealizadas.setVisible(menuVentasOpen);
+				subMisComisiones.setVisible(menuVentasOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		subNuevaVenta.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarCliente aux = new RegistrarCliente(); aux.setModal(true); aux.setVisible(true); } });
+
+		// --- 2. GESTIÓN DE CLIENTES ---
+		final JButton btnGCliCom = crearBotonMenu("> Gestión de Clientes", 203, 40, false);
+		final JButton subListCliCom = crearBotonMenu("   Listar y Modificar", 203, 30, true);
+		final JButton subSuspenderCom = crearBotonMenu("   Suspender Cliente", 203, 30, true);
+
+		panelContenedorMenu.add(btnGCliCom);
+		panelContenedorMenu.add(subListCliCom);
+		panelContenedorMenu.add(subSuspenderCom);
+
+		btnGCliCom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuClientesAbierto = !menuClientesAbierto;
+				btnGCliCom.setText(menuClientesAbierto ? "v Gestión de Clientes" : "> Gestión de Clientes");
+				subListCliCom.setVisible(menuClientesAbierto);
+				subSuspenderCom.setVisible(menuClientesAbierto);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		subListCliCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarClientes aux = new ListarClientes(); aux.setModal(true); aux.setVisible(true); } });
+		subSuspenderCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { SuspenderCliente aux = new SuspenderCliente(); aux.setModal(true); aux.setVisible(true); } });
+
+		// --- 3. GESTIÓN DE SERVICIOS ---
+		final JButton btnGServCom = crearBotonMenu("> Gestión de Servicios", 203, 40, false);
+		final JButton subRecargasCom = crearBotonMenu("   Recargas", 203, 30, true);
+		final JButton subCatalogoCom = crearBotonMenu("   Catálogo de Servicios", 203, 30, true);
+
+		panelContenedorMenu.add(btnGServCom);
+		panelContenedorMenu.add(subRecargasCom);
+		panelContenedorMenu.add(subCatalogoCom);
+
+		btnGServCom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuServOpenCom = !menuServOpenCom;
+				btnGServCom.setText(menuServOpenCom ? "v Gestión de Servicios" : "> Gestión de Servicios");
+				subRecargasCom.setVisible(menuServOpenCom);
+				subCatalogoCom.setVisible(menuServOpenCom);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		subRecargasCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegRecarga recarga = new RegRecarga(); recarga.setModal(true); recarga.setVisible(true); } });
+		subCatalogoCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(); aux.setModal(true); aux.setVisible(true); } });
+
+		JButton btnLogout = new JButton("Cerrar Sesión");
+		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);
+		btnLogout.setBackground(new Color(220, 53, 69));
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
 		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
 	}
 
@@ -662,16 +616,10 @@ public class SistemaPrincipal extends JFrame {
 	}
 
 	private void configurarVistaSegunRol(String rol) {
-		tglbtnAdmin.setSelected(false);
-		tglbtnTecnico.setSelected(false);
-		tglbtnComercial.setSelected(false);
-		tglbtnCliente.setSelected(false);
-
-		if (rol.equalsIgnoreCase("Administrador")) tglbtnAdmin.setSelected(true);
-		else if (rol.equalsIgnoreCase("Técnico")) tglbtnTecnico.setSelected(true);
-		else if (rol.equalsIgnoreCase("Comercial")) tglbtnComercial.setSelected(true);
-		else if (rol.equalsIgnoreCase("Cliente")) tglbtnCliente.setSelected(true);
-
+		tglbtnAdmin.setSelected(rol.equalsIgnoreCase("Administrador"));
+		tglbtnTecnico.setSelected(rol.equalsIgnoreCase("Técnico"));
+		tglbtnComercial.setSelected(rol.equalsIgnoreCase("Comercial"));
+		tglbtnCliente.setSelected(rol.equalsIgnoreCase("Cliente"));
 		actualizarBordesBotones();
 	}
 }
