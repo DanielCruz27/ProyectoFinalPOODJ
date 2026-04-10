@@ -1,6 +1,7 @@
 package Logico;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Cliente implements Serializable {
@@ -14,6 +15,7 @@ public class Cliente implements Serializable {
 	private String apellidoCliente;
 	private String emailCliente;
 	private String direccionCliente;
+	private String cedula;
 	private Usuario miCuenta;
 	private String zonaVivienda;
 	private int puntosAcumulados;
@@ -25,7 +27,7 @@ public class Cliente implements Serializable {
 	private ArrayList<Contrato>misContratos;
 
 	public Cliente(String idCliente, String nombreCliente, String apellidoCliente, String emailCliente,
-			String direccionCliente, Usuario miCuenta, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
+			String direccionCliente, String cedula,  Usuario miCuenta, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
 			MetodoDePago miMetodo,float deudaPendiente, int cantPagosAtrasados, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
 		super();
 		this.idCliente = idCliente;
@@ -33,6 +35,7 @@ public class Cliente implements Serializable {
 		this.apellidoCliente = apellidoCliente;
 		this.emailCliente = emailCliente;
 		this.direccionCliente = direccionCliente;
+		this.cedula = cedula;
 		this.zonaVivienda = zonaVivienda;
 		this.miCuenta = miCuenta;
 		this.puntosAcumulados = puntosAcumulados;
@@ -138,6 +141,26 @@ public class Cliente implements Serializable {
 	}
 	public void setMiCuenta(Usuario miCuenta) {
 		this.miCuenta = miCuenta;
+	}
+	public Object getCantidadAtrasos() {
+		int atrasos = 0;
+	    LocalDate hoy = LocalDate.now();
+
+	    if (misPagos != null) {
+	        for (Pago p : misPagos) {
+	            // Un atraso es un pago NO realizado Y cuya fecha ya pasó
+	            if (!p.isEstadoPago() && p.getFechaEmision().isBefore(hoy)) {
+	                atrasos++;
+	            }
+	        }
+	    }
+	    return atrasos;
+	}
+	public String getCedula() {
+		return cedula;
+	}
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 	
 		

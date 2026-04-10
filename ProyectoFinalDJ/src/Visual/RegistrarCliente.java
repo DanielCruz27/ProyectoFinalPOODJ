@@ -1,174 +1,330 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import Logico.Altice;
-import Logico.Cliente;
-import Logico.MetodoDePago;
-import Logico.Usuario;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPasswordField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
+import Logico.*;
 
 public class RegistrarCliente extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	private JTextField txtCodigo, txtNombre, txtApellido, txtDireccion, txtEmail, txtCedula; // <--- Agregado txtCedula
 	private JPasswordField txtPassword;
-	private JComboBox cbxVivienda;
-	private JTextField txtCodigo;
-	private JTextField txtNombre;
-	private JTextField txtApellido;
-	private JTextField txtDireccion;
-	private JTextField txtEmail;
+	private JComboBox<String> cbxVivienda, cbxPlanes;
+	private JTable tableServicios;
+	private DefaultTableModel tableModel;
+	private JLabel lblTotal;
+	
+	private ArrayList<Servicio> serviciosParaContrato = new ArrayList<Servicio>();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			RegistrarCliente dialog = new RegistrarCliente();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-        	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
+			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public RegistrarCliente() {
-		setTitle("Registrar Cliente");
+		setTitle("Altice - Registro de Cliente y Contratación");
+		setModal(true);
 		setResizable(false);
-		setBounds(100, 100, 450, 385);
+		setSize(650, 780); // Aumentamos un poco el alto para la cédula
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
+		
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+
+		// --- CABECERA ---
+		JPanel panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(0, 102, 204));
+		panelHeader.setBounds(0, 0, 650, 40);
+		contentPanel.add(panelHeader);
 		
-		JLabel IdCliente = new JLabel("Codigo");
-		IdCliente.setBounds(15, 16, 69, 20);
-		contentPanel.add(IdCliente);
-		
-		txtCodigo = new JTextField();
-		txtCodigo.setText("C-" + Altice.getInstance().getCodigoCliente());
-		txtCodigo.setEnabled(false);
-		txtCodigo.setBounds(15, 39, 146, 26);
+		JLabel lblTitulo = new JLabel("REGISTRO DE CLIENTE Y CONTRATO");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+		panelHeader.add(lblTitulo);
+
+		// --- DATOS PERSONALES ---
+		JLabel lblId = new JLabel("Código:");
+		lblId.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblId.setBounds(30, 60, 100, 14);
+		contentPanel.add(lblId);
+
+		txtCodigo = new JTextField("C-" + Altice.getInstance().getCodigoCliente());
+		txtCodigo.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtCodigo.setEditable(false);
+		txtCodigo.setBounds(30, 80, 120, 25);
 		contentPanel.add(txtCodigo);
-		txtCodigo.setColumns(10);
-		
-		txtNombre = new JTextField();
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(15, 101, 146, 26);
-		contentPanel.add(txtNombre);
-		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(15, 81, 69, 20);
-		contentPanel.add(lblNombre);
-		
-		JLabel Apellido = new JLabel("Apellido");
-		Apellido.setBounds(176, 81, 69, 20);
-		contentPanel.add(Apellido);
-		
-		txtApellido = new JTextField();
-		txtApellido.setColumns(10);
-		txtApellido.setBounds(176, 101, 146, 26);
-		contentPanel.add(txtApellido);
-		
-		txtEmail = new JTextField();
-		txtEmail.setColumns(10);
-		txtEmail.setBounds(15, 215, 307, 26);
-		contentPanel.add(txtEmail);
-		
-		JLabel Email = new JLabel("Email");
-		Email.setBounds(15, 193, 69, 20);
-		contentPanel.add(Email);
-		
-		cbxVivienda = new JComboBox();
-		cbxVivienda.setModel(new DefaultComboBoxModel(new String[] {"<<Selecionar>>", "Metropolitana", "Norte", "Sur", "Este"}));
-		cbxVivienda.setBounds(176, 38, 146, 28);
+
+		JLabel lblZona = new JLabel("Zona de Vivienda:");
+		lblZona.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblZona.setBounds(180, 60, 150, 14);
+		contentPanel.add(lblZona);
+
+		cbxVivienda = new JComboBox<String>();
+		cbxVivienda.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		cbxVivienda.setModel(new DefaultComboBoxModel<String>(new String[] {"<<Seleccionar>>", "Metropolitana", "Norte", "Sur", "Este"}));
+		cbxVivienda.setBounds(180, 80, 180, 25);
 		contentPanel.add(cbxVivienda);
-		
-		JLabel lblZonaVivienda = new JLabel("Zona Vivienda");
-		lblZonaVivienda.setBounds(176, 16, 196, 20);
-		contentPanel.add(lblZonaVivienda);
-		
-		txtPassword = new JPasswordField();
-		txtPassword.setBounds(15, 265, 307, 26);
-		contentPanel.add(txtPassword);
-		
-		JLabel Contrasea = new JLabel("Contraseña");
-		Contrasea.setBounds(15, 243, 230, 20);
-		contentPanel.add(Contrasea);
-		
+
+		// FILA 2: Nombre y Apellido
+		JLabel lblNom = new JLabel("Nombre:");
+		lblNom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblNom.setBounds(30, 120, 100, 14);
+		contentPanel.add(lblNom);
+
+		txtNombre = new JTextField();
+		txtNombre.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtNombre.setBounds(30, 140, 250, 25);
+		contentPanel.add(txtNombre);
+
+		JLabel lblApe = new JLabel("Apellido:");
+		lblApe.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblApe.setBounds(310, 120, 100, 14);
+		contentPanel.add(lblApe);
+
+		txtApellido = new JTextField();
+		txtApellido.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtApellido.setBounds(310, 140, 250, 25);
+		contentPanel.add(txtApellido);
+
+		// FILA 3: Cédula y Dirección (Dirección ocupa más)
+		JLabel lblCed = new JLabel("Cédula:");
+		lblCed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblCed.setBounds(30, 180, 100, 14);
+		contentPanel.add(lblCed);
+
+		txtCedula = new JTextField();
+		txtCedula.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtCedula.setBounds(30, 200, 250, 25);
+		contentPanel.add(txtCedula);
+
+		JLabel lblDir = new JLabel("Dirección Completa:");
+		lblDir.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblDir.setBounds(310, 180, 200, 14);
+		contentPanel.add(lblDir);
+
 		txtDireccion = new JTextField();
-		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(15, 156, 307, 26);
+		txtDireccion.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtDireccion.setBounds(310, 200, 250, 25);
 		contentPanel.add(txtDireccion);
-		
-		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setBounds(15, 132, 91, 20);
-		contentPanel.add(lblDireccion);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton btnRegistrar = new JButton("Registrar");
-				btnRegistrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-					Usuario user = new Usuario(txtEmail.getText(), txtPassword.getPassword().toString());
-					if(!Altice.getInstance().buscarUsuario(user.getNombreUsuario())) {	
-				Cliente client = new Cliente(txtCodigo.getText(),txtNombre.getText(), txtApellido.getText(),txtEmail.getText(), txtDireccion.getText(), user,cbxVivienda.getSelectedItem().toString(), 0 ,false ,null, 0, 0, null, null);
+
+		// FILA 4: Email y Password
+		JLabel lblEmail = new JLabel("Correo Electrónico:");
+		lblEmail.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblEmail.setBounds(30, 240, 150, 14);
+		contentPanel.add(lblEmail);
+
+		txtEmail = new JTextField();
+		txtEmail.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtEmail.setBounds(30, 260, 250, 25);
+		contentPanel.add(txtEmail);
+
+		JLabel lblPass = new JLabel("Contraseña de Acceso:");
+		lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblPass.setBounds(310, 240, 200, 14);
+		contentPanel.add(lblPass);
+
+		txtPassword = new JPasswordField();
+		txtPassword.setBounds(310, 260, 250, 25);
+		contentPanel.add(txtPassword);
+
+		// --- PANEL DE CONTRATO ---
+		JPanel panelVenta = new JPanel();
+		panelVenta.setBackground(new Color(250, 250, 250));
+		TitledBorder bordeVenta = new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Configuración del Contrato ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
+		panelVenta.setBorder(bordeVenta);
+		panelVenta.setBounds(30, 330, 580, 320);
+		contentPanel.add(panelVenta);
+		panelVenta.setLayout(null);
+
+		cbxPlanes = new JComboBox<String>();
+		cbxPlanes.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		llenarComboPlanes();
+		cbxPlanes.setBounds(20, 50, 380, 25);
+		panelVenta.add(cbxPlanes);
+
+		JButton btnAgregar = new JButton("Añadir al Contrato");
+		btnAgregar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 11));
+		btnAgregar.setBounds(410, 50, 160, 25);
+		btnAgregar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				agregarServicio();
+			}
+		});
+		panelVenta.add(btnAgregar);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 90, 530, 180);
+		panelVenta.add(scrollPane);
+
+		String[] col = {"ID", "Servicio", "Tipo", "Mensualidad"};
+		tableModel = new DefaultTableModel(null, col) {
+			@Override
+			public boolean isCellEditable(int row, int column) { return false; }
+		};
+		tableServicios = new JTable(tableModel);
+		tableServicios.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		scrollPane.setViewportView(tableServicios);
+
+		lblTotal = new JLabel("Total a Pagar: RD$ 0.00");
+		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotal.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+		lblTotal.setBounds(300, 285, 250, 20);
+		panelVenta.add(lblTotal);
+
+		// --- BOTONES INFERIORES ---
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+		JButton btnRegistrar = new JButton("Finalizar Registro");
+		btnRegistrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
+		btnRegistrar.setBackground(new Color(0, 153, 51));
+		btnRegistrar.setForeground(Color.WHITE);
+		btnRegistrar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				realizarRegistro();
+			}
+		});
+		buttonPane.add(btnRegistrar);
+
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		buttonPane.add(btnCancel);
+	}
+
+	private void llenarComboPlanes() {
+		cbxPlanes.addItem("<< Seleccionar Plan Activo >>");
+		for (Servicio s : Altice.getInstance().getCatalogoServicio()) {
+			if (s.isEstadoDelServicio()) {
+				cbxPlanes.addItem(s.getIdServicio() + " - " + s.getNombreServicio());
+			}
+		}
+	}
+
+	private void agregarServicio() {
+		if (cbxPlanes.getSelectedIndex() > 0) {
+			String id = cbxPlanes.getSelectedItem().toString().split(" - ")[0];
+			Servicio s = Altice.getInstance().buscarServicioById(id);
+			if (s != null && !serviciosParaContrato.contains(s)) {
+				serviciosParaContrato.add(s);
+				actualizarTabla();
+			}
+		}
+	}
+
+	private void actualizarTabla() {
+		tableModel.setRowCount(0);
+		float total = 0;
+		for (Servicio s : serviciosParaContrato) {
+			String tipo = (s instanceof PlanMovil) ? "Móvil" : "Hogar";
+			tableModel.addRow(new Object[]{s.getIdServicio(), s.getNombreServicio(), tipo, s.getPrecioBase()});
+			total += s.getPrecioBase();
+		}
+		lblTotal.setText("Total a Pagar: RD$ " + total);
+	}
+
+	private void realizarRegistro() {
+		try {
+			// 1. Validaciones
+			if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
+				txtDireccion.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty() ||
+				new String(txtPassword.getPassword()).isEmpty()) {
+				throw new Exception("Todos los campos obligatorios deben estar llenos.");
+			}
+			if (cbxVivienda.getSelectedIndex() == 0) throw new Exception("Seleccione una zona de vivienda.");
+			if (serviciosParaContrato.isEmpty()) throw new Exception("Debe añadir al menos un plan al contrato.");
+
+			// 2. GENERACIÓN AUTOMÁTICA DE USUARIO
+			String nombre = txtNombre.getText().trim();
+			String apellido = txtApellido.getText().trim();
+			String userStr = nombre.toLowerCase().replace(" ", "") + "." + apellido.toLowerCase().replace(" ", "");
+
+			// 3. Validar usuario único
+			if (!Altice.getInstance().buscarUsuario(userStr)) {
+				
+				Usuario user = new Usuario(userStr, new String(txtPassword.getPassword()));
+				
+				// 4. Crear Cliente (INCLUYENDO LA CÉDULA)
+				// Asegúrate de que el constructor de Cliente reciba la cédula en este orden
+				Cliente client = new Cliente(
+					    txtCodigo.getText(),            // 1. idCliente
+					    nombre,                         // 2. nombreCliente
+					    apellido,                       // 3. apellidoCliente
+					    txtEmail.getText().trim(),      // 4. emailCliente (VA AQUÍ)
+					    txtDireccion.getText().trim(),  // 5. direccionCliente (VA AQUÍ)
+					    txtCedula.getText().trim(),     // 6. cedula (VA AQUÍ)
+					    user,                           // 7. miCuenta
+					    cbxVivienda.getSelectedItem().toString(), // 8. zonaVivienda
+					    0,      // puntos
+					    false,  // estado
+					    null,   // metodoPago
+					    0,      // deuda
+					    0,      // atrasos
+					    null,   // pagos
+					    null    // contratos
+					);
+
+				// 5. Guardar Cliente e incrementar contador
 				Altice.getInstance().InsertaCliente(client);
-				JOptionPane.showMessageDialog(null,"Registro Exitoso", "Confirmacion", JOptionPane.INFORMATION_MESSAGE);
+
+				// 6. Vendedor actual
+				String idVendedor = "V-000";
+				if (Altice.getInstance().getUsuarioLogueado() != null) {
+					idVendedor = Altice.getInstance().getUsuarioLogueado().getIdEmpleado();
+				}
+
+				// 7. Contratar cada servicio usando tu lógica de Altice
+				for (Servicio s : serviciosParaContrato) {
+					Altice.getInstance().contratarServicio(client.getIdCliente(), s.getIdServicio(), idVendedor);
+				}
+
+				JOptionPane.showMessageDialog(this, "Registro Exitoso.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 				clean();
-						}else {
-							JOptionPane.showMessageDialog(null,"Email ya esta en uso", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-				});
-				btnRegistrar.setActionCommand("OK");
-				buttonPane.add(btnRegistrar);
-				getRootPane().setDefaultButton(btnRegistrar);
+				
+			} else {
+				JOptionPane.showMessageDialog(this, "El usuario generado (" + userStr + ") ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Atención", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
 	protected void clean() {
-		// TODO Auto-generated method stub
-		txtApellido.setText("");
 		txtNombre.setText("");
-		txtEmail.setText("");
 		txtApellido.setText("");
+		txtCedula.setText(""); // <--- Limpiar cédula
+		txtDireccion.setText("");
+		txtEmail.setText("");
+		txtPassword.setText("");
 		cbxVivienda.setSelectedIndex(0);
-		txtCodigo.setText("C-" + Altice.getInstance().getCodigoCliente());		
-		
-		
+		cbxPlanes.setSelectedIndex(0);
+		txtCodigo.setText("C-" + Altice.getInstance().getCodigoCliente());
+		serviciosParaContrato.clear();
+		tableModel.setRowCount(0);
+		lblTotal.setText("Total a Pagar: RD$ 0.00");
+		txtNombre.requestFocus();
 	}
 }

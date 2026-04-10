@@ -429,37 +429,69 @@ public class SistemaPrincipal extends JFrame {
 
 		// --- 3. GESTIÓN DE CLIENTES ---
 		final JButton btnGCli = crearBotonMenu("> Gestión de Clientes", 203, 40, false);
-		final JButton subRegCli = crearBotonMenu("   Registrar Cliente", 203, 30, true);
-		final JButton subListCli = crearBotonMenu("   Listado Clientes", 203, 30, true);
+		final JButton subRegCli = crearBotonMenu("   Registrar Cliente / Contrato", 203, 30, true);
+		final JButton subListCli = crearBotonMenu("   Listar y Modificar", 203, 30, true);
+		final JButton subSuspender = crearBotonMenu("   Suspender Cliente", 203, 30, true); 
 		final JButton subAlertas = crearBotonMenu("   Clientes en Alerta", 203, 30, true);
 		final JButton subHistorial = crearBotonMenu("   Historial Pagos/Contratos", 203, 30, true);
 
 		panelContenedorMenu.add(btnGCli);
 		panelContenedorMenu.add(subRegCli);
 		panelContenedorMenu.add(subListCli);
+		panelContenedorMenu.add(subSuspender); // Agregado al panel
 		panelContenedorMenu.add(subAlertas);
 		panelContenedorMenu.add(subHistorial);
 
+		// ACTION LISTENER PARA SUSPENDER (Debes crear la ventana SuspenderCliente luego)
+		subSuspender.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Aquí llamarías a la ventana que vayas a crear para suspender
+		        // SuspenderCliente aux = new SuspenderCliente();
+		        // aux.setModal(true);
+		        // aux.setVisible(true);
+		    }
+		});
+
 		subRegCli.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RegistrarCliente aux = new RegistrarCliente();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        RegistrarCliente aux = new RegistrarCliente();
+		        aux.setModal(true);
+		        aux.setVisible(true);
+		    }
+		});
+
+		subListCli.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        ListarClientes aux = new ListarClientes();
+		        aux.setModal(true);
+		        aux.setVisible(true);
+		    }
 		});
 		
+		subSuspender.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        SuspenderCliente aux = new SuspenderCliente();
+		        aux.setModal(true);
+		        aux.setVisible(true);
+		    }
+		});
+
 		btnGCli.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				menuClientesAbierto = !menuClientesAbierto;
-				btnGCli.setText(menuClientesAbierto ? "v Gestión de Clientes" : "> Gestión de Clientes");
-				subRegCli.setVisible(menuClientesAbierto);
-				subListCli.setVisible(menuClientesAbierto);
-				subAlertas.setVisible(menuClientesAbierto);
-				subHistorial.setVisible(menuClientesAbierto);
-				panelContenedorMenu.revalidate();
-			}
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        menuClientesAbierto = !menuClientesAbierto;
+		        btnGCli.setText(menuClientesAbierto ? "v Gestión de Clientes" : "> Gestión de Clientes");
+		        subRegCli.setVisible(menuClientesAbierto);
+		        subListCli.setVisible(menuClientesAbierto);
+		        subSuspender.setVisible(menuClientesAbierto); // Se controla con el menú principal
+		        subAlertas.setVisible(menuClientesAbierto);
+		        subHistorial.setVisible(menuClientesAbierto);
+		        panelContenedorMenu.revalidate();
+		    }
 		});
 
 		// --- 4. GESTIÓN DE SERVICIOS Y PLANES ---
@@ -479,6 +511,22 @@ public class SistemaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				CrearPlanes aux = new CrearPlanes();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}});
+		
+		subListarMod.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ListarServicios aux = new ListarServicios();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}});
+		
+		subDesactivar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DesactivarServicios aux = new DesactivarServicios();
 				aux.setModal(true);
 				aux.setVisible(true);
 			}});

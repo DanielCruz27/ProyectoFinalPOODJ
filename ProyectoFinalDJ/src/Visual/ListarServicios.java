@@ -14,10 +14,11 @@ public class ListarServicios extends JDialog {
 	private JTable table;
 	private DefaultTableModel model;
 	private JTextField txtNombre, txtPrecio;
-	private JSpinner spnEspecial1, spnEspecial2; // Minutos/Velocidad o Redes/MinutosFijo
+	private JSpinner spnEspecial1, spnEspecial2; 
 	private JLabel lblEspecial1, lblEspecial2, lblStreaming;
-	private JTextArea txtStreaming; // Para ver la lista de streamings o redes
+	private JTextArea txtStreaming; 
 	private JPanel panelEditar;
+	private JButton btnGuardar; // Lo volvemos global para poder deshabilitarlo
 	private Servicio seleccionado = null;
 
 	public static void main(String[] args) {
@@ -117,7 +118,7 @@ public class ListarServicios extends JDialog {
 		spnEspecial2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		spnEspecial2.setBounds(20, 225, 100, 25); panelEditar.add(spnEspecial2);
 
-		lblStreaming = new JLabel("Inclusiones (Redes/Video):");
+		lblStreaming = new JLabel("Inclusiones:");
 		lblStreaming.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblStreaming.setBounds(20, 265, 250, 14); panelEditar.add(lblStreaming);
 		
@@ -130,7 +131,7 @@ public class ListarServicios extends JDialog {
 		txtStreaming.setBounds(20, 285, 250, 60);
 		panelEditar.add(txtStreaming);
 
-		JButton btnGuardar = new JButton("Guardar Cambios");
+		btnGuardar = new JButton("Guardar Cambios");
 		btnGuardar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnGuardar.setBackground(new Color(0, 153, 51));
 		btnGuardar.setForeground(Color.WHITE);
@@ -142,6 +143,14 @@ public class ListarServicios extends JDialog {
 			}
 		});
 		panelEditar.add(btnGuardar);
+
+		// --- OCULTAR POR DEFECTO ---
+		lblEspecial1.setVisible(false);
+		spnEspecial1.setVisible(false);
+		lblEspecial2.setVisible(false);
+		spnEspecial2.setVisible(false);
+		lblStreaming.setVisible(false);
+		txtStreaming.setVisible(false);
 
 		// --- BOTONES INFERIORES ---
 		JPanel buttonPane = new JPanel();
@@ -158,7 +167,6 @@ public class ListarServicios extends JDialog {
 		});
 		buttonPane.add(btnCerrar);
 
-		// --- EVENTO TABLA ---
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -182,27 +190,35 @@ public class ListarServicios extends JDialog {
 		int fila = table.getSelectedRow();
 		if (fila >= 0) {
 			String id = (String) table.getValueAt(fila, 0);
-			// Debes tener un método buscarServicioById en Altice
 			seleccionado = Altice.getInstance().buscarServicioById(id);
 
 			if (seleccionado != null) {
 				txtNombre.setText(seleccionado.getNombreServicio());
 				txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
 
+				// CONTROL DE EDICIÓN: Si el plan no está disponible, bloqueamos los campos
+				toggleCampos(seleccionado.isEstadoDelServicio());
+
 				if (seleccionado instanceof PlanMovil) {
 					PlanMovil pm = (PlanMovil) seleccionado;
 					lblEspecial1.setText("Minutos Incluidos:");
+					lblEspecial1.setVisible(true);
+					spnEspecial1.setVisible(true);
 					spnEspecial1.setValue(pm.getMinutosIncluidos());
 					
 					lblEspecial2.setVisible(false);
 					spnEspecial2.setVisible(false);
 					
 					lblStreaming.setText("Redes Sociales Incluidas:");
+					lblStreaming.setVisible(true);
+					txtStreaming.setVisible(true);
 					txtStreaming.setText(pm.getRedesLibresIncluidas());
 				} 
 				else if (seleccionado instanceof PlanHogar) {
 					PlanHogar ph = (PlanHogar) seleccionado;
 					lblEspecial1.setText("Velocidad (Mbps):");
+					lblEspecial1.setVisible(true);
+					spnEspecial1.setVisible(true);
 					spnEspecial1.setValue(ph.getVelocidadInternet());
 					
 					lblEspecial2.setText("Minutos Fijo:");
@@ -211,12 +227,29 @@ public class ListarServicios extends JDialog {
 					spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
 					
 					lblStreaming.setText("Streaming Incluido:");
+					lblStreaming.setVisible(true);
+					txtStreaming.setVisible(true);
 					txtStreaming.setText(ph.getStreamingIncluido());
 				}
 				
 				panelEditar.revalidate();
 				panelEditar.repaint();
 			}
+		}
+	}
+
+	// Método para habilitar o deshabilitar la edición según el estado del servicio
+	private void toggleCampos(boolean habilitar) {
+		txtNombre.setEnabled(habilitar);
+		txtPrecio.setEnabled(habilitar);
+		spnEspecial1.setEnabled(habilitar);
+		spnEspecial2.setEnabled(habilitar);
+		btnGuardar.setEnabled(habilitar);
+		
+		if(!habilitar) {
+			btnGuardar.setToolTipText("No se puede editar un plan descatalogado");
+		} else {
+			btnGuardar.setToolTipText(null);
 		}
 	}
 

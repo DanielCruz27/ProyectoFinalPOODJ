@@ -17,6 +17,7 @@ public class Altice implements Serializable{
 	private ArrayList<Pago> historialPagos;
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
+	private Personal usuarioLogueado;
 	public  int codigoPersonal = 1;
 	public  int codigoCliente = 1;
 	public  int codigoContrato = 1;
@@ -31,6 +32,7 @@ public class Altice implements Serializable{
 		this.historialPagos = new ArrayList<>();
 		this.colaDeEspera = new ArrayList<>();
 		this.listaContratos = new ArrayList<>();
+		this.usuarioLogueado =usuarioLogueado;
 	}
 	
 	public static Altice getInstance() {
@@ -181,7 +183,7 @@ public class Altice implements Serializable{
 
 		return aux;
 	}
-	private Servicio buscarServicioById(String idServicio) {
+	public Servicio buscarServicioById(String idServicio) {
 		Servicio aux = null;
 		boolean finded = false;
 		int i = 0;
@@ -390,6 +392,54 @@ public void incrementarServicio() {
 	    service.setIdServicio("S-" + codigoServicio);
 	    catalogoServicio.add(service);
 	    codigoServicio++;
+	}
+	
+	// Método para cambiar el estado de un servicio (Activar/Desactivar)
+	public void cambiarEstadoServicio(String idServicio) {
+	    Servicio s = buscarServicioById(idServicio);
+	    if (s != null) {
+	        // Si está true lo pone false, y viceversa
+	        s.setEstadoDelServicio(!s.isEstadoDelServicio());
+	    }
+	}
+
+	public Personal getUsuarioLogueado() {
+		return usuarioLogueado;
+	}
+
+	public void setUsuarioLogueado(Personal usuarioLogueado) {
+		this.usuarioLogueado = usuarioLogueado;
+	}
+	
+	// Método para contar servicios totales de un cliente sumando todos sus contratos
+	public int contarCantServiciosDeCliente(String idCliente) {
+	    int total = 0;
+	    Cliente client = buscarCliente(idCliente);
+	    if (client != null && client.getMisContratos() != null) {
+	        for (Contrato con : client.getMisContratos()) {
+	            total += con.getMisServicios().size();
+	        }
+	    }
+	    return total;
+	}
+
+	// Método para verificar si el cliente tiene facturas sin pagar
+	public String comprobarSiHayDeuda(String idCliente) {
+	    String tieneDeuda = "No";
+	    Cliente client = buscarCliente(idCliente);
+	    
+	    if (client != null && client.getMisPagos() != null) {
+	        boolean encontrado = false;
+	        int i = 0;
+	        while (i < client.getMisPagos().size() && !encontrado) {
+	            if (!client.getMisPagos().get(i).isEstadoPago()) { // Si el pago no está realizado
+	                tieneDeuda = "Si";
+	                encontrado = true;
+	            }
+	            i++;
+	        }
+	    }
+	    return tieneDeuda;
 	}
 
 }

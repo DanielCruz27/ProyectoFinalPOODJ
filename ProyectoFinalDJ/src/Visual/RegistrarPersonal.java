@@ -199,7 +199,7 @@ public class RegistrarPersonal extends JDialog {
 		rbComercial.addActionListener(rolListener);
 
 		// --- PANEL USUARIO ---
-		JLabel lblPass = new JLabel("Contraseña inicial:");
+		JLabel lblPass = new JLabel("Contraseña de Acceso:");
 		lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblPass.setBounds(30, 420, 150, 14);
 		contentPanel.add(lblPass);

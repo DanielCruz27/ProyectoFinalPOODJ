@@ -32,5 +32,7 @@ public class Comercial extends Personal {
 		return getSalarioBase() + comisiones;
 	}
 
+	
+
 
 }
