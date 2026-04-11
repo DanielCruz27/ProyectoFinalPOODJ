@@ -33,31 +33,7 @@ public class SistemaPrincipal extends JFrame {
 	private boolean menuVentasOpen = false;
 	private boolean menuServOpenCom = false;
 
-	public static void main(String[] args) {
-	    EventQueue.invokeLater(new Runnable() {
-	        public void run() {
-	            // --- LECTURA INICIAL ---
-	            try {
-	                FileInputStream fileIn = new FileInputStream("Alticee.dat");
-	                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-	                Altice.setInstance((Altice) objectIn.readObject());
-	                objectIn.close();
-	            } catch (Exception e) {
-	                // Si falla, simplemente iniciamos con una instancia vacía
-	                System.out.println("Iniciando sin datos previos...");
-	            }
-
-	            // --- LANZAMIENTO DEL SISTEMA ---
-	            try {
-	                // CAMBIA "administrador" por "comercial" para probar el nuevo menú
-	                SistemaPrincipal frame = new SistemaPrincipal("comercial");
-	                frame.setVisible(true);
-	            } catch (Exception e) {
-	                JOptionPane.showMessageDialog(null, "Error al iniciar la interfaz", "Error", JOptionPane.WARNING_MESSAGE);
-	            }
-	        }
-	    });
-	}
+	
 
 	public SistemaPrincipal(String rolUsuario) {
 		addWindowListener(new WindowAdapter() {
@@ -118,9 +94,9 @@ public class SistemaPrincipal extends JFrame {
 
 		// --- CARGA DINÁMICA DE MENÚS ---
 		if (rolUsuario.equalsIgnoreCase("Administrador")) {
-			crearMenuAdministrador(altoPantalla);
+			crearMenuAdministrador(altoPantalla,rolUsuario);
 		} else if (rolUsuario.equalsIgnoreCase("Comercial")) {
-			crearMenuComercial(altoPantalla);
+			crearMenuComercial(altoPantalla,rolUsuario);
 		}
 
 		JLabel lblFondoLateral = new JLabel("");
@@ -363,7 +339,7 @@ public class SistemaPrincipal extends JFrame {
 		configurarVistaSegunRol(rolUsuario);
 	}
 
-	private void crearMenuAdministrador(int altoPantalla) {
+	private void crearMenuAdministrador(int altoPantalla,String rolUsuario) {
 		JButton btnDash = crearBotonMenu("Dashboard", 203, 40, false);
 		panelContenedorMenu.add(btnDash);
 
@@ -440,7 +416,7 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subRecarga);
 		
 		subCrearPlanes.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { CrearPlanes aux = new CrearPlanes(); aux.setModal(true); aux.setVisible(true); } });
-		subListarMod.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(); aux.setModal(true); aux.setVisible(true); } });
+		subListarMod.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(rolUsuario); aux.setModal(true); aux.setVisible(true); } });
 		subDesactivar.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { DesactivarServicios aux = new DesactivarServicios(); aux.setModal(true); aux.setVisible(true); } });
 		subRecarga.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegRecarga recarga = new RegRecarga(); recarga.setModal(true); recarga.setVisible(true); } });
 
@@ -499,7 +475,7 @@ public class SistemaPrincipal extends JFrame {
 		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
 	}
 
-	private void crearMenuComercial(int altoPantalla) {
+	private void crearMenuComercial(int altoPantalla,String rolusuario) {
 		// --- 1. GESTIÓN DE VENTAS ---
 		final JButton btnVentas = crearBotonMenu("> Gestión de Ventas", 203, 40, false);
 		final JButton subNuevaVenta = crearBotonMenu("   Registrar Cliente / Contrato", 203, 30, true);
@@ -569,7 +545,7 @@ public class SistemaPrincipal extends JFrame {
 		});
 
 		subRecargasCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegRecarga recarga = new RegRecarga(); recarga.setModal(true); recarga.setVisible(true); } });
-		subCatalogoCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(); aux.setModal(true); aux.setVisible(true); } });
+		subCatalogoCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(rolusuario); aux.setModal(true); aux.setVisible(true); } });
 
 		JButton btnLogout = new JButton("Cerrar Sesión");
 		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);

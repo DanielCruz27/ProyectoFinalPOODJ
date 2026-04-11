@@ -34,7 +34,7 @@ public class Altice implements Serializable {
 		this.historialPagos = new ArrayList<>();
 		this.colaDeEspera = new ArrayList<>();
 		this.listaContratos = new ArrayList<>();
-		this.usuarioLogueado = usuarioLogueado;
+		
 	}
 
 	public static Altice getInstance() {
@@ -43,6 +43,23 @@ public class Altice implements Serializable {
 		}
 		return altice;
 	}
+	public Object verificarAccesoUniversal(String user, String pass) {
+		Object login = null;
+	    for (Personal p : listaEmpleados) {
+	        if (p.getMiCuenta().getNombreUsuario().equalsIgnoreCase(user) && p.getMiCuenta().getContraseña().equals(pass)) {
+	            login = p; 
+	        }
+	    }
+	    
+	    for (Cliente c : listaClientes) {
+	        if (c.getMiCuenta().getNombreUsuario().equalsIgnoreCase(user) && c.getMiCuenta().getContraseña().equals(pass)) {
+	            login =  c;
+	        }
+	    }
+	    
+	    return login; 
+	}
+
 
 	public ArrayList<Cliente> getListaClientes() {
 		return listaClientes;

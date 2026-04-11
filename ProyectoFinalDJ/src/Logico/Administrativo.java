@@ -22,6 +22,11 @@ public class Administrativo extends Personal {
 	protected float calcularSueldoNeto() {
 		return getSalarioBase();
 	}
+	@Override
+	public String getRol() {
+		// TODO Auto-generated method stub
+		return "administrador";
+	}
 	
 	
 	

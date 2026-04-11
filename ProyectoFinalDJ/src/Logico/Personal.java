@@ -76,6 +76,7 @@ public abstract class Personal implements Serializable{
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
+	public abstract String getRol();
 	
 	
 	

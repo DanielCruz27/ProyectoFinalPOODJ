@@ -18,13 +18,14 @@ public class ListarServicios extends JDialog {
 	private JLabel lblEspecial1, lblEspecial2, lblStreaming;
 	private JTextArea txtStreaming; 
 	private JPanel panelEditar;
-	private JButton btnGuardar; // Lo volvemos global para poder deshabilitarlo
+	private JButton btnGuardar; 
 	private Servicio seleccionado = null;
 
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ListarServicios dialog = new ListarServicios();
+            // Para probar como comercial, se pasaría el parámetro al constructor
+			ListarServicios dialog = new ListarServicios("comercial"); 
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -32,8 +33,9 @@ public class ListarServicios extends JDialog {
 		}
 	}
 
-	public ListarServicios() {
-		setTitle("Altice - Gestión de Catálogo de Servicios");
+    // Constructor modificado para recibir el rol
+	public ListarServicios(String rol) {
+		setTitle("Altice - Consulta de Catálogo de Servicios");
 		setSize(950, 600);
 		setLocationRelativeTo(null);
 		setModal(true);
@@ -75,7 +77,7 @@ public class ListarServicios extends JDialog {
 		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
-		// --- PANEL DE EDICIÓN ---
+		// --- PANEL DE DETALLES ---
 		panelEditar = new JPanel();
 		panelEditar.setBackground(Color.WHITE);
 		panelEditar.setLayout(null);
@@ -174,6 +176,16 @@ public class ListarServicios extends JDialog {
 			}
 		});
 
+        // --- LÓGICA DE BLOQUEO PARA COMERCIAL ---
+        if (rol.equalsIgnoreCase("comercial")) {
+            txtNombre.setEditable(false);
+            txtPrecio.setEditable(false);
+            spnEspecial1.setEnabled(false);
+            spnEspecial2.setEnabled(false);
+            btnGuardar.setVisible(false); // Ni siquiera se lo mostramos
+            setTitle("Altice - Consulta de Catálogo (Solo Lectura)");
+        }
+
 		cargarTabla();
 	}
 
@@ -196,19 +208,14 @@ public class ListarServicios extends JDialog {
 				txtNombre.setText(seleccionado.getNombreServicio());
 				txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
 
-				// CONTROL DE EDICIÓN: Si el plan no está disponible, bloqueamos los campos
-				toggleCampos(seleccionado.isEstadoDelServicio());
-
 				if (seleccionado instanceof PlanMovil) {
 					PlanMovil pm = (PlanMovil) seleccionado;
 					lblEspecial1.setText("Minutos Incluidos:");
 					lblEspecial1.setVisible(true);
 					spnEspecial1.setVisible(true);
 					spnEspecial1.setValue(pm.getMinutosIncluidos());
-					
 					lblEspecial2.setVisible(false);
 					spnEspecial2.setVisible(false);
-					
 					lblStreaming.setText("Redes Sociales Incluidas:");
 					lblStreaming.setVisible(true);
 					txtStreaming.setVisible(true);
@@ -220,12 +227,10 @@ public class ListarServicios extends JDialog {
 					lblEspecial1.setVisible(true);
 					spnEspecial1.setVisible(true);
 					spnEspecial1.setValue(ph.getVelocidadInternet());
-					
 					lblEspecial2.setText("Minutos Fijo:");
 					lblEspecial2.setVisible(true);
 					spnEspecial2.setVisible(true);
 					spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
-					
 					lblStreaming.setText("Streaming Incluido:");
 					lblStreaming.setVisible(true);
 					txtStreaming.setVisible(true);
@@ -238,25 +243,9 @@ public class ListarServicios extends JDialog {
 		}
 	}
 
-	// Método para habilitar o deshabilitar la edición según el estado del servicio
-	private void toggleCampos(boolean habilitar) {
-		txtNombre.setEnabled(habilitar);
-		txtPrecio.setEnabled(habilitar);
-		spnEspecial1.setEnabled(habilitar);
-		spnEspecial2.setEnabled(habilitar);
-		btnGuardar.setEnabled(habilitar);
-		
-		if(!habilitar) {
-			btnGuardar.setToolTipText("No se puede editar un plan descatalogado");
-		} else {
-			btnGuardar.setToolTipText(null);
-		}
-	}
-
 	private void guardarCambios() {
 		try {
 			if (seleccionado == null) throw new Exception("Seleccione un plan de la tabla.");
-			
 			seleccionado.setNombreServicio(txtNombre.getText());
 			seleccionado.setPrecioBase(Float.parseFloat(txtPrecio.getText()));
 

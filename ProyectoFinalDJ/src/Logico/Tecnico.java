@@ -76,5 +76,11 @@ public class Tecnico extends Personal {
 	        this.horasExtrasTrabajadas += horasNuevas;
 	    }
 	}
+
+	@Override
+	public String getRol() {
+		// TODO Auto-generated method stub
+		return "tecnico";
+	}
 	
 }

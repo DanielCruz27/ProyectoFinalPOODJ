@@ -32,6 +32,12 @@ public class Comercial extends Personal {
 		return getSalarioBase() + comisiones;
 	}
 
+	@Override
+	public String getRol() {
+		// TODO Auto-generated method stub
+		return "comercial";
+	}
+
 	
 
 

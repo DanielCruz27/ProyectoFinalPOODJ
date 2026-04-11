@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,23 +25,48 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import Logico.Administrativo;
+import Logico.Altice;
+import Logico.Cliente;
+import Logico.Comercial;
+import Logico.Personal;
+import Logico.Tecnico;
+
 import javax.swing.border.EtchedBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Principal_InicioSesion extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField textField;
+    private JTextField txtUser;
     private JPasswordField passwordField;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+                // --- 1. LECTURA DE DATOS ANTES DE MOSTRAR EL LOGIN ---
+                try {
+                    FileInputStream fileIn = new FileInputStream("Alticee.dat");
+                    ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                    // Cargamos la base de datos completa en el Singleton
+                    Altice.setInstance((Altice) objectIn.readObject());
+                    objectIn.close();
+                    fileIn.close();
+                    System.out.println("Datos cargados correctamente.");
+                } catch (Exception e) {
+                    // Si el archivo no existe, el Singleton ya inicializa listas vacías en su constructor
+                    System.out.println("No se encontró el archivo Alticee.dat. Iniciando sistema nuevo.");
+                }
+
+                // --- 2. LANZAMIENTO DE LA VENTANA ---
                 try {
                     Principal_InicioSesion frame = new Principal_InicioSesion();
                     frame.setVisible(true);
                 } catch (Exception e) {
-                	JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
                 }
             }
         });
@@ -92,10 +119,10 @@ public class Principal_InicioSesion extends JFrame {
         lblUser.setBounds(71, 244, 102, 14);
         panelLogin.add(lblUser);
         
-        textField = new JTextField();
-        textField.setBorder(new LineBorder(new Color(0, 0, 255)));
-        textField.setBounds(71, 268, 329, 25);
-        panelLogin.add(textField);
+        txtUser = new JTextField();
+        txtUser.setBorder(new LineBorder(new Color(0, 0, 255)));
+        txtUser.setBounds(71, 268, 329, 25);
+        panelLogin.add(txtUser);
         
         JLabel lblPass = new JLabel("Contraseña:");
         lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
@@ -108,6 +135,35 @@ public class Principal_InicioSesion extends JFrame {
         panelLogin.add(passwordField);
         
         JButton btnAcceder = new JButton("Acceder");
+        btnAcceder.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String user = txtUser.getText();
+                String password = new String(passwordField.getPassword());
+                
+                Object logueado = Altice.getInstance().verificarAccesoUniversal(user, password);
+                
+                if (logueado != null) {
+                    String rol = "";
+                    
+                    if (logueado instanceof Personal) {
+                        Personal emp = (Personal) logueado;
+                        Altice.getInstance().setUsuarioLogueado(emp);
+                        rol = emp.getRol(); 
+                    } 
+                    else if (logueado instanceof Cliente) {
+                        rol = "Cliente";
+                    }
+                    
+                    SistemaPrincipal sistema = new SistemaPrincipal(rol);
+                    sistema.setVisible(true);
+                    dispose();
+                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+       
+            }
+        });
         btnAcceder.setBackground(new Color(0, 128, 255));
         btnAcceder.setForeground(Color.WHITE);
         btnAcceder.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
