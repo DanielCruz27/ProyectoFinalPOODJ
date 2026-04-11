@@ -154,16 +154,18 @@ public class Principal_InicioSesion extends JFrame {
                         rol = "Cliente";
                     }
                     
-                    SistemaPrincipal sistema = new SistemaPrincipal(rol);
+                    /*SistemaPrincipal sistema = new SistemaPrincipal("Administrador");
                     sistema.setVisible(true);
-                    dispose();
+                    dispose();*/
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                SistemaPrincipal sistema = new SistemaPrincipal("administrador");
+                
+                SistemaPrincipal sistema = new SistemaPrincipal("técnico");
                 sistema.setVisible(true);
                 dispose();
+       
             }
         });
         btnAcceder.setBackground(new Color(0, 128, 255));

@@ -33,7 +33,14 @@ public class SistemaPrincipal extends JFrame {
 	private boolean menuVentasOpen = false;
 	private boolean menuServOpenCom = false;
 
-	
+	// --- VARIABLES PARA CLIENTE ---
+	private boolean menuInfoClienteOpen = false;
+	private boolean menuSoporteClienteOpen = false;
+	private boolean menuValoracionClienteOpen = false;
+
+	// --- VARIABLES AGREGADAS PARA TECNICO ---
+	private boolean menuTrabajoTecnicoOpen = false;
+	private boolean menuRendimientoTecnicoOpen = false;
 
 	public SistemaPrincipal(String rolUsuario) {
 		addWindowListener(new WindowAdapter() {
@@ -97,6 +104,10 @@ public class SistemaPrincipal extends JFrame {
 			crearMenuAdministrador(altoPantalla,rolUsuario);
 		} else if (rolUsuario.equalsIgnoreCase("Comercial")) {
 			crearMenuComercial(altoPantalla,rolUsuario);
+		} else if (rolUsuario.equalsIgnoreCase("Cliente")) {
+			crearMenuCliente(altoPantalla, rolUsuario);
+		} else if (rolUsuario.equalsIgnoreCase("Técnico")) {
+			crearMenuTecnico(altoPantalla, rolUsuario); // <--- AGREGADO
 		}
 
 		JLabel lblFondoLateral = new JLabel("");
@@ -423,7 +434,7 @@ public class SistemaPrincipal extends JFrame {
 		btnGServ.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				menuReportesAbierto = !menuReportesAbierto; // Reusamos variable o creamos una específica
+				menuReportesAbierto = !menuReportesAbierto; 
 				btnGServ.setText(menuReportesAbierto ? "v Gestión de Servicios" : "> Gestión de Servicios");
 				subCrearPlanes.setVisible(menuReportesAbierto);
 				subListarMod.setVisible(menuReportesAbierto);
@@ -472,11 +483,13 @@ public class SistemaPrincipal extends JFrame {
 		btnLogout.setBackground(new Color(220, 53, 69));
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
+		btnLogout.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) { dispose(); }
+		});
 		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
 	}
 
 	private void crearMenuComercial(int altoPantalla,String rolusuario) {
-		// --- 1. GESTIÓN DE VENTAS ---
 		final JButton btnVentas = crearBotonMenu("> Gestión de Ventas", 203, 40, false);
 		final JButton subNuevaVenta = crearBotonMenu("   Registrar Cliente / Contrato", 203, 30, true);
 		final JButton subVentasRealizadas = crearBotonMenu("   Ventas Realizadas", 203, 30, true);
@@ -498,18 +511,9 @@ public class SistemaPrincipal extends JFrame {
 				panelContenedorMenu.revalidate();
 			}
 		});
-		subVentasRealizadas.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				verVentasRealizadas aux = new verVentasRealizadas();
-				aux.setModal(true);
-				aux.setVisible(true);
-			}
-		});
+		
 		subNuevaVenta.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarCliente aux = new RegistrarCliente(); aux.setModal(true); aux.setVisible(true); } });
 
-		// --- 2. GESTIÓN DE CLIENTES ---
 		final JButton btnGCliCom = crearBotonMenu("> Gestión de Clientes", 203, 40, false);
 		final JButton subListCliCom = crearBotonMenu("   Listar y Modificar", 203, 30, true);
 		final JButton subSuspenderCom = crearBotonMenu("   Suspender Cliente", 203, 30, true);
@@ -532,7 +536,6 @@ public class SistemaPrincipal extends JFrame {
 		subListCliCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarClientes aux = new ListarClientes(); aux.setModal(true); aux.setVisible(true); } });
 		subSuspenderCom.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { SuspenderCliente aux = new SuspenderCliente(); aux.setModal(true); aux.setVisible(true); } });
 
-		// --- 3. GESTIÓN DE SERVICIOS ---
 		final JButton btnGServCom = crearBotonMenu("> Gestión de Servicios", 203, 40, false);
 		final JButton subRecargasCom = crearBotonMenu("   Recargas", 203, 30, true);
 		final JButton subCatalogoCom = crearBotonMenu("   Catálogo de Servicios", 203, 30, true);
@@ -560,6 +563,135 @@ public class SistemaPrincipal extends JFrame {
 		btnLogout.setBackground(new Color(220, 53, 69));
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
+		btnLogout.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) { dispose(); }
+		});
+		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
+	}
+
+	private void crearMenuCliente(int altoPantalla, String rolUsuario) {
+		final JButton btnInfo = crearBotonMenu("> Mi Información", 203, 40, false);
+		final JButton subContrato = crearBotonMenu("   Mi contrato", 203, 30, true);
+		final JButton subEstado = crearBotonMenu("   Estado de Cuenta", 203, 30, true);
+		final JButton subPagar = crearBotonMenu("   Pagar Contrato", 203, 30, true);
+		final JButton subFacturas = crearBotonMenu("   Mis facturas", 203, 30, true);
+		final JButton subMinutos = crearBotonMenu("   Consumo de Minutos", 203, 30, true);
+		final JButton subMetodoPago = crearBotonMenu("   Método de pago", 203, 30, true);
+
+		panelContenedorMenu.add(btnInfo);
+		panelContenedorMenu.add(subContrato); panelContenedorMenu.add(subEstado);
+		panelContenedorMenu.add(subPagar); panelContenedorMenu.add(subFacturas);
+		panelContenedorMenu.add(subMinutos); panelContenedorMenu.add(subMetodoPago);
+
+		btnInfo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuInfoClienteOpen = !menuInfoClienteOpen;
+				btnInfo.setText(menuInfoClienteOpen ? "v Mi Información" : "> Mi Información");
+				subContrato.setVisible(menuInfoClienteOpen); subEstado.setVisible(menuInfoClienteOpen);
+				subPagar.setVisible(menuInfoClienteOpen); subFacturas.setVisible(menuInfoClienteOpen);
+				subMinutos.setVisible(menuInfoClienteOpen); subMetodoPago.setVisible(menuInfoClienteOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		final JButton btnSoporte = crearBotonMenu("> Soporte Técnico", 203, 40, false);
+		final JButton subTicket = crearBotonMenu("   Generar Nuevo Ticket", 203, 30, true);
+
+		panelContenedorMenu.add(btnSoporte); panelContenedorMenu.add(subTicket);
+
+		btnSoporte.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuSoporteClienteOpen = !menuSoporteClienteOpen;
+				btnSoporte.setText(menuSoporteClienteOpen ? "v Soporte Técnico" : "> Soporte Técnico");
+				subTicket.setVisible(menuSoporteClienteOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		final JButton btnVal = crearBotonMenu("> Valoraciones", 203, 40, false);
+		final JButton subHacerVal = crearBotonMenu("   Hacer valoración", 203, 30, true);
+
+		panelContenedorMenu.add(btnVal); panelContenedorMenu.add(subHacerVal);
+
+		btnVal.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuValoracionClienteOpen = !menuValoracionClienteOpen;
+				btnVal.setText(menuValoracionClienteOpen ? "v Valoraciones" : "> Valoraciones");
+				subHacerVal.setVisible(menuValoracionClienteOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		JButton btnLogout = new JButton("Cerrar Sesión");
+		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);
+		btnLogout.setBackground(new Color(220, 53, 69));
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
+		btnLogout.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) { dispose(); }
+		});
+		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
+	}
+
+	// --- MÉTODO AGREGADO PARA EL ROL TÉCNICO ---
+	private void crearMenuTecnico(int altoPantalla, String rolUsuario) {
+		// --- 1. GESTIÓN DE TRABAJO ---
+		final JButton btnTrabajo = crearBotonMenu("> Gestión de Trabajo", 203, 40, false);
+		final JButton subInfo = crearBotonMenu("   Mi información", 203, 30, true);
+		final JButton subOrdenes = crearBotonMenu("   Ordenes de servicio", 203, 30, true);
+
+		panelContenedorMenu.add(btnTrabajo);
+		panelContenedorMenu.add(subInfo);
+		panelContenedorMenu.add(subOrdenes);
+
+		btnTrabajo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuTrabajoTecnicoOpen = !menuTrabajoTecnicoOpen;
+				btnTrabajo.setText(menuTrabajoTecnicoOpen ? "v Gestión de Trabajo" : "> Gestión de Trabajo");
+				subInfo.setVisible(menuTrabajoTecnicoOpen);
+				subOrdenes.setVisible(menuTrabajoTecnicoOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		// --- 2. GESTIÓN DE RENDIMIENTO ---
+		final JButton btnRendimiento = crearBotonMenu("> Gestión de Rendimiento", 203, 40, false);
+		final JButton subEstadisticas = crearBotonMenu("   Mis estadísticas", 203, 30, true);
+		final JButton subHoras = crearBotonMenu("   Horas extras", 203, 30, true);
+		final JButton subBono = crearBotonMenu("   Reclamar bono", 203, 30, true);
+
+		panelContenedorMenu.add(btnRendimiento);
+		panelContenedorMenu.add(subEstadisticas);
+		panelContenedorMenu.add(subHoras);
+		panelContenedorMenu.add(subBono);
+
+		btnRendimiento.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuRendimientoTecnicoOpen = !menuRendimientoTecnicoOpen;
+				btnRendimiento.setText(menuRendimientoTecnicoOpen ? "v Gestión de Rendimiento" : "> Gestión de Rendimiento");
+				subEstadisticas.setVisible(menuRendimientoTecnicoOpen);
+				subHoras.setVisible(menuRendimientoTecnicoOpen);
+				subBono.setVisible(menuRendimientoTecnicoOpen);
+				panelContenedorMenu.revalidate();
+			}
+		});
+
+		JButton btnLogout = new JButton("Cerrar Sesión");
+		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);
+		btnLogout.setBackground(new Color(220, 53, 69));
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
+		btnLogout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
 	}
 
