@@ -165,7 +165,6 @@ public class HistorialCliente extends JDialog {
 		model.setRowCount(0);
 		raw = new Object[table.getColumnCount()];
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		//	String headers[] = {"Servicios", "Vendedor", "Pagos", "Emision"};
 
 		ArrayList<Contrato> contra = client.getMisContratos();
 		

@@ -498,7 +498,15 @@ public class SistemaPrincipal extends JFrame {
 				panelContenedorMenu.revalidate();
 			}
 		});
-
+		subVentasRealizadas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				verVentasRealizadas aux = new verVentasRealizadas();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+		});
 		subNuevaVenta.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarCliente aux = new RegistrarCliente(); aux.setModal(true); aux.setVisible(true); } });
 
 		// --- 2. GESTIÓN DE CLIENTES ---

@@ -19,7 +19,7 @@ public class Altice implements Serializable {
 	private ArrayList<Pago> historialPagos;
 	private ArrayList<Ticket> colaDeEspera;
 	private ArrayList<Contrato> listaContratos;
-	private Personal usuarioLogueado;
+	private Object usuarioLogueado;
 	public int codigoPersonal = 1;
 	public int codigoCliente = 1;
 	public int codigoContrato = 1;
@@ -445,11 +445,11 @@ public class Altice implements Serializable {
 		}
 	}
 
-	public Personal getUsuarioLogueado() {
+	public Object getUsuarioLogueado() {
 		return usuarioLogueado;
 	}
 
-	public void setUsuarioLogueado(Personal usuarioLogueado) {
+	public void setUsuarioLogueado(Object usuarioLogueado) {
 		this.usuarioLogueado = usuarioLogueado;
 	}
 
@@ -499,6 +499,40 @@ public class Altice implements Serializable {
 		}
 
 		return aux;
+	}
+	public ArrayList<Contrato> buscarContratoByUser() {
+	    ArrayList<Contrato> contratos = new ArrayList<Contrato>();
+	    
+	    Personal emp = buscarPersonalPorUser();
+	    
+	    if (emp != null) {
+	        for (Contrato aux : listaContratos) {
+	            if (aux.getVendedor().getIdEmpleado().equalsIgnoreCase(emp.getIdEmpleado())) {
+	                contratos.add(aux); 
+	            }
+	        }
+	    }
+	    return contratos;
+	}
+
+	private Personal buscarPersonalPorUser() {
+	    Personal emp = null;
+	    
+	    if (usuarioLogueado != null && usuarioLogueado instanceof Personal) {
+	        Personal logueado = (Personal) usuarioLogueado;
+	        String userActual = logueado.getMiCuenta().getNombreUsuario();
+
+	        boolean finded = false;
+	        int i = 0;
+	        while (!finded && i < listaEmpleados.size()) {
+	            if (listaEmpleados.get(i).getMiCuenta().getNombreUsuario().equalsIgnoreCase(userActual)) {
+	                finded = true;
+	                emp = listaEmpleados.get(i);
+	            }
+	            i++;
+	        }
+	    }
+	    return emp;
 	}
 
 	

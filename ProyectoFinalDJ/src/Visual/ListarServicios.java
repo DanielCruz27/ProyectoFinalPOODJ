@@ -24,7 +24,6 @@ public class ListarServicios extends JDialog {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // Para probar como comercial, se pasaría el parámetro al constructor
 			ListarServicios dialog = new ListarServicios("comercial"); 
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -33,7 +32,6 @@ public class ListarServicios extends JDialog {
 		}
 	}
 
-    // Constructor modificado para recibir el rol
 	public ListarServicios(String rol) {
 		setTitle("Altice - Consulta de Catálogo de Servicios");
 		setSize(950, 600);
@@ -46,7 +44,6 @@ public class ListarServicios extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 950, 40);
@@ -57,7 +54,6 @@ public class ListarServicios extends JDialog {
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA DE SERVICIOS ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 60, 580, 430);
 		contentPanel.add(scrollPane);
@@ -77,7 +73,6 @@ public class ListarServicios extends JDialog {
 		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
-		// --- PANEL DE DETALLES ---
 		panelEditar = new JPanel();
 		panelEditar.setBackground(Color.WHITE);
 		panelEditar.setLayout(null);
@@ -146,7 +141,6 @@ public class ListarServicios extends JDialog {
 		});
 		panelEditar.add(btnGuardar);
 
-		// --- OCULTAR POR DEFECTO ---
 		lblEspecial1.setVisible(false);
 		spnEspecial1.setVisible(false);
 		lblEspecial2.setVisible(false);
@@ -154,7 +148,6 @@ public class ListarServicios extends JDialog {
 		lblStreaming.setVisible(false);
 		txtStreaming.setVisible(false);
 
-		// --- BOTONES INFERIORES ---
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -176,13 +169,12 @@ public class ListarServicios extends JDialog {
 			}
 		});
 
-        // --- LÓGICA DE BLOQUEO PARA COMERCIAL ---
         if (rol.equalsIgnoreCase("comercial")) {
             txtNombre.setEditable(false);
             txtPrecio.setEditable(false);
             spnEspecial1.setEnabled(false);
             spnEspecial2.setEnabled(false);
-            btnGuardar.setVisible(false); // Ni siquiera se lo mostramos
+            btnGuardar.setVisible(false); 
             setTitle("Altice - Consulta de Catálogo (Solo Lectura)");
         }
 

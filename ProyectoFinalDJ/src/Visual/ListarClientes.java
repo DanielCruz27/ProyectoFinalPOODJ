@@ -282,7 +282,16 @@ public class ListarClientes extends JDialog {
 			
 			if (cbxNuevosPlanes.getSelectedIndex() > 0) {
 				String idPlan = cbxNuevosPlanes.getSelectedItem().toString().split(" - ")[0];
-				String idVend = (Altice.getInstance().getUsuarioLogueado() != null) ? Altice.getInstance().getUsuarioLogueado().getIdEmpleado() : "V-000";
+				
+				// --- BLOQUE LIMPIO ---
+			    String idVend = "V-000"; 
+			    Object logueado = Altice.getInstance().getUsuarioLogueado();
+			    
+			    if (logueado instanceof Personal) {
+			        idVend = ((Personal) logueado).getIdEmpleado();
+			    }
+				
+				
 				Altice.getInstance().contratarServicio(seleccionado.getIdCliente(), idPlan, idVend);
 				JOptionPane.showMessageDialog(this, "Nuevo plan contratado.");
 				actualizarListaPlanes();

@@ -247,69 +247,64 @@ public class RegistrarCliente extends JDialog {
 	}
 
 	private void realizarRegistro() {
-		try {
-			// 1. Validaciones
-			if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
-				txtDireccion.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty() ||
-				new String(txtPassword.getPassword()).isEmpty()) {
-				throw new Exception("Todos los campos obligatorios deben estar llenos.");
-			}
-			if (cbxVivienda.getSelectedIndex() == 0) throw new Exception("Seleccione una zona de vivienda.");
-			if (serviciosParaContrato.isEmpty()) throw new Exception("Debe añadir al menos un plan al contrato.");
+	    try {
+	        // 1. Validaciones
+	        if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
+	            txtDireccion.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty() ||
+	            new String(txtPassword.getPassword()).isEmpty()) {
+	            throw new Exception("Todos los campos obligatorios deben estar llenos.");
+	        }
+	        if (cbxVivienda.getSelectedIndex() == 0) throw new Exception("Seleccione una zona de vivienda.");
+	        if (serviciosParaContrato.isEmpty()) throw new Exception("Debe añadir al menos un plan al contrato.");
 
-			// 2. GENERACIÓN AUTOMÁTICA DE USUARIO
-			String nombre = txtNombre.getText().trim();
-			String apellido = txtApellido.getText().trim();
-			String userStr = nombre.toLowerCase().replace(" ", "") + "." + apellido.toLowerCase().replace(" ", "");
+	        // 2. Generación de usuario
+	        String nombre = txtNombre.getText().trim();
+	        String apellido = txtApellido.getText().trim();
+	        String userStr = nombre.toLowerCase().replace(" ", "") + "." + apellido.toLowerCase().replace(" ", "");
 
-			// 3. Validar usuario único
-			if (!Altice.getInstance().buscarUsuario(userStr)) {
-				
-				Usuario user = new Usuario(userStr, new String(txtPassword.getPassword()));
-				
-				// 4. Crear Cliente (INCLUYENDO LA CÉDULA)
-				// Asegúrate de que el constructor de Cliente reciba la cédula en este orden
-				Cliente client = new Cliente(
-					    txtCodigo.getText(),            // 1. idCliente
-					    nombre,                         // 2. nombreCliente
-					    apellido,                       // 3. apellidoCliente
-					    txtEmail.getText().trim(),      // 4. emailCliente (VA AQUÍ)
-					    txtDireccion.getText().trim(),  // 5. direccionCliente (VA AQUÍ)
-					    txtCedula.getText().trim(),     // 6. cedula (VA AQUÍ)
-					    user,                           // 7. miCuenta
-					    cbxVivienda.getSelectedItem().toString(), // 8. zonaVivienda
-					    0,      // puntos
-					    false,  // estado
-					    null,   // metodoPago
-					    0,      // deuda
-					    0,      // atrasos
-					    null,   // pagos
-					    null    // contratos
-					);
+	        // 3. Validar usuario único
+	        if (!Altice.getInstance().buscarUsuario(userStr)) {
+	            
+	            Usuario user = new Usuario(userStr, new String(txtPassword.getPassword()));
+	            
+	            // 4. Crear Cliente
+	            Cliente client = new Cliente(
+	                txtCodigo.getText(),            
+	                nombre,                         
+	                apellido,                       
+	                txtEmail.getText().trim(),      
+	                txtDireccion.getText().trim(),  
+	                txtCedula.getText().trim(),     
+	                user,                           
+	                cbxVivienda.getSelectedItem().toString(), 
+	                0, false, null, 0, 0, null, null    
+	            );
 
-				// 5. Guardar Cliente e incrementar contador
-				Altice.getInstance().InsertaCliente(client);
+	            // 5. Guardar Cliente
+	            Altice.getInstance().InsertaCliente(client);
 
-				// 6. Vendedor actual
-				String idVendedor = "V-000";
-				if (Altice.getInstance().getUsuarioLogueado() != null) {
-					idVendedor = Altice.getInstance().getUsuarioLogueado().getIdEmpleado();
-				}
+	            // 6. Manejo de Vendedor (BLOQUE LIMPIO)
+	            String idVendedor = "V-000";
+	            Object logueado = Altice.getInstance().getUsuarioLogueado();
+	            
+	            if (logueado instanceof Personal) {
+	                idVendedor = ((Personal) logueado).getIdEmpleado();
+	            }
 
-				// 7. Contratar cada servicio usando tu lógica de Altice
-				for (Servicio s : serviciosParaContrato) {
-					Altice.getInstance().contratarServicio(client.getIdCliente(), s.getIdServicio(), idVendedor);
-				}
+	            // 7. Contratar servicios
+	            for (Servicio s : serviciosParaContrato) {
+	                Altice.getInstance().contratarServicio(client.getIdCliente(), s.getIdServicio(), idVendedor);
+	            }
 
-				JOptionPane.showMessageDialog(this, "Registro Exitoso.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-				clean();
-				
-			} else {
-				JOptionPane.showMessageDialog(this, "El usuario generado (" + userStr + ") ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, ex.getMessage(), "Atención", JOptionPane.WARNING_MESSAGE);
-		}
+	            JOptionPane.showMessageDialog(this, "Registro Exitoso.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	            clean();
+	            
+	        } else {
+	            JOptionPane.showMessageDialog(this, "El usuario generado (" + userStr + ") ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    } catch (Exception ex) {
+	        JOptionPane.showMessageDialog(this, ex.getMessage(), "Atención", JOptionPane.WARNING_MESSAGE);
+	    }
 	}
 
 	protected void clean() {
