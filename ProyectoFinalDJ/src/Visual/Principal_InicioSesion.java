@@ -166,6 +166,7 @@ public class Principal_InicioSesion extends JFrame {
                 sistema.setVisible(true);
                 dispose();
        
+
             }
         });
         btnAcceder.setBackground(new Color(0, 128, 255));
