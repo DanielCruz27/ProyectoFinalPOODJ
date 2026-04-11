@@ -161,7 +161,9 @@ public class Principal_InicioSesion extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-       
+                SistemaPrincipal sistema = new SistemaPrincipal("administrador");
+                sistema.setVisible(true);
+                dispose();
             }
         });
         btnAcceder.setBackground(new Color(0, 128, 255));
