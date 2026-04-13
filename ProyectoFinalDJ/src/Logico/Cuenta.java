@@ -35,5 +35,10 @@ public class Cuenta extends MetodoDePago {
 		this.banco = banco;
 	}
 	
+	@Override
+	public String toString() {
+	    return "Banco: " + banco + " - No. " + numeroCuenta;
+	}
+	
 
 }

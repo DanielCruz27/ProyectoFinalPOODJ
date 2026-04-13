@@ -13,15 +13,17 @@ public class Ticket implements Serializable {
 	private Cliente elCliente;
 	private String areaAtencion;
 	private LocalDate horaGeneracion;
-	private int prioridad;
-
-	public Ticket(String idTicket, Cliente elCliente, String areaAtencion, LocalDate horaGeneracion, int prioridad) {
+	private int estado;
+	private Tecnico tecnicoAsignado;
+	
+	public Ticket(String idTicket, Cliente elCliente, String areaAtencion, LocalDate horaGeneracion, int estado, Tecnico tecnicoAsignado) {
 		super();
 		this.idTicket = idTicket;
 		this.elCliente = elCliente;
 		this.areaAtencion = areaAtencion;
 		this.horaGeneracion = horaGeneracion;
-		this.prioridad = prioridad;
+		this.estado = estado;
+		this.tecnicoAsignado = null; // Nadie lo tiene al empezar
 	}
 
 	public String getIdTicket() {
@@ -56,12 +58,21 @@ public class Ticket implements Serializable {
 		this.horaGeneracion = horaGeneracion;
 	}
 
-	public int getPrioridad() {
-		return prioridad;
+	public int getEstado() {
+		return estado;
 	}
 
-	public void setPrioridad(int prioridad) {
-		this.prioridad = prioridad;
+	public void setEstado(int estado) {
+		this.estado = estado;
 	}
 
+	public Tecnico getTecnicoAsignado() {
+		return tecnicoAsignado;
+	}
+
+	public void setTecnicoAsignado(Tecnico tecnicoAsignado) {
+		this.tecnicoAsignado = tecnicoAsignado;
+	}
+
+	
 }

@@ -26,5 +26,13 @@ public class Efectivo extends MetodoDePago {
 	public void setMontoPagado(float montoPagado) {
 		this.montoPagado = montoPagado;
 	}
+	
+	public Efectivo(float montoPagado) {
+        super("Consumidor Final", "CASH-GEN"); // Datos genéricos
+        this.moneda = "DOP"; // Pesos Dominicanos por defecto
+        this.montoPagado = montoPagado;
+    }
+	
+	
 
 }

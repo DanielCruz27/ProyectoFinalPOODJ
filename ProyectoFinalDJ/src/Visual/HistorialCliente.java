@@ -1,48 +1,24 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-
-import Logico.Altice;
-import Logico.Cliente;
-import Logico.Contrato;
-import Logico.Cuenta;
-import Logico.Efectivo;
-import Logico.Pago;
-import Logico.Tarjeta;
-
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionListener;
-import java.time.format.DateTimeFormatter;
+import Logico.*;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import javax.swing.ButtonGroup;
+
 public class HistorialCliente extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtCedula;
-	private Object[] raw;
 	private DefaultTableModel model;
 	private JTable table;
-	
-	
-	/**
-	 * Launch the application.
-	 */
+	private JComboBox<String> cbxCedulas;
+
 	public static void main(String[] args) {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			HistorialCliente dialog = new HistorialCliente();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -51,133 +27,127 @@ public class HistorialCliente extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public HistorialCliente() {
+		setTitle("Altice - Historial de Pagos y Facturación");
 		setResizable(false);
-		setBounds(100, 100, 542, 491);
+		setSize(700, 550);
 		setLocationRelativeTo(null);
+		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
+		
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		txtCedula = new JTextField();
-		txtCedula.setBounds(68, 18, 86, 20);
-		contentPanel.add(txtCedula);
-		txtCedula.setColumns(10);
+		// --- CABECERA ---
+		JPanel panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(0, 102, 204));
+		panelHeader.setBounds(0, 0, 700, 40);
+		contentPanel.add(panelHeader);
 		
-		JLabel lblNewLabel = new JLabel("Cedula");
-		lblNewLabel.setBounds(20, 21, 48, 14);
-		contentPanel.add(lblNewLabel);
+		JLabel lblTitulo = new JLabel("HISTORIAL DE PAGOS Y FACTURAS ACUMULADAS");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+		panelHeader.add(lblTitulo);
+
+		JLabel lblCed = new JLabel("Seleccione Cédula:");
+		lblCed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		lblCed.setBounds(25, 60, 130, 14);
+		contentPanel.add(lblCed);
+
+		// --- COMBO BOX DE CÉDULAS ---
+		cbxCedulas = new JComboBox<String>();
+		cbxCedulas.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		cbxCedulas.setBounds(150, 57, 220, 25);
+		llenarComboClientes();
+		contentPanel.add(cbxCedulas);
 		
-		// Tus botones ya creados
-		JRadioButton rbtnContrato = new JRadioButton("Historial Contrato");
-		rbtnContrato.setBounds(10, 56, 144, 23);
-		contentPanel.add(rbtnContrato);
+		// Evento para que cargue la tabla automáticamente al seleccionar
+		cbxCedulas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarHistorial();
+			}
+		});
 
-		JRadioButton rbtnPagos = new JRadioButton("Historial Pagos");
-		rbtnPagos.setBounds(183, 56, 168, 23);
-		contentPanel.add(rbtnPagos);
-
-		// --- AQUÍ CREAS EL GRUPO ---
-		ButtonGroup grupoHistorial = new ButtonGroup();
-		grupoHistorial.add(rbtnContrato);
-		grupoHistorial.add(rbtnPagos);
-
-		// OPCIONAL: Seleccionar uno por defecto para que nunca empiece vacío
-		rbtnContrato.setSelected(true);
-		
+		// --- TABLA ---
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 100, 526, 319);
+		scrollPane.setBounds(25, 100, 635, 340);
 		contentPanel.add(scrollPane);
 		
-		table = new JTable();
-		model = new DefaultTableModel();
-		
-		if(rbtnContrato.isSelected()) {
-			String headers[] = {"Cantidad de servicios", "Vendedor","Cantidad Pagos","Emision"};
-			
-			table.setModel(model);
-			model.setColumnIdentifiers(headers);
-			
-		}
+		String headers[] = {"ID Factura", "Subtotal", "Método", "ITBIS (18%)", "Monto Pagado"};
+		model = new DefaultTableModel(null, headers) {
+			@Override
+			public boolean isCellEditable(int row, int column) { return false; }
+		};
+		table = new JTable(model);
+		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
+		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		scrollPane.setViewportView(table);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			
-			JButton btnBuscar = new JButton("Buscar");
-			btnBuscar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Cliente client = Altice.getInstance().buscarClienteByCedula(txtCedula.getText());
-					if (rbtnContrato.isSelected()) {
-			            String headers[] = {"Servicios", "Vendedor", "Pagos", "Emision"};
-			            model.setColumnIdentifiers(headers);
-			            loadContrato(client);
-			            
-			        } else if (rbtnPagos.isSelected()) {
-			            String headers[] = {"Codigo", "Monto", "Metodo", "ITBIS"};
-			            model.setColumnIdentifiers(headers);
-			            loadPago(client);
-			        }
-			    }
-				
-			});
-			btnBuscar.setActionCommand("Cancel");
-			buttonPane.add(btnBuscar);
-			{
-				JButton btnCerrar = new JButton("Cancel");
-				btnCerrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				btnCerrar.setActionCommand("Cancel");
-				buttonPane.add(btnCerrar);
+
+		// --- BOTONES INFERIORES ---
+		JPanel buttonPane = new JPanel();
+		buttonPane.setBackground(new Color(245, 245, 245));
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
+		});
+		buttonPane.add(btnCerrar);
+		
+		// Cargar datos por defecto si hay clientes
+		cargarHistorial();
+	}
+
+	private void llenarComboClientes() {
+		cbxCedulas.removeAllItems();
+		cbxCedulas.addItem("<< Seleccione un cliente >>");
+		for (Cliente c : Altice.getInstance().getListaClientes()) {
+			cbxCedulas.addItem(c.getCedula() + " - " + c.getNombreCliente() + " " + c.getApellidoCliente());
 		}
 	}
 
-	protected void loadPago(Cliente client) {
-		model.setRowCount(0);
-		raw = new Object[table.getColumnCount()];
-		ArrayList<Pago> pago = client.getMisPagos();
-		for(Pago aux: pago) {
-			raw[0] = aux.getIdFactura();
-			raw[1] = "RD$" +aux.getMontoTotal();
-			if(aux.getMetodoUtilizado() instanceof Efectivo) {
-				raw[2] = "Efectivo";
-			}else if(aux.getMetodoUtilizado() instanceof Tarjeta){
-				raw[2] = "Tarjeta";
-			}else if(aux.getMetodoUtilizado() instanceof Cuenta) {
-				raw[2] = "Transferencia";
-			}
-			raw[3] = "RD$" + aux.getItbis();
-			model.addRow(raw);
-		}
-		
-	}
+	private void cargarHistorial() {
+	    model.setRowCount(0);
+	    // Validamos que no sea el índice 0 ("<< Seleccione... >>")
+	    if (cbxCedulas.getSelectedIndex() <= 0) return;
 
-	protected void loadContrato(Cliente client) {
-		model.setRowCount(0);
-		raw = new Object[table.getColumnCount()];
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	    String seleccion = cbxCedulas.getSelectedItem().toString();
+	    String cedula = seleccion.split(" - ")[0]; 
+	    
+	    Cliente client = Altice.getInstance().buscarClienteByCedula(cedula);
+	    
+	    if (client != null && client.getMisPagos() != null) {
+	        for (Pago p : client.getMisPagos()) {
+	            
+	            // 1. Identificar el método de pago
+	            String metodo = "Otro";
+	            if (p.getMetodoUtilizado() instanceof Efectivo) {
+	                metodo = "Efectivo";
+	            } else if (p.getMetodoUtilizado() instanceof Tarjeta) {
+	                metodo = "Tarjeta";
+	            } else if (p.getMetodoUtilizado() instanceof Cuenta) {
+	                metodo = "Transferencia";
+	            }
 
-		ArrayList<Contrato> contra = client.getMisContratos();
-		
-		for(Contrato aux : contra) {
-			raw[0] = aux.getMisServicios().size();
-			raw[1] = aux.getVendedor().getNombre();
-			raw[2] = aux.getHistorialDePagos().size();
-			raw[3] = aux.getFechaFirma().format(formatter);
-			model.addRow(raw);
-			
-			
-		}
-		
-		
+	            // 2. Calcular subtotal (Monto Total - ITBIS)
+	            // Usamos p.getItbis() porque así se llama en tu clase Pago
+	            float subtotal = p.getMontoTotal() - p.getItbis();
+
+	            // 3. Agregar a la tabla con los nombres exactos de tus getters
+	            model.addRow(new Object[]{
+	                p.getIdFactura(), // Coincide con tu getIdFactura()
+	                "RD$ " + String.format("%.2f", subtotal),
+	                metodo,
+	                "RD$ " + String.format("%.2f", p.getItbis()), // Coincide con tu getItbis()
+	                "RD$ " + String.format("%.2f", p.getMontoTotal())
+	            });
+	        }
+	    }
 	}
 }

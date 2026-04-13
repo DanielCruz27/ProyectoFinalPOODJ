@@ -45,5 +45,10 @@ public class Tarjeta extends MetodoDePago {
 	public void setCodigoSeguridad(int codigoSeguridad) {
 		this.codigoSeguridad = codigoSeguridad;
 	}
+	
+	@Override
+	public String toString() {
+	    return "Número: " + numeroTarjeta; // O lo que quieras mostrar en la tabla
+	}
 
 }

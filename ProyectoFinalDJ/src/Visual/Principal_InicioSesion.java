@@ -154,7 +154,7 @@ public class Principal_InicioSesion extends JFrame {
                         rol = "Cliente";
                     }
                     
-                    /*SistemaPrincipal sistema = new SistemaPrincipal("Administrador");
+               /* SistemaPrincipal sistema = new SistemaPrincipal(rol);
                     sistema.setVisible(true);
                     dispose();*/
                     
@@ -162,7 +162,7 @@ public class Principal_InicioSesion extends JFrame {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
-                SistemaPrincipal sistema = new SistemaPrincipal("técnico");
+               SistemaPrincipal sistema = new SistemaPrincipal("administrador");
                 sistema.setVisible(true);
                 dispose();
        

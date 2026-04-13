@@ -106,7 +106,7 @@ public class SistemaPrincipal extends JFrame {
 			crearMenuComercial(altoPantalla,rolUsuario);
 		} else if (rolUsuario.equalsIgnoreCase("Cliente")) {
 			crearMenuCliente(altoPantalla, rolUsuario);
-		} else if (rolUsuario.equalsIgnoreCase("Técnico")) {
+		} else if (rolUsuario.equalsIgnoreCase("Tecnico")) {
 			crearMenuTecnico(altoPantalla, rolUsuario); // <--- AGREGADO
 		}
 
@@ -385,7 +385,7 @@ public class SistemaPrincipal extends JFrame {
 		final JButton subListCli = crearBotonMenu("   Listar y Modificar", 203, 30, true);
 		final JButton subSuspender = crearBotonMenu("   Suspender / Activar Cliente", 203, 30, true); 
 		final JButton subAlertas = crearBotonMenu("   Clientes en Alerta", 203, 30, true);
-		final JButton subHistorial = crearBotonMenu("   Historial Pagos/Contratos", 203, 30, true);
+		final JButton subHistorial = crearBotonMenu("   Historial Pagos / Facturas", 203, 30, true);
 
 		panelContenedorMenu.add(btnGCli);
 		panelContenedorMenu.add(subRegCli);
@@ -426,7 +426,15 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subDesactivar);
 		panelContenedorMenu.add(subRecarga);
 		
-		subCrearPlanes.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { CrearPlanes aux = new CrearPlanes(); aux.setModal(true); aux.setVisible(true); } });
+		subCrearPlanes.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				CrearPlanes aux = new CrearPlanes();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
 		subListarMod.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { ListarServicios aux = new ListarServicios(rolUsuario); aux.setModal(true); aux.setVisible(true); } });
 		subDesactivar.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { DesactivarServicios aux = new DesactivarServicios(); aux.setModal(true); aux.setVisible(true); } });
 		subRecarga.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegRecarga recarga = new RegRecarga(); recarga.setModal(true); recarga.setVisible(true); } });
@@ -513,7 +521,26 @@ public class SistemaPrincipal extends JFrame {
 		});
 		
 		subNuevaVenta.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { RegistrarCliente aux = new RegistrarCliente(); aux.setModal(true); aux.setVisible(true); } });
+		
+		subVentasRealizadas.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				verVentasRealizadas aux = new verVentasRealizadas();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
 
+		subMisComisiones.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				MisComisiones aux = new MisComisiones();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		
 		final JButton btnGCliCom = crearBotonMenu("> Gestión de Clientes", 203, 40, false);
 		final JButton subListCliCom = crearBotonMenu("   Listar y Modificar", 203, 30, true);
 		final JButton subSuspenderCom = crearBotonMenu("   Suspender Cliente", 203, 30, true);
@@ -570,6 +597,7 @@ public class SistemaPrincipal extends JFrame {
 	}
 
 	private void crearMenuCliente(int altoPantalla, String rolUsuario) {
+		
 		final JButton btnInfo = crearBotonMenu("> Mi Información", 203, 40, false);
 		final JButton subContrato = crearBotonMenu("   Mi contrato", 203, 30, true);
 		final JButton subEstado = crearBotonMenu("   Estado de Cuenta", 203, 30, true);
@@ -582,7 +610,62 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subContrato); panelContenedorMenu.add(subEstado);
 		panelContenedorMenu.add(subPagar); panelContenedorMenu.add(subFacturas);
 		panelContenedorMenu.add(subMinutos); panelContenedorMenu.add(subMetodoPago);
+		
+		subContrato.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				MiContrato aux = new MiContrato();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		subEstado.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				EstadoCuenta aux = new EstadoCuenta();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
 
+		
+		subMetodoPago.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				MetodoPago aux = new MetodoPago();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		subPagar.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				PagarContrato aux = new PagarContrato();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+
+		subFacturas.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				MisFacturas aux = new MisFacturas();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		subMinutos.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				ConsumoMin aux = new ConsumoMin();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
 		btnInfo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -600,6 +683,16 @@ public class SistemaPrincipal extends JFrame {
 
 		panelContenedorMenu.add(btnSoporte); panelContenedorMenu.add(subTicket);
 
+		
+		subTicket.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				GenerarTicket aux = new GenerarTicket();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
 		btnSoporte.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -614,6 +707,16 @@ public class SistemaPrincipal extends JFrame {
 		final JButton subHacerVal = crearBotonMenu("   Hacer valoración", 203, 30, true);
 
 		panelContenedorMenu.add(btnVal); panelContenedorMenu.add(subHacerVal);
+		
+		subHacerVal.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				HacerValoracion aux = new HacerValoracion();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
 
 		btnVal.addActionListener(new ActionListener() {
 			@Override
@@ -646,6 +749,27 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(btnTrabajo);
 		panelContenedorMenu.add(subInfo);
 		panelContenedorMenu.add(subOrdenes);
+		
+		subInfo.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				Mi_informacionTecnico aux = new Mi_informacionTecnico();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		subOrdenes.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				OrdenesServicio aux = new OrdenesServicio();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		
+		
 
 		btnTrabajo.addActionListener(new ActionListener() {
 			@Override
@@ -668,6 +792,34 @@ public class SistemaPrincipal extends JFrame {
 		panelContenedorMenu.add(subEstadisticas);
 		panelContenedorMenu.add(subHoras);
 		panelContenedorMenu.add(subBono);
+		
+		subEstadisticas.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				MisEstadisticas aux = new MisEstadisticas();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		
+		subHoras.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				HorasExtras aux = new HorasExtras();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
+		
+		subBono.addActionListener(new ActionListener() 
+		{
+			@Override public void actionPerformed(ActionEvent e) 
+		{
+				ReclamarBono aux = new ReclamarBono();
+				aux.setModal(true);
+				aux.setVisible(true); }	
+			});
 
 		btnRendimiento.addActionListener(new ActionListener() {
 			@Override
@@ -733,7 +885,7 @@ public class SistemaPrincipal extends JFrame {
 
 	private void configurarVistaSegunRol(String rol) {
 		tglbtnAdmin.setSelected(rol.equalsIgnoreCase("Administrador"));
-		tglbtnTecnico.setSelected(rol.equalsIgnoreCase("Técnico"));
+		tglbtnTecnico.setSelected(rol.equalsIgnoreCase("Tecnico"));
 		tglbtnComercial.setSelected(rol.equalsIgnoreCase("Comercial"));
 		tglbtnCliente.setSelected(rol.equalsIgnoreCase("Cliente"));
 		actualizarBordesBotones();

@@ -1,35 +1,24 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-
 import Logico.Altice;
 import Logico.Cliente;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ClientesEnAlerta extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
-	private Object[] raw;
 	private DefaultTableModel model;
+	private Object[] raw;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			ClientesEnAlerta dialog = new ClientesEnAlerta();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -38,69 +27,85 @@ public class ClientesEnAlerta extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public ClientesEnAlerta() {
+		setTitle("Altice - Monitor de Clientes en Alerta");
 		setResizable(false);
-		setBounds(100, 100, 610, 484);
+		setSize(800, 500); // Un poco más ancho para que se vea profesional
 		setLocationRelativeTo(null);
+		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
+		
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new BorderLayout(0, 0));
-		{
-			JScrollPane scrollPane = new JScrollPane();
-			contentPanel.add(scrollPane, BorderLayout.CENTER);
-			{
-				table = new JTable();
-				model = new DefaultTableModel();
+		contentPanel.setLayout(null);
 
-				String headers[] = { "Cedula", "Nombre", "Estado", "Pendiente", "Pagos Atrasados"};
-				table.setModel(model);
-				model.setColumnIdentifiers(headers);
-				scrollPane.setViewportView(table);
-				table.setAutoCreateRowSorter(true);
-				table.getTableHeader().setReorderingAllowed(false);
+		// --- CABECERA ESTILO ALTICE ---
+		JPanel panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(0, 102, 204)); // Azul Altice
+		panelHeader.setBounds(0, 0, 800, 40);
+		contentPanel.add(panelHeader);
+		
+		JLabel lblTitulo = new JLabel("CLIENTES EN ALERTA");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+		panelHeader.add(lblTitulo);
+
+		// --- TABLA ESTILIZADA ---
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 60, 745, 340);
+		contentPanel.add(scrollPane);
+
+		String headers[] = { "Cédula", "Nombre", "Estado", "Deuda Pendiente", "Atrasos"};
+		model = new DefaultTableModel(null, headers) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) { return false; }
+		};
+		
+		table = new JTable(model);
+		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getTableHeader().setBackground(new Color(150, 150, 150));
+		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
+		table.getTableHeader().setForeground(Color.BLACK);
+		table.setRowHeight(25);
+		scrollPane.setViewportView(table);
+
+		// --- BOTÓN CERRAR ---
+		JPanel buttonPane = new JPanel();
+		buttonPane.setBackground(new Color(245, 245, 245));
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+		
+		JButton btnCerrar = new JButton("Cerrar ");
+		btnCerrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
-		}
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton BtnCerrar = new JButton("Cerrar");
-				BtnCerrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				BtnCerrar.setActionCommand("OK");
-				buttonPane.add(BtnCerrar);
-				getRootPane().setDefaultButton(BtnCerrar);
-			}
-		}
+		});
+		buttonPane.add(btnCerrar);
+
 		loadClientesAtrasados();
 	}
 
 	private void loadClientesAtrasados() {
-		model.setRowCount(0);
-		raw = new Object[table.getColumnCount()];
-		for (Cliente client : Altice.getInstance().getListaClientes()) {
-			if(client.getCantidadAtrasos() > 1) {
-				raw[0] = client.getCedula();
-				raw[1] = client.getNombreCliente();
-				if (client.isEstadoCliente()) {
-					raw[2] = "Activo";
-				} else {
-					raw[2] = "Inactivo";
-				}
-				raw[3] = "RD$" + client.getDeudaPendiente();
-				raw[4] = client.getCantidadAtrasos();
-				model.addRow(raw);
+	    model.setRowCount(0);
+	    for (Cliente client : Altice.getInstance().getListaClientes()) {
+	        int atrasos = Altice.getInstance().calcularAtrasosReales(client);
+	        float deudaDinero = Altice.getInstance().calcularMontoDeudaReal(client);
 
-			}
-		}
-		
+	        // Si el cliente debe dinero o tiene más de un mes de atraso
+	        if (atrasos > 1 || deudaDinero > 0) {
+	            Object[] row = new Object[5];
+	            row[0] = client.getCedula();
+	            row[1] = client.getNombreCliente() + " " + client.getApellidoCliente();
+	            row[2] = (atrasos > 2) ? "Suspendido" : "Activo";
+	            row[3] = "RD$ " + deudaDinero;
+	            row[4] = atrasos;
+	            model.addRow(row);
+	        }
+	    }
 	}
 }

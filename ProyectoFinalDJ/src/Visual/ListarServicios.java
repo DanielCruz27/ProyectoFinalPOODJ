@@ -16,15 +16,18 @@ public class ListarServicios extends JDialog {
 	private JTextField txtNombre, txtPrecio;
 	private JSpinner spnEspecial1, spnEspecial2; 
 	private JLabel lblEspecial1, lblEspecial2, lblStreaming;
-	private JTextArea txtStreaming; 
 	private JPanel panelEditar;
 	private JButton btnGuardar; 
 	private Servicio seleccionado = null;
+	
+	private JCheckBox chkWa, chkIg, chkFb, chkTk, chkYt;
+	private JCheckBox chkNetflix, chkHBO, chkDisney, chkPrime, chkAlticeTV;
+	private JPanel panelChecks;
 
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ListarServicios dialog = new ListarServicios("comercial"); 
+			ListarServicios dialog = new ListarServicios("admin"); 
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -33,8 +36,8 @@ public class ListarServicios extends JDialog {
 	}
 
 	public ListarServicios(String rol) {
-		setTitle("Altice - Consulta de Catálogo de Servicios");
-		setSize(950, 600);
+		setTitle("Altice - Consulta y Edición de Catálogo");
+		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
@@ -46,137 +49,95 @@ public class ListarServicios extends JDialog {
 
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
-		panelHeader.setBounds(0, 0, 950, 40);
+		panelHeader.setBounds(0, 0, 1000, 40);
 		contentPanel.add(panelHeader);
 		
-		JLabel lblTitulo = new JLabel("CATÁLOGO DE PLANES Y SERVICIOS");
+		JLabel lblTitulo = new JLabel("GESTIÓN DE CATÁLOGO DE PLANES");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 60, 580, 430);
+		scrollPane.setBounds(20, 60, 620, 430);
 		contentPanel.add(scrollPane);
 
 		String[] columnas = {"ID", "Nombre", "Tipo", "Precio", "Estado"}; 
 		model = new DefaultTableModel(null, columnas) {
-			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
 		
 		table = new JTable(model);
 		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setBackground(new Color(0, 102, 204));
 		table.getTableHeader().setForeground(Color.WHITE);
-		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
 		panelEditar = new JPanel();
 		panelEditar.setBackground(Color.WHITE);
 		panelEditar.setLayout(null);
-		TitledBorder borde = BorderFactory.createTitledBorder(
-			new LineBorder(new Color(0, 102, 204), 1, true), " Detalles del Plan ",
-			TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
-		panelEditar.setBorder(borde);
-		panelEditar.setBounds(620, 60, 290, 430);
+		panelEditar.setBorder(new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Detalles y Edición ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204)));
+		panelEditar.setBounds(660, 60, 310, 430);
 		contentPanel.add(panelEditar);
 
-		JLabel l1 = new JLabel("Nombre del Plan:");
-		l1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		l1.setBounds(20, 30, 150, 14); panelEditar.add(l1);
-		
-		txtNombre = new JTextField();
-		txtNombre.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		txtNombre.setBounds(20, 50, 250, 25); panelEditar.add(txtNombre);
+		JLabel l1 = new JLabel("Nombre:");
+		l1.setBounds(20, 30, 80, 14); panelEditar.add(l1);
+		txtNombre = new JTextField(); txtNombre.setBounds(20, 50, 270, 25); panelEditar.add(txtNombre);
 
 		JLabel l2 = new JLabel("Precio Base:");
-		l2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		l2.setBounds(20, 85, 100, 14); panelEditar.add(l2);
-		
-		txtPrecio = new JTextField();
-		txtPrecio.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		txtPrecio.setBounds(20, 105, 120, 25); panelEditar.add(txtPrecio);
+		txtPrecio = new JTextField(); txtPrecio.setBounds(20, 105, 120, 25); panelEditar.add(txtPrecio);
 
 		lblEspecial1 = new JLabel("Dato 1:");
-		lblEspecial1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		lblEspecial1.setBounds(20, 145, 200, 14); panelEditar.add(lblEspecial1);
-		
+		lblEspecial1.setBounds(20, 145, 150, 14); panelEditar.add(lblEspecial1);
 		spnEspecial1 = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-		spnEspecial1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		spnEspecial1.setBounds(20, 165, 100, 25); panelEditar.add(spnEspecial1);
 
 		lblEspecial2 = new JLabel("Dato 2:");
-		lblEspecial2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		lblEspecial2.setBounds(20, 205, 200, 14); panelEditar.add(lblEspecial2);
-		
+		lblEspecial2.setBounds(170, 145, 150, 14); panelEditar.add(lblEspecial2);
 		spnEspecial2 = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-		spnEspecial2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		spnEspecial2.setBounds(20, 225, 100, 25); panelEditar.add(spnEspecial2);
+		spnEspecial2.setBounds(170, 165, 100, 25); panelEditar.add(spnEspecial2);
 
 		lblStreaming = new JLabel("Inclusiones:");
-		lblStreaming.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		lblStreaming.setBounds(20, 265, 250, 14); panelEditar.add(lblStreaming);
-		
-		txtStreaming = new JTextArea();
-		txtStreaming.setEditable(false);
-		txtStreaming.setLineWrap(true);
-		txtStreaming.setWrapStyleWord(true);
-		txtStreaming.setBackground(new Color(245, 245, 245));
-		txtStreaming.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		txtStreaming.setBounds(20, 285, 250, 60);
-		panelEditar.add(txtStreaming);
+		lblStreaming.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lblStreaming.setBounds(20, 205, 250, 14); panelEditar.add(lblStreaming);
+
+		panelChecks = new JPanel();
+		panelChecks.setBackground(new Color(250, 250, 250));
+		panelChecks.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		panelChecks.setBounds(20, 225, 270, 130);
+		panelEditar.add(panelChecks);
+		panelChecks.setLayout(null);
+
+		// Inicializar todos los Checks
+		chkWa = new JCheckBox("WhatsApp"); chkWa.setBounds(5, 5, 120, 20); chkWa.setBackground(new Color(250,250,250));
+		chkIg = new JCheckBox("Instagram"); chkIg.setBounds(5, 30, 120, 20); chkIg.setBackground(new Color(250,250,250));
+		chkFb = new JCheckBox("Facebook"); chkFb.setBounds(5, 55, 120, 20); chkFb.setBackground(new Color(250,250,250));
+		chkTk = new JCheckBox("TikTok"); chkTk.setBounds(135, 5, 120, 20); chkTk.setBackground(new Color(250,250,250));
+		chkYt = new JCheckBox("YouTube"); chkYt.setBounds(135, 30, 120, 20); chkYt.setBackground(new Color(250,250,250));
+
+		chkNetflix = new JCheckBox("Netflix"); chkNetflix.setBounds(5, 5, 120, 20); chkNetflix.setBackground(new Color(250,250,250));
+		chkHBO = new JCheckBox("HBO Max"); chkHBO.setBounds(5, 30, 120, 20); chkHBO.setBackground(new Color(250,250,250));
+		chkDisney = new JCheckBox("Disney+"); chkDisney.setBounds(5, 55, 120, 20); chkDisney.setBackground(new Color(250,250,250));
+		chkPrime = new JCheckBox("Prime Video"); chkPrime.setBounds(135, 5, 120, 20); chkPrime.setBackground(new Color(250,250,250));
+		chkAlticeTV = new JCheckBox("Altice TV"); chkAlticeTV.setBounds(135, 30, 120, 20); chkAlticeTV.setBackground(new Color(250,250,250));
 
 		btnGuardar = new JButton("Guardar Cambios");
-		btnGuardar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnGuardar.setBackground(new Color(0, 153, 51));
 		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.setBounds(55, 375, 180, 35);
-		btnGuardar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				guardarCambios();
-			}
-		});
+		btnGuardar.setBounds(65, 375, 180, 35);
+		btnGuardar.addActionListener(e -> guardarCambios());
 		panelEditar.add(btnGuardar);
-
-		lblEspecial1.setVisible(false);
-		spnEspecial1.setVisible(false);
-		lblEspecial2.setVisible(false);
-		spnEspecial2.setVisible(false);
-		lblStreaming.setVisible(false);
-		txtStreaming.setVisible(false);
-
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		btnCerrar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		buttonPane.add(btnCerrar);
 
 		table.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				cargarDatosSeleccionado();
-			}
+			public void mouseClicked(MouseEvent e) { cargarDatosSeleccionado(); }
 		});
 
-        if (rol.equalsIgnoreCase("comercial")) {
-            txtNombre.setEditable(false);
-            txtPrecio.setEditable(false);
-            spnEspecial1.setEnabled(false);
-            spnEspecial2.setEnabled(false);
-            btnGuardar.setVisible(false); 
-            setTitle("Altice - Consulta de Catálogo (Solo Lectura)");
-        }
+		// Ocultar al inicio
+		lblEspecial1.setVisible(false); spnEspecial1.setVisible(false);
+		lblEspecial2.setVisible(false); spnEspecial2.setVisible(false);
+		lblStreaming.setVisible(false); panelChecks.setVisible(false);
 
 		cargarTabla();
 	}
@@ -185,74 +146,110 @@ public class ListarServicios extends JDialog {
 		model.setRowCount(0);
 		for (Servicio s : Altice.getInstance().getCatalogoServicio()) {
 			String tipo = (s instanceof PlanMovil) ? "Móvil" : "Hogar";
-			String estado = s.isEstadoDelServicio() ? "Disponible" : "Descatalogado";
-			model.addRow(new Object[]{s.getIdServicio(), s.getNombreServicio(), tipo, s.getPrecioBase(), estado});
+			model.addRow(new Object[]{s.getIdServicio(), s.getNombreServicio(), tipo, s.getPrecioBase(), s.isEstadoDelServicio()?"Activo":"No"});
 		}
 	}
 
 	private void cargarDatosSeleccionado() {
-		int fila = table.getSelectedRow();
-		if (fila >= 0) {
-			String id = (String) table.getValueAt(fila, 0);
-			seleccionado = Altice.getInstance().buscarServicioById(id);
+	    int fila = table.getSelectedRow();
+	    if (fila >= 0) {
+	        String id = (String) table.getValueAt(fila, 0);
+	        seleccionado = Altice.getInstance().buscarServicioById(id);
+	        
+	        if (seleccionado != null) {
+	            txtNombre.setText(seleccionado.getNombreServicio());
+	            txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
+	            
+	            panelChecks.removeAll();
+	            panelChecks.setVisible(true); 
+	            lblStreaming.setVisible(true);
 
-			if (seleccionado != null) {
-				txtNombre.setText(seleccionado.getNombreServicio());
-				txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
-
-				if (seleccionado instanceof PlanMovil) {
-					PlanMovil pm = (PlanMovil) seleccionado;
-					lblEspecial1.setText("Minutos Incluidos:");
-					lblEspecial1.setVisible(true);
-					spnEspecial1.setVisible(true);
-					spnEspecial1.setValue(pm.getMinutosIncluidos());
-					lblEspecial2.setVisible(false);
-					spnEspecial2.setVisible(false);
-					lblStreaming.setText("Redes Sociales Incluidas:");
-					lblStreaming.setVisible(true);
-					txtStreaming.setVisible(true);
-					txtStreaming.setText(pm.getRedesLibresIncluidas());
-				} 
-				else if (seleccionado instanceof PlanHogar) {
-					PlanHogar ph = (PlanHogar) seleccionado;
-					lblEspecial1.setText("Velocidad (Mbps):");
-					lblEspecial1.setVisible(true);
-					spnEspecial1.setVisible(true);
-					spnEspecial1.setValue(ph.getVelocidadInternet());
-					lblEspecial2.setText("Minutos Fijo:");
-					lblEspecial2.setVisible(true);
-					spnEspecial2.setVisible(true);
-					spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
-					lblStreaming.setText("Streaming Incluido:");
-					lblStreaming.setVisible(true);
-					txtStreaming.setVisible(true);
-					txtStreaming.setText(ph.getStreamingIncluido());
-				}
-				
-				panelEditar.revalidate();
-				panelEditar.repaint();
-			}
-		}
+	            if (seleccionado instanceof PlanMovil) {
+	                PlanMovil pm = (PlanMovil) seleccionado;
+	                lblEspecial1.setText("Mins. Incluidos:");
+	                lblEspecial1.setVisible(true);
+	                spnEspecial1.setVisible(true);
+	                spnEspecial1.setValue(pm.getMinutosIncluidos());
+	                lblEspecial2.setVisible(false); spnEspecial2.setVisible(false);
+	                
+	                lblStreaming.setText("Redes Sociales:");
+	                
+	                // --- AQUÍ MARCAMOS LOS CHECKS SEGÚN LOS DATOS ---
+	                String redes = pm.getRedesLibresIncluidas();
+	                chkWa.setSelected(redes.contains("WhatsApp"));
+	                chkIg.setSelected(redes.contains("Instagram"));
+	                chkFb.setSelected(redes.contains("Facebook"));
+	                chkTk.setSelected(redes.contains("TikTok"));
+	                chkYt.setSelected(redes.contains("YouTube"));
+	                
+	                panelChecks.add(chkWa); panelChecks.add(chkIg); panelChecks.add(chkFb);
+	                panelChecks.add(chkTk); panelChecks.add(chkYt);
+	                
+	            } else {
+	                PlanHogar ph = (PlanHogar) seleccionado;
+	                lblEspecial1.setText("Velocidad Mbps:");
+	                lblEspecial1.setVisible(true);
+	                spnEspecial1.setVisible(true);
+	                spnEspecial1.setValue(ph.getVelocidadInternet());
+	                
+	                lblEspecial2.setText("Mins. Fijo:");
+	                lblEspecial2.setVisible(true); spnEspecial2.setVisible(true);
+	                spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
+	                
+	                lblStreaming.setText("Servicios Streaming:");
+	                
+	                // --- AQUÍ MARCAMOS LOS CHECKS SEGÚN LOS DATOS ---
+	                String st = ph.getStreamingIncluido();
+	                chkNetflix.setSelected(st.contains("Netflix"));
+	                chkHBO.setSelected(st.contains("HBO Max"));
+	                chkDisney.setSelected(st.contains("Disney+"));
+	                chkPrime.setSelected(st.contains("Prime Video"));
+	                chkAlticeTV.setSelected(st.contains("Altice TV"));
+	                
+	                panelChecks.add(chkNetflix); panelChecks.add(chkHBO); panelChecks.add(chkDisney);
+	                panelChecks.add(chkPrime); panelChecks.add(chkAlticeTV);
+	            }
+	            
+	            panelChecks.revalidate();
+	            panelChecks.repaint();
+	            panelEditar.revalidate();
+	            panelEditar.repaint();
+	        }
+	    }
 	}
 
 	private void guardarCambios() {
 		try {
-			if (seleccionado == null) throw new Exception("Seleccione un plan de la tabla.");
+			if (seleccionado == null) return;
 			seleccionado.setNombreServicio(txtNombre.getText());
 			seleccionado.setPrecioBase(Float.parseFloat(txtPrecio.getText()));
 
 			if (seleccionado instanceof PlanMovil) {
-				((PlanMovil) seleccionado).setMinutosLibres(Integer.parseInt(spnEspecial1.getValue().toString()));
-			} 
-			else if (seleccionado instanceof PlanHogar) {
-				((PlanHogar) seleccionado).setVelocidadInternet(Integer.parseInt(spnEspecial1.getValue().toString()));
-				((PlanHogar) seleccionado).setMinutosTelefonoHogar(Integer.parseInt(spnEspecial2.getValue().toString()));
+				PlanMovil pm = (PlanMovil) seleccionado;
+				pm.setMinutosLibres((Integer)spnEspecial1.getValue());
+				String redes = "";
+				if(chkWa.isSelected()) redes += "WhatsApp, ";
+				if(chkIg.isSelected()) redes += "Instagram, ";
+				if(chkFb.isSelected()) redes += "Facebook, ";
+				if(chkTk.isSelected()) redes += "TikTok, ";
+				if(chkYt.isSelected()) redes += "YouTube, ";
+				pm.setRedesLibresIncluidas(redes.isEmpty() ? "Ninguna" : redes.substring(0, redes.length()-2));
+			} else {
+				PlanHogar ph = (PlanHogar) seleccionado;
+				ph.setVelocidadInternet((Integer)spnEspecial1.getValue());
+				ph.setMinutosTelefonoHogar((Integer)spnEspecial2.getValue());
+				String st = "";
+				if(chkNetflix.isSelected()) st += "Netflix, ";
+				if(chkHBO.isSelected()) st += "HBO Max, ";
+				if(chkDisney.isSelected()) st += "Disney+, ";
+				if(chkPrime.isSelected()) st += "Prime Video, ";
+				if(chkAlticeTV.isSelected()) st += "Altice TV, ";
+				ph.setStreamingIncluido(st.isEmpty() ? "Ninguno" : st.substring(0, st.length()-2));
 			}
-
-			JOptionPane.showMessageDialog(this, "Plan actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Plan actualizado correctamente.");
 			cargarTabla();
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
 		}
 	}
 }

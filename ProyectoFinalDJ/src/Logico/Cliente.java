@@ -20,15 +20,15 @@ public class Cliente implements Serializable {
 	private String zonaVivienda;
 	private int puntosAcumulados;
 	private boolean estadoCliente;
-	private MetodoDePago miMetodo;
+	private ArrayList<MetodoDePago>misMetodos;
 	private float deudaPendiente;
 	private int cantPagosAtrasados;
 	private ArrayList<Pago>misPagos;
-	private ArrayList<Contrato>misContratos;
+	private Contrato miContrato;
 
 	public Cliente(String idCliente, String nombreCliente, String apellidoCliente, String emailCliente,
 			String direccionCliente, String cedula,  Usuario miCuenta, String zonaVivienda, int puntosAcumulados, boolean estadoCliente,
-			MetodoDePago miMetodo,float deudaPendiente, int cantPagosAtrasados, ArrayList<Pago> misPagos, ArrayList<Contrato> misContratos) {
+			ArrayList<MetodoDePago>misMetodos,float deudaPendiente, int cantPagosAtrasados, ArrayList<Pago> misPagos, Contrato miContrato) {
 		super();
 		this.idCliente = idCliente;
 		this.nombreCliente = nombreCliente;
@@ -40,9 +40,9 @@ public class Cliente implements Serializable {
 		this.miCuenta = miCuenta;
 		this.puntosAcumulados = puntosAcumulados;
 		this.estadoCliente = estadoCliente;
-		this.miMetodo = miMetodo;
 		this.deudaPendiente = deudaPendiente;
 		this.cantPagosAtrasados = cantPagosAtrasados;
+		this.miContrato = miContrato;
 
 		if (misPagos == null) {
 			this.misPagos = new ArrayList<Pago>();
@@ -50,13 +50,14 @@ public class Cliente implements Serializable {
 		} else {
 			this.misPagos = misPagos;
 		}
-
-		if (misContratos == null) {
-			this.misContratos = new ArrayList<Contrato>();
+		
+		if (misMetodos == null) {
+			this.misMetodos = new ArrayList<MetodoDePago>();
 
 		} else {
-			this.misContratos = misContratos;
+			this.misMetodos = misMetodos;
 		}
+
 	}
 	public String getIdCliente() {
 		return idCliente;
@@ -106,24 +107,14 @@ public class Cliente implements Serializable {
 	public void setEstadoCliente(boolean estadoCliente) {
 		this.estadoCliente = estadoCliente;
 	}
-	public MetodoDePago getMiMetodo() {
-		return miMetodo;
-	}
-	public void setMiMetodo(MetodoDePago miMetodo) {
-		this.miMetodo = miMetodo;
-	}
+	
 	public ArrayList<Pago> getMisPagos() {
 		return misPagos;
 	}
 	public void setMisPagos(ArrayList<Pago> misPagos) {
 		this.misPagos = misPagos;
 	}
-	public ArrayList<Contrato> getMisContratos() {
-		return misContratos;
-	}
-	public void setMisContratos(ArrayList<Contrato> misContratos) {
-		this.misContratos = misContratos;
-	}
+	
 	public float getDeudaPendiente() {
 		return deudaPendiente;
 	}
@@ -162,7 +153,28 @@ public class Cliente implements Serializable {
 	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
+	public Contrato getMiContrato() {
+		return miContrato;
+	}
+	public void setMiContrato(Contrato miContrato) {
+		this.miContrato = miContrato;
+	}
+	public ArrayList<MetodoDePago> getMisMetodos() {
+	    if (misMetodos == null) {
+	        misMetodos = new ArrayList<MetodoDePago>();
+	    }
+	    return misMetodos;
+	}
+	public void setMisMetodos(ArrayList<MetodoDePago> misMetodos) {
+		this.misMetodos = misMetodos;
+	}
 	
+	public void addMetodoPago(MetodoDePago metodo) {
+	    if (misMetodos == null) {
+	        misMetodos = new ArrayList<MetodoDePago>();
+	    }
+	    this.misMetodos.add(metodo);
+	}
 		
 	
 	

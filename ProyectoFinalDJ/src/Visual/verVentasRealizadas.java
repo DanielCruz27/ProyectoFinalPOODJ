@@ -1,19 +1,21 @@
 package Visual;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Logico.Altice;
-import Logico.Cliente;
 import Logico.Contrato;
 
 import javax.swing.JScrollPane;
@@ -27,83 +29,84 @@ public class verVentasRealizadas extends JDialog {
 	private JTable table;
 	private DefaultTableModel model;
 	private Object[] raw;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			verVentasRealizadas dialog = new verVentasRealizadas();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public verVentasRealizadas() {
-		setBounds(100, 100, 450, 300);
+		setTitle("Altice - Mis Ventas Realizadas");
+		setModal(true);
+		setSize(600, 400); // Un poco más grande para que se vea bien
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
+		
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
+
+		// --- HEADER AZUL ---
+		JPanel panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(0, 102, 204));
+		getContentPane().add(panelHeader, BorderLayout.NORTH);
+		
+		JLabel lblTitulo = new JLabel("RESUMEN DE CONTRATOS CERRADOS");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
+		panelHeader.add(lblTitulo);
+
 		{
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane, BorderLayout.CENTER);
 			{
-				table = new JTable();
-				table = new JTable();
-				model = new DefaultTableModel();
+				model = new DefaultTableModel() {
+					@Override
+					public boolean isCellEditable(int row, int column) {
+						return false; // No editable
+					}
+				};
 				
-				String headers[] = { "Cliente", "Servicios", "Pagos", "Firmas"};
-				table.setModel(model);
+				String headers[] = { "Cédula Cliente", "Nombre Cliente", "Cant. Servicios", "Fecha de Firma"};
 				model.setColumnIdentifiers(headers);
-				scrollPane.setViewportView(table);
+				
+				table = new JTable(model);
 				table.setAutoCreateRowSorter(true);
 				table.getTableHeader().setReorderingAllowed(false);
 				scrollPane.setViewportView(table);
+				
 				loadContrato();
 			}
 		}
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBackground(new Color(245, 245, 245));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
+				JButton btnCerrar = new JButton("Cerrar");
+				btnCerrar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				buttonPane.add(btnCerrar);
 			}
 		}
 	}
 
 	private void loadContrato() {
+		model.setRowCount(0);
+		raw = new Object[model.getColumnCount()];
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-			model.setRowCount(0);
-			raw = new Object[table.getColumnCount()];
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-			ArrayList<Contrato> contra = Altice.getInstance().buscarContratoByUser();
-			
-			for(Contrato aux : contra) {
+		// Este método en Altice ya filtra por el vendedor logueado
+		ArrayList<Contrato> contra = Altice.getInstance().buscarContratoByUser();
+		
+		for(Contrato aux : contra) {
+			if (aux != null && aux.getElTitular() != null) {
 				raw[0] = aux.getElTitular().getCedula();
-				raw[1] = aux.getMisServicios().size();
-				raw[2] = aux.getHistorialDePagos().size();
+				raw[1] = aux.getElTitular().getNombreCliente() + " " + aux.getElTitular().getApellidoCliente();
+				raw[2] = aux.getMisServicios().size();
 				raw[3] = aux.getFechaFirma().format(formatter);
 				model.addRow(raw);
-				
-				
 			}
-	
+		}
 	}
-
 }
-
