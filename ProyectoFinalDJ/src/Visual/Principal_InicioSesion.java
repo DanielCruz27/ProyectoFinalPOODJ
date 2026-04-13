@@ -154,19 +154,15 @@ public class Principal_InicioSesion extends JFrame {
                         rol = "Cliente";
                     }
                     
-               /* SistemaPrincipal sistema = new SistemaPrincipal(rol);
+                    SistemaPrincipal sistema = new SistemaPrincipal(rol);
                     sistema.setVisible(true);
-                    dispose();*/
+                    dispose();
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
-               SistemaPrincipal sistema = new SistemaPrincipal("administrador");
-                sistema.setVisible(true);
-                dispose();
-       
-
+    
             }
         });
         btnAcceder.setBackground(new Color(0, 128, 255));
@@ -205,7 +201,6 @@ public class Principal_InicioSesion extends JFrame {
         int alto = getHeight();
 
         Image imgEscalada = ((ImageIcon)lblFondo.getIcon()).getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-
         lblFondo.setIcon(new ImageIcon(imgEscalada));
         lblFondo.setBounds(0, 0, ancho, alto);
     }

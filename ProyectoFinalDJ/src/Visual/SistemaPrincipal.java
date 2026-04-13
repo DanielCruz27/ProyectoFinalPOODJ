@@ -2,12 +2,17 @@ package Visual;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
@@ -17,6 +22,8 @@ import Logico.Altice;
 
 public class SistemaPrincipal extends JFrame {
 
+	
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panelCuerpo; // El área donde se mostrarán los formularios
@@ -42,6 +49,10 @@ public class SistemaPrincipal extends JFrame {
 	private boolean menuTrabajoTecnicoOpen = false;
 	private boolean menuRendimientoTecnicoOpen = false;
 
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
+	
 	public SistemaPrincipal(String rolUsuario) {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -485,14 +496,95 @@ public class SistemaPrincipal extends JFrame {
 				panelContenedorMenu.revalidate();
 			}
 		});
+		subRanking.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
+				rankingPersonal aux = new rankingPersonal();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+		});
+		subFinanzas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				totalGeneradoReporte aux = new totalGeneradoReporte();
+				
+				aux.setModal(true);
+				aux.setVisible(true);
+						
+			}
+		});
+		subCalidad.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ReporteValoraciones aux = new ReporteValoraciones();
+				aux.setModal(true);
+				aux.setVisible(true);
+				
+			}
+		});
+		subTickets.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				reporteTicket aux = new reporteTicket();
+				aux.setModal(true);
+				aux.setVisible(true);
+			}
+		});
+		
+		JButton btnRespaldo = new JButton("Generar Respaldo");
+	    btnRespaldo.setBounds(10, altoPantalla - 150, 203, 40); 
+	    btnRespaldo.setBackground(new Color(0, 102, 204)); 
+	    btnRespaldo.setForeground(Color.WHITE);
+	    btnRespaldo.setFont(new Font("Arial", Font.BOLD, 13));
+	    btnRespaldo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			    try {
+			        sfd = new Socket("127.0.0.1", 7000);
+			        
+			        File file = new File("Alticee.dat"); 
+			        DataInputStream aux = new DataInputStream(new FileInputStream(file));
+			        SalidaSocket = new DataOutputStream(sfd.getOutputStream());
+			        
+			        int Byte;
+			        while((Byte = aux.read()) != -1) {
+			            SalidaSocket.write(Byte);
+			        }
+			        
+			        SalidaSocket.flush();
+			        aux.close();
+			        SalidaSocket.close();
+			        sfd.close();
+			        
+			        JOptionPane.showMessageDialog(null, "Respaldo enviado. Cerrando sistema...", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			        dispose(); 
+
+			    } catch (IOException ioe) {
+			        JOptionPane.showMessageDialog(null, "Error: " + ioe.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			    }
+			}
+	    });
+				
+	    ((Container)this.getContentPane().getComponent(0)).add(btnRespaldo);
 		JButton btnLogout = new JButton("Cerrar Sesión");
 		btnLogout.setBounds(10, altoPantalla - 100, 203, 40);
 		btnLogout.setBackground(new Color(220, 53, 69));
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Arial", Font.BOLD, 13));
 		btnLogout.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) { dispose(); }
+			@Override public void actionPerformed(ActionEvent e) { 
+				dispose(); 
+				}
 		});
 		((Container)this.getContentPane().getComponent(0)).add(btnLogout);
 	}

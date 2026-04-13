@@ -6,6 +6,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
 import Visual.ListarServicios;
 
 public class Altice implements Serializable {
@@ -172,10 +175,11 @@ public class Altice implements Serializable {
 	            
 	            Contrato nuevo = new Contrato(client, listaInicial, vendedor, new ArrayList<Pago>(), LocalDate.now());
 	            client.setMiContrato(nuevo);
-	            
-	            // --- ESTA LÍNEA ES VITAL ---
+	            if (vendedor instanceof Comercial) {
+	                Comercial c = (Comercial) vendedor;
+	                c.setVentasRealizadas(c.getVentasRealizadas() + 1); 
+	            }
 	            this.listaContratos.add(nuevo); 
-	            // ---------------------------
 	        } else {
 	            client.getMiContrato().getMisServicios().add(servicioReal);
 	        }
@@ -714,6 +718,113 @@ public class Altice implements Serializable {
 	    codigoValoracion++;
 	}
 
+	public DefaultCategoryDataset obtenerDatosRankingVentas() {
+		    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		    for (Personal p : listaEmpleados) {
+		        if (p instanceof Comercial) {
+		            int totalVentas = ((Comercial) p).getVentasRealizadas();
+		            dataset.addValue(totalVentas, "Ventas", p.getNombre());
+		        }
+		    }
+		    return dataset;
+		}
 	
-	
+
+	public DefaultPieDataset obtenerDatosFinanzasPie() {
+	    DefaultPieDataset dataset = new DefaultPieDataset();
+	    float totalMovil = 0;
+	    float totalHogar = 0;
+
+	    for (Pago p : historialPagos) {
+	        Contrato con = p.getElContrato();
+	        
+	        if (con != null && !con.getMisServicios().isEmpty()) {
+	            Servicio s = con.getMisServicios().get(0);
+	            
+	            if (s instanceof PlanMovil) {
+	                totalMovil += p.getMontoTotal();
+	            } else if (s instanceof PlanHogar) {
+	                totalHogar += p.getMontoTotal();
+	            }
+	        }
+	    }
+
+	    dataset.setValue("Planes Móviles", totalMovil);
+	    dataset.setValue("Planes Hogar", totalHogar);
+	    
+	    return dataset;
+	}
+	public DefaultCategoryDataset obtenerDatosValoraciones() {
+	    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	    
+	    int estrella1 = 0, estrella2 = 0, estrella3 = 0, estrella4 = 0, estrella5 = 0;
+
+	    for (Valoracion v : listaValoraciones) {
+	        if (v.getCantidadEstrellas() == 1)
+	        	estrella1++;
+	        if (v.getCantidadEstrellas() == 2)
+	        	estrella2++;
+	        if (v.getCantidadEstrellas() == 3)
+	        	estrella3++;
+	        if (v.getCantidadEstrellas() == 4) 
+	        	estrella4++;
+	        if (v.getCantidadEstrellas() == 5) 
+	        	estrella5++;
+	    }
+
+	    dataset.addValue(estrella1, "Clientes", "1 ★");
+	    dataset.addValue(estrella2, "Clientes", "2 ★");
+	    dataset.addValue(estrella3, "Clientes", "3 ★");
+	    dataset.addValue(estrella4, "Clientes", "4 ★");
+	    dataset.addValue(estrella5, "Clientes", "5 ★");
+
+	    return dataset;
+	}
+	public DefaultPieDataset obtenerDatosTickets() {
+	    DefaultPieDataset dataset = new DefaultPieDataset();
+	    
+	    int internet = 0;
+	    int cable = 0;
+	    int poste = 0;
+	    int instalacion = 0;
+
+	    // Recorremos la lista de tickets global
+	    for (Ticket t : getListaTickets()) {
+	        // Suponiendo que el 'problema' se guarda en un atributo o lo inferimos del área
+	        String area = t.getAreaAtencion(); 
+	        
+	        if (area.equalsIgnoreCase("Soporte técnico")) internet++;
+	        else if (area.equalsIgnoreCase("Planta externa")) cable++;
+	        else if (area.equalsIgnoreCase("Infraestructura")) poste++;
+	        else if (area.equalsIgnoreCase("Instalacion")) instalacion++;
+	    }
+
+	    if (internet > 0) dataset.setValue("Internet lento", internet);
+	    if (cable > 0) dataset.setValue("Cable roto", cable);
+	    if (poste > 0) dataset.setValue("Poste inclinado", poste);
+	    if (instalacion > 0) dataset.setValue("Instalación equipo", instalacion);
+
+	    return dataset;
+	}
+	public String planMasContratadoSimple() {
+	    String ganador = "No hay contratos";
+	    int maximo = 0;
+
+	    for (Servicio s : catalogoServicio) {
+	        int contador = 0;
+	        for (Contrato c : listaContratos) {
+	            for (Servicio sc : c.getMisServicios()) {
+	                if (sc.getNombreServicio().equalsIgnoreCase(s.getNombreServicio())) {
+	                    contador++;
+	                }
+	            }
+	        }
+	        // Si este es el nuevo máximo, lo guardamos
+	        if (contador > maximo) {
+	            maximo = contador;
+	            ganador = s.getNombreServicio() + " — Cantidad: " + contador;
+	        }
+	    }
+	    return ganador;
+	}
 }
