@@ -8,6 +8,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import Logico.Altice;
+import java.awt.Toolkit;
 
 public class reporteTicket extends JDialog {
 
@@ -17,7 +18,8 @@ public class reporteTicket extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	public reporteTicket() {
-		setTitle("Altice - Análisis de Reportes y Averías");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(reporteTicket.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Panel de Tickets");
 		setSize(700, 500);
 		setLocationRelativeTo(null);
 		setModal(true);

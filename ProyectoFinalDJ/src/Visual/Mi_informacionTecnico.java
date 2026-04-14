@@ -15,7 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import Logico.Altice;
 import Logico.Tecnico;
-import Logico.Personal;
+import java.awt.Toolkit;
 
 public class Mi_informacionTecnico extends JDialog {
 
@@ -23,7 +23,8 @@ public class Mi_informacionTecnico extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	public Mi_informacionTecnico() {
-		setTitle("Altice - Perfil del Técnico");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Mi_informacionTecnico.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Mi información");
 		setModal(true);
 		setResizable(false);
 		setSize(400, 420);

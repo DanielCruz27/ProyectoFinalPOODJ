@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +29,8 @@ public class MetodoPago extends JDialog {
 	private CardLayout cardLayout;
 
 	public MetodoPago() {
-		setTitle("Altice - Gestión de Pagos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MetodoPago.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Metodo de Pago");
 		setModal(true);
 		setSize(550, 600);
 		setLocationRelativeTo(null);

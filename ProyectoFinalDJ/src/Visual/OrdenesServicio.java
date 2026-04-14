@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -16,13 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Logico.Altice;
 import Logico.Tecnico;
 import Logico.Ticket;
+import java.awt.Toolkit;
 
 public class OrdenesServicio extends JDialog {
 
@@ -32,19 +31,10 @@ public class OrdenesServicio extends JDialog {
 	private DefaultTableModel model;
 	private Tecnico tecnicoLogueado;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			OrdenesServicio dialog = new OrdenesServicio();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public OrdenesServicio() {
-		setTitle("Altice - Mis Órdenes de Servicio");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OrdenesServicio.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Ordenes de Servicio");
 		setModal(true);
 		setSize(750, 450);
 		setLocationRelativeTo(null);

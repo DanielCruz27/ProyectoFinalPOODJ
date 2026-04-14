@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,9 +18,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import Logico.Altice;
-import Logico.Contrato;
 import Logico.Personal;
-import Logico.Servicio;
+import java.awt.Toolkit;
 
 public class MisComisiones extends JDialog {
 
@@ -31,7 +29,8 @@ public class MisComisiones extends JDialog {
 	private Personal comercialLogueado;
 
 	public MisComisiones() {
-		setTitle("Altice - Mis Comisiones por Ventas");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MisComisiones.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Mis comisiones");
 		setModal(true);
 		setResizable(false);
 		setSize(450, 320);

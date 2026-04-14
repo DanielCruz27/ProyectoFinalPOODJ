@@ -26,6 +26,7 @@ import Logico.Contrato;
 import Logico.Servicio;
 import Logico.PlanHogar;
 import Logico.PlanMovil;
+import java.awt.Toolkit;
 
 public class MiContrato extends JDialog {
 
@@ -38,7 +39,8 @@ public class MiContrato extends JDialog {
 	private Cliente clienteLogueado;
 
 	public MiContrato() {
-		setTitle("Altice - Resumen de mi Contrato");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MiContrato.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Mi contrato");
 		setModal(true);
 		setSize(600, 450);
 		setLocationRelativeTo(null);

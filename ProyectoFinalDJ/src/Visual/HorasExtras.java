@@ -19,8 +19,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
 import Logico.Altice;
-import Logico.Personal;
 import Logico.Tecnico;
+import java.awt.Toolkit;
 
 public class HorasExtras extends JDialog {
 
@@ -29,18 +29,11 @@ public class HorasExtras extends JDialog {
 	private JSpinner spnHoras;
 	private Tecnico tecnicoLogueado;
 
-	public static void main(String[] args) {
-		try {
-			HorasExtras dialog = new HorasExtras();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public HorasExtras() {
-		setTitle("Altice - Registro de Horas Extras");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(HorasExtras.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Horas extras");
 		setModal(true);
 		setResizable(false);
 		setSize(400, 250);

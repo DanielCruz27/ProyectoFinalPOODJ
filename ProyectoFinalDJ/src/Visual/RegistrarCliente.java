@@ -2,7 +2,6 @@ package Visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -22,19 +21,11 @@ public class RegistrarCliente extends JDialog {
 
 	private ArrayList<Servicio> serviciosParaContrato = new ArrayList<Servicio>();
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			RegistrarCliente dialog = new RegistrarCliente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public RegistrarCliente() {
-		setTitle("Altice - Registro de Cliente y Contratación");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistrarCliente.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Registro de Cliente y Contrato");
 		setModal(true);
 		setResizable(false);
 		setSize(650, 780); 

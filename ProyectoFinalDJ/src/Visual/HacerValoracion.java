@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 import Logico.Altice;
 import Logico.Cliente;
 import Logico.Valoracion;
+import java.awt.Toolkit;
 
 public class HacerValoracion extends JDialog {
 
@@ -32,7 +33,8 @@ public class HacerValoracion extends JDialog {
 	private Cliente clienteLogueado;
 
 	public HacerValoracion() {
-		setTitle("Altice - Valorar mi Experiencia");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(HacerValoracion.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Hacer Valoración");
 		setModal(true);
 		setResizable(false);
 		setSize(450, 380);

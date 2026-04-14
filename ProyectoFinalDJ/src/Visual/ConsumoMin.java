@@ -19,6 +19,7 @@ import Logico.Cliente;
 import Logico.PlanHogar;
 import Logico.PlanMovil;
 import Logico.Servicio;
+import java.awt.Toolkit;
 
 public class ConsumoMin extends JDialog {
 
@@ -29,7 +30,8 @@ public class ConsumoMin extends JDialog {
 	private Cliente clienteLogueado;
 
 	public ConsumoMin() {
-		setTitle("Altice - Consumo General");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ConsumoMin.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Consumo de Minutos");
 		setModal(true);
 		setSize(500, 400);
 		setLocationRelativeTo(null);

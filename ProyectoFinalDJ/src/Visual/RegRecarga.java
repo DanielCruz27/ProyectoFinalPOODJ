@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import java.awt.Toolkit;
 
 public class RegRecarga extends JDialog {
 
@@ -31,18 +32,11 @@ public class RegRecarga extends JDialog {
 	private JTextField txtNumeroTelefonico;
 	private JSpinner spnMinutos;
 
-	public static void main(String[] args) {
-		try {
-			RegRecarga dialog = new RegRecarga();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public RegRecarga() {
-		setTitle("Altice - Recarga de Saldo");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegRecarga.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Recarga");
 		setResizable(false);
 		setModal(true);
 		setSize(300, 250);

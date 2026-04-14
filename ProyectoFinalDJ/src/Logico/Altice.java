@@ -192,21 +192,7 @@ public class Altice implements Serializable {
 		}
 	}
 
-	/*private Contrato buscarContratoPorCliente(String idCliente) {
-		Contrato aux = null;
-		boolean finded = false;
-		int i = 0;
-		while (!finded && i < listaContratos.size()) {
 
-			if (listaContratos.get(i).getElTitular().getIdCliente().equalsIgnoreCase(idCliente)) {
-				aux = listaContratos.get(i);
-				finded = true;
-			}
-			i++;
-		}
-
-		return aux;
-	}*/
 
 	public Personal buscarEmpleadoPorId(String idVendedor) {
 

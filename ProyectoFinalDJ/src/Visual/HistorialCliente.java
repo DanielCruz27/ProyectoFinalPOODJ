@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import Logico.*;
-import java.util.ArrayList;
 
 public class HistorialCliente extends JDialog {
 
@@ -16,19 +15,11 @@ public class HistorialCliente extends JDialog {
 	private JTable table;
 	private JComboBox<String> cbxCedulas;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			HistorialCliente dialog = new HistorialCliente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public HistorialCliente() {
-		setTitle("Altice - Historial de Pagos y Facturación");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(HistorialCliente.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Historial Pagos / Facturas");
 		setResizable(false);
 		setSize(700, 550);
 		setLocationRelativeTo(null);

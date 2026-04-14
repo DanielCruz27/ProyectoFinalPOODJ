@@ -16,19 +16,11 @@ public class DesactivarServicios extends JDialog {
 	private JLabel lblID, lblNombre, lblTipo, lblEstado;
 	private Servicio seleccionado = null;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			DesactivarServicios dialog = new DesactivarServicios();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	public DesactivarServicios() {
-		setTitle("Altice - Desactivar Planes del Catálogo");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DesactivarServicios.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Desactivar Planes");
 		setSize(800, 500);
 		setLocationRelativeTo(null);
 		setModal(true);

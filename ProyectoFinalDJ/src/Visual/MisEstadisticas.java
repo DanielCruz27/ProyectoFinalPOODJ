@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import Logico.Altice;
 import Logico.Tecnico;
 import Logico.Ticket;
+import java.awt.Toolkit;
 
 public class MisEstadisticas extends JDialog {
 
@@ -29,7 +30,8 @@ public class MisEstadisticas extends JDialog {
 	private Tecnico tecnicoLogueado;
 
 	public MisEstadisticas() {
-		setTitle("Altice - Mis Estadísticas y Horas");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MisEstadisticas.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Mis Estadísticas");
 		setModal(true);
 		setSize(450, 400); 
 		setLocationRelativeTo(null);

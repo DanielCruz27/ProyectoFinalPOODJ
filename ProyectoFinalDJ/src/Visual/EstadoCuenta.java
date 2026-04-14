@@ -12,13 +12,13 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import Logico.Altice;
 import Logico.Cliente;
+import java.awt.Toolkit;
 
 public class EstadoCuenta extends JDialog {
 
@@ -27,18 +27,11 @@ public class EstadoCuenta extends JDialog {
 	private JLabel lblNombreVal, lblZonaVal, lblPuntosVal, lblAtrasosVal, lblDeudaVal, lblEstadoVal;
 	private Cliente clienteLogueado;
 
-	public static void main(String[] args) {
-		try {
-			EstadoCuenta dialog = new EstadoCuenta();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public EstadoCuenta() {
-		setTitle("Altice - Mi Estado de Cuenta");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EstadoCuenta.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Estado de Cuenta");
 		setModal(true);
 		setResizable(false);
 		setSize(500, 450);

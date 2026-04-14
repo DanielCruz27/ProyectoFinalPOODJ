@@ -21,6 +21,7 @@ import javax.swing.border.TitledBorder;
 import Logico.Altice;
 import Logico.Tecnico;
 import Logico.Ticket;
+import java.awt.Toolkit;
 
 public class ReclamarBono extends JDialog {
 
@@ -31,7 +32,8 @@ public class ReclamarBono extends JDialog {
 	private double bonoCalculado = 0;
 
 	public ReclamarBono() {
-		setTitle("Altice - Reclamar Bono Acumulado");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReclamarBono.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Reclamar Bono");
 		setModal(true);
 		setResizable(false);
 		setSize(400, 280);

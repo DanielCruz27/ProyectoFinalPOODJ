@@ -22,19 +22,11 @@ public class ListarClientes extends JDialog {
 	private Cliente seleccionado = null;
 	private JButton btnGuardar, btnAgregarPlan, btnEliminarPlan;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ListarClientes dialog = new ListarClientes();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public ListarClientes() {
-		setTitle("Altice - Gestión Integral de Clientes");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListarClientes.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Listar y Modificar");
 		setSize(1250, 700);
 		setLocationRelativeTo(null);
 		setModal(true);

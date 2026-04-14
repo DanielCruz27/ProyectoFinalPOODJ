@@ -19,6 +19,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logico.Altice;
+import java.awt.Toolkit;
 
 public class PlanMasContratado extends JDialog {
 
@@ -26,7 +27,8 @@ public class PlanMasContratado extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanMasContratado() {
-		setTitle("Altice - Análisis de Planes más Populares");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(PlanMasContratado.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Plan máas Contratado");
 		setModal(true);
 		setSize(650, 500);
 		setLocationRelativeTo(null);

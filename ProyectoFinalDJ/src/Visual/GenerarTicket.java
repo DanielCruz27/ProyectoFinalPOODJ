@@ -16,11 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+
 
 import Logico.Altice;
 import Logico.Cliente;
+import java.awt.Toolkit;
 
 public class GenerarTicket extends JDialog {
 
@@ -31,7 +31,8 @@ public class GenerarTicket extends JDialog {
 	private Cliente clienteLogueado;
 
 	public GenerarTicket() {
-		setTitle("Altice - Reportar Avería o Solicitud");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GenerarTicket.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Generar Nuevo Ticket");
 		setModal(true);
 		setResizable(false);
 		setSize(480, 400);

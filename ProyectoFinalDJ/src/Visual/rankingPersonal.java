@@ -2,9 +2,7 @@ package Visual;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +16,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Logico.Altice;
+import java.awt.Toolkit;
 
 public class rankingPersonal extends JDialog {
 
@@ -27,23 +26,16 @@ public class rankingPersonal extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			rankingPersonal dialog = new rankingPersonal();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	/**
 	 * Create the dialog.
 	 */
 	public rankingPersonal() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(rankingPersonal.class.getResource("/Recursos/LogoAltice.jpg")));
 		setResizable(false);
 		setBounds(100, 100, 450, 300);
-		setTitle("Altice - Ranking de Ventas por Empleado");
+		setTitle("Ranking de Personal");
 		setSize(900, 600);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());

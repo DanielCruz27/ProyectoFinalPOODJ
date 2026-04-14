@@ -24,19 +24,11 @@ public class ListarServicios extends JDialog {
 	private JCheckBox chkNetflix, chkHBO, chkDisney, chkPrime, chkAlticeTV;
 	private JPanel panelChecks;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ListarServicios dialog = new ListarServicios("admin"); 
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public ListarServicios(String rol) {
-		setTitle("Altice - Consulta y Edición de Catálogo");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListarServicios.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Listar y Modificar");
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setModal(true);

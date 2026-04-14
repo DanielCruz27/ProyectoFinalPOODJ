@@ -17,7 +17,8 @@ public class PagarContrato extends JDialog {
 	private float deudaActual = 0;
 
 	public PagarContrato() {
-		setTitle("Altice - Realizar Pago");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(PagarContrato.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Pagar Contrato");
 		setModal(true);
 		setSize(450, 400);
 		setLocationRelativeTo(null);

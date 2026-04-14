@@ -22,6 +22,7 @@ import Logico.Pago;
 import Logico.Tarjeta;
 import Logico.Efectivo;
 import Logico.Cuenta;
+import java.awt.Toolkit;
 
 public class MisFacturas extends JDialog {
 
@@ -32,7 +33,8 @@ public class MisFacturas extends JDialog {
 	private Cliente clienteLogueado;
 
 	public MisFacturas() {
-		setTitle("Altice - Mis Facturas Pagadas");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MisFacturas.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Mis Facturas");
 		setModal(true);
 		setSize(600, 450);
 		setLocationRelativeTo(null);

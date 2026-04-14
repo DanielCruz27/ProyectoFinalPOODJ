@@ -17,19 +17,10 @@ public class SuspenderCliente extends JDialog {
 	private Cliente seleccionado = null;
 	private JButton btnAccion; 
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			SuspenderCliente dialog = new SuspenderCliente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public SuspenderCliente() {
-		setTitle("Altice - Control de Estado de Clientes");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(SuspenderCliente.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Suspender / Activar Cliente");
 		setSize(850, 500);
 		setLocationRelativeTo(null);
 		setModal(true);

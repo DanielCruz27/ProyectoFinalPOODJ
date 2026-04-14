@@ -15,25 +15,10 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logico.Altice;
+import java.awt.Toolkit;
 
 public class totalGeneradoReporte extends JDialog {
-	public static void main(String[] args) {
 
-		try {
-
-			totalGeneradoReporte dialog = new totalGeneradoReporte();
-
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-			dialog.setVisible(true);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-
-	}
 	/**
 	 * 
 	 */
@@ -41,7 +26,8 @@ public class totalGeneradoReporte extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	public totalGeneradoReporte() {
-		setTitle("Altice - Reporte Financiero de Ingresos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(totalGeneradoReporte.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Finanzas");
 		setModal(true);
 		setSize(800, 600);
 		setLocationRelativeTo(null);

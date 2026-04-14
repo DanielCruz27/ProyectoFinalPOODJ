@@ -20,6 +20,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Logico.Altice;
+import java.awt.Toolkit;
 
 public class InstalacionPorZona extends JDialog {
 
@@ -28,7 +29,8 @@ public class InstalacionPorZona extends JDialog {
 	private Color azulAltice = new Color(0, 102, 204);
 
 	public InstalacionPorZona() {
-		setTitle("Altice - Reporte Técnico por Zona");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InstalacionPorZona.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Trabajos por Zona");
 		setModal(true);
 		setSize(750, 500);
 		setLocationRelativeTo(null);

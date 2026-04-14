@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import Logico.Altice;
 import Logico.Cliente;
+import java.awt.Toolkit;
 
 public class MetricasCalidad extends JDialog {
 
@@ -23,7 +24,8 @@ public class MetricasCalidad extends JDialog {
 	private Color azulAltice = new Color(0, 102, 204);
 
 	public MetricasCalidad() {
-		setTitle("Altice - Dashboard de Métricas de Calidad");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MetricasCalidad.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Métricas de Calidad");
 		setModal(true);
 		setSize(750, 550); 
 		setLocationRelativeTo(null);

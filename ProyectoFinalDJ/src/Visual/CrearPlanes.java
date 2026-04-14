@@ -21,18 +21,11 @@ public class CrearPlanes extends JDialog {
 	private JSpinner spnVelocidad, spnMinutosHogar;
 	private JCheckBox chkNetflix, chkHBO, chkDisney, chkPrime, chkAlticeTV;
 
-	public static void main(String[] args) {
-		try {
-			CrearPlanes dialog = new CrearPlanes();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public CrearPlanes() {
-		setTitle("Altice - Registro de Planes y Servicios");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(CrearPlanes.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Crear Planes");
 		setModal(true);
 		setResizable(false);
 		setSize(500, 650);

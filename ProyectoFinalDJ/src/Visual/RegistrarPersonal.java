@@ -19,18 +19,11 @@ public class RegistrarPersonal extends JDialog {
 	private JPanel panelEspecializado;
 	private JButton btnRegistrar;
 
-	public static void main(String[] args) {
-		try {
-			RegistrarPersonal dialog = new RegistrarPersonal();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public RegistrarPersonal() {
-		setTitle("Altice - Registro de Personal");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistrarPersonal.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Registro de Personal");
 		setResizable(false);
 		setModal(true);
 		setSize(500, 600);
@@ -47,7 +40,7 @@ public class RegistrarPersonal extends JDialog {
 		panelHeader.setBounds(0, 0, 500, 40);
 		contentPanel.add(panelHeader);
 
-		JLabel lblTitulo = new JLabel("REGISTRO DE NUEVO EMPLEADO");
+		JLabel lblTitulo = new JLabel("REGISTRO DE PERSONAL");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);

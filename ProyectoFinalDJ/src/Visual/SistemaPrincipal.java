@@ -3,14 +3,12 @@ package Visual;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.time.LocalDateTime;
@@ -21,7 +19,6 @@ import javax.swing.border.*;
 import Logico.Altice;
 import Logico.Cliente;
 import Logico.Personal;
-import Logico.Usuario;
 
 public class SistemaPrincipal extends JFrame {
 

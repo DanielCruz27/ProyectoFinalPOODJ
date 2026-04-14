@@ -24,19 +24,11 @@ public class ListarPersonal extends JDialog {
 
 	private JLabel lblDatoExtra1, lblDatoExtra2, lblDatoExtra3;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ListarPersonal dialog = new ListarPersonal();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public ListarPersonal() {
-		setTitle("Altice - Gestión de Personal");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListarPersonal.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Listar y Modificar Personal");
 		setSize(900, 720); 
 		setLocationRelativeTo(null);
 		setModal(true);

@@ -15,19 +15,11 @@ public class ClientesEnAlerta extends JDialog {
 	private JTable table;
 	private DefaultTableModel model;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			ClientesEnAlerta dialog = new ClientesEnAlerta();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public ClientesEnAlerta() {
-		setTitle("Altice - Monitor de Clientes en Alerta");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientesEnAlerta.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Clientes en Alerta");
 		setResizable(false);
 		setSize(800, 500); 
 		setLocationRelativeTo(null);

@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -22,10 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import Logico.Altice;
 import Logico.Cliente;
@@ -44,26 +43,63 @@ public class Principal_InicioSesion extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				boolean cargado = false;
+				String nombreRespaldoHoy = "Altice_Respaldo_" + java.time.LocalDate.now() + ".dat";
+				File archivoPrincipal = new File("Alticee.dat");
+
 				try {
-					FileInputStream fileIn = new FileInputStream("Alticee.dat");
-					ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-					Altice.setInstance((Altice) objectIn.readObject());
-					objectIn.close();
-					fileIn.close();
+					if (archivoPrincipal.exists()) {
+						FileInputStream fileIn = new FileInputStream(archivoPrincipal);
+						ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+						Altice.setInstance((Altice) objectIn.readObject());
+						objectIn.close();
+						fileIn.close();
+						cargado = true;
+					}
 				} catch (Exception e) {
-					System.out.println("No se encontró archivo de datos. Iniciando sistema nuevo.");
+					JOptionPane.showMessageDialog(null, "Error al leer Alticee.dat: " + e.getMessage(), "Error de Datos", JOptionPane.ERROR_MESSAGE);
+				}
+
+				if (!cargado) {
+					try {
+						File archivoRespaldo = new File(nombreRespaldoHoy);
+						String rutaEscritorio = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + nombreRespaldoHoy;
+						File archivoRespaldoDesktop = new File(rutaEscritorio);
+
+						File archivoALeer = null;
+						if (archivoRespaldo.exists()) {
+							archivoALeer = archivoRespaldo;
+						} else if (archivoRespaldoDesktop.exists()) {
+							archivoALeer = archivoRespaldoDesktop;
+						}
+
+						if (archivoALeer != null) {
+							FileInputStream fileIn = new FileInputStream(archivoALeer);
+							ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+							Altice.setInstance((Altice) objectIn.readObject());
+							objectIn.close();
+							fileIn.close();
+							cargado = true;
+
+						}
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "No se pudo cargar el respaldo: " + ex.getMessage(), "Error de Respaldo", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+
+				if (!cargado) {
+					JOptionPane.showMessageDialog(null, "No se encontró base de datos ni respaldo. El sistema iniciará vacío.", "Inicio Limpio", JOptionPane.WARNING_MESSAGE);
 				}
 
 				try {
 					Principal_InicioSesion frame = new Principal_InicioSesion();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error crítico al iniciar la interfaz: " + e.getMessage(), "Error Crítico", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 	}
-
 	public Principal_InicioSesion() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Principal_InicioSesion.class.getResource("/Recursos/LogoAltice.jpg")));
 		setTitle("Altice - Inicio de Sesión");
@@ -163,6 +199,10 @@ public class Principal_InicioSesion extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Altice - Error", JOptionPane.ERROR_MESSAGE);
 				}
+
+				/*SistemaPrincipal sistema = new SistemaPrincipal("administrador");
+				sistema.setVisible(true);
+				dispose();*/
 			}
 		});
 		panelLogin.add(btnAcceder);

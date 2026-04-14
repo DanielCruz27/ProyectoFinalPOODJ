@@ -17,19 +17,11 @@ public class DarBajaPersonal extends JDialog {
 	private Personal seleccionado = null;
 	private JButton btnAccion;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			DarBajaPersonal dialog = new DarBajaPersonal();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public DarBajaPersonal() {
-		setTitle("Altice - Gestión de Estado de Personal");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DarBajaPersonal.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Dar de Baja / Reactivar");
 		setSize(850, 500);
 		setLocationRelativeTo(null);
 		setModal(true);

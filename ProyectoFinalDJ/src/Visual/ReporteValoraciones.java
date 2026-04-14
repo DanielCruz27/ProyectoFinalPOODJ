@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Logico.Altice;
 import Logico.Valoracion;
+import java.awt.Toolkit;
 
 public class ReporteValoraciones extends JDialog {
 
@@ -27,7 +28,8 @@ public class ReporteValoraciones extends JDialog {
 	private DefaultTableModel model;
 
 	public ReporteValoraciones() {
-		setTitle("Altice - Listado de Valoraciones de Clientes");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReporteValoraciones.class.getResource("/Recursos/LogoAltice.jpg")));
+		setTitle("Valoraciones de Clientes");
 		setModal(true);
 		setSize(750, 500);
 		setLocationRelativeTo(null);
