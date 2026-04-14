@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 public class Pago implements Serializable {
 
-	
-
 	/**
 	 * 
 	 */
@@ -18,7 +16,7 @@ public class Pago implements Serializable {
 	private MetodoDePago metodoUtilizado;
 	private float itbis;
 	private Contrato elContrato;
-	
+
 	public Pago(String idFactura, LocalDate fechaEmision, float montoTotal, boolean estadoPago,
 			MetodoDePago metodoUtilizado, float itbis, Contrato elContrato) {
 		super();
@@ -72,5 +70,5 @@ public class Pago implements Serializable {
 	public void setElContrato(Contrato elContrato) {
 		this.elContrato = elContrato;
 	}
-	
+
 }

@@ -3,14 +3,14 @@ package Logico;
 import java.io.Serializable;
 
 public abstract class MetodoDePago implements Serializable{
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	protected String nombreTitular;
 	protected String idMetodo;
-	
+
 	public MetodoDePago(String nombreTitular, String idMetodo) {
 		super();
 		this.nombreTitular = nombreTitular;

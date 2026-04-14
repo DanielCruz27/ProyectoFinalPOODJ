@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -42,24 +43,22 @@ public class MiContrato extends JDialog {
 		setSize(600, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 600, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("DETALLES DE MI CONTRATO");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- INFORMACIÓN GENERAL ---
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBackground(Color.WHITE);
 		panelInfo.setBorder(new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Datos Generales ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 11), new Color(0, 102, 204)));
@@ -85,7 +84,6 @@ public class MiContrato extends JDialog {
 		lblVendedor.setBounds(130, 50, 250, 14);
 		panelInfo.add(lblVendedor);
 
-		// --- TABLA DE SERVICIOS ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 150, 545, 200);
 		contentPanel.add(scrollPane);
@@ -95,11 +93,10 @@ public class MiContrato extends JDialog {
 			@Override
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		
+
 		tableServicios = new JTable(model);
 		scrollPane.setViewportView(tableServicios);
 
-		// --- CARGAR DATOS ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Cliente) {
 			clienteLogueado = (Cliente) user;
@@ -125,43 +122,52 @@ public class MiContrato extends JDialog {
 
 	private void cargarDatosContrato() {
 		try {
+			if (clienteLogueado == null) {
+				JOptionPane.showMessageDialog(this, "No hay un cliente logueado en el sistema.", "Error de Sesión", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
 			Contrato contrato = clienteLogueado.getMiContrato();
-			
+
 			if (contrato != null) {
-				// Cargar labels
 				lblFechaFirma.setText(contrato.getFechaFirma().toString());
 				if (contrato.getVendedor() != null) {
 					lblVendedor.setText(contrato.getVendedor().getNombre() + " " + contrato.getVendedor().getApellido());
 				}
-				
-				// Cargar Tabla
+
 				model.setRowCount(0);
 				ArrayList<Servicio> misServicios = contrato.getMisServicios();
-				
-				for (Servicio s : misServicios) {
-					String tipo = "";
-					String numero = "N/A";
-					
-					if (s instanceof PlanHogar) {
-						tipo = "Hogar";
-						numero = ((PlanHogar) s).getNumeroTelefonico();
-					} else if (s instanceof PlanMovil) {
-						tipo = "Móvil";
-						numero = ((PlanMovil) s).getNumeroTelefonico();
+
+				if (misServicios != null) {
+					for (Servicio s : misServicios) {
+						String tipo = "";
+						String numero = "N/A";
+
+						if (s instanceof PlanHogar) {
+							tipo = "Hogar";
+							numero = ((PlanHogar) s).getNumeroTelefonico();
+						} else if (s instanceof PlanMovil) {
+							tipo = "Móvil";
+							numero = ((PlanMovil) s).getNumeroTelefonico();
+						}
+
+						model.addRow(new Object[] {
+								s.getNombreServicio(),
+								tipo,
+								"RD$ " + s.getPrecioBase(),
+								numero
+						});
 					}
-					
-					model.addRow(new Object[] {
-						s.getNombreServicio(),
-						tipo,
-						"RD$ " + s.getPrecioBase(),
-						numero
-					});
 				}
 			} else {
 				lblVendedor.setText("Sin contrato activo todavía.");
+
 			}
 		} catch (Exception e) {
-			System.out.println("Error al cargar contrato: " + e.getMessage());
+			JOptionPane.showMessageDialog(this, 
+					"Ocurrió un problema al cargar los datos de tu contrato:\n" + e.getMessage(), 
+					"Error de Carga", 
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

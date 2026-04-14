@@ -34,18 +34,17 @@ public class HistorialCliente extends JDialog {
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
-		// --- CABECERA ---
+
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 700, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("HISTORIAL DE PAGOS Y FACTURAS ACUMULADAS");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
@@ -56,25 +55,22 @@ public class HistorialCliente extends JDialog {
 		lblCed.setBounds(25, 60, 130, 14);
 		contentPanel.add(lblCed);
 
-		// --- COMBO BOX DE CÉDULAS ---
 		cbxCedulas = new JComboBox<String>();
 		cbxCedulas.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		cbxCedulas.setBounds(150, 57, 220, 25);
 		llenarComboClientes();
 		contentPanel.add(cbxCedulas);
-		
-		// Evento para que cargue la tabla automáticamente al seleccionar
+
 		cbxCedulas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cargarHistorial();
 			}
 		});
 
-		// --- TABLA ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 100, 635, 340);
 		contentPanel.add(scrollPane);
-		
+
 		String headers[] = {"ID Factura", "Subtotal", "Método", "ITBIS (18%)", "Monto Pagado"};
 		model = new DefaultTableModel(null, headers) {
 			@Override
@@ -85,7 +81,6 @@ public class HistorialCliente extends JDialog {
 		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		scrollPane.setViewportView(table);
 
-		// --- BOTONES INFERIORES ---
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBackground(new Color(245, 245, 245));
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -99,8 +94,7 @@ public class HistorialCliente extends JDialog {
 			}
 		});
 		buttonPane.add(btnCerrar);
-		
-		// Cargar datos por defecto si hay clientes
+
 		cargarHistorial();
 	}
 
@@ -113,41 +107,37 @@ public class HistorialCliente extends JDialog {
 	}
 
 	private void cargarHistorial() {
-	    model.setRowCount(0);
-	    // Validamos que no sea el índice 0 ("<< Seleccione... >>")
-	    if (cbxCedulas.getSelectedIndex() <= 0) return;
+		model.setRowCount(0);
+		if (cbxCedulas.getSelectedIndex() <= 0) return;
 
-	    String seleccion = cbxCedulas.getSelectedItem().toString();
-	    String cedula = seleccion.split(" - ")[0]; 
-	    
-	    Cliente client = Altice.getInstance().buscarClienteByCedula(cedula);
-	    
-	    if (client != null && client.getMisPagos() != null) {
-	        for (Pago p : client.getMisPagos()) {
-	            
-	            // 1. Identificar el método de pago
-	            String metodo = "Otro";
-	            if (p.getMetodoUtilizado() instanceof Efectivo) {
-	                metodo = "Efectivo";
-	            } else if (p.getMetodoUtilizado() instanceof Tarjeta) {
-	                metodo = "Tarjeta";
-	            } else if (p.getMetodoUtilizado() instanceof Cuenta) {
-	                metodo = "Transferencia";
-	            }
+		String seleccion = cbxCedulas.getSelectedItem().toString();
+		String cedula = seleccion.split(" - ")[0]; 
 
-	            // 2. Calcular subtotal (Monto Total - ITBIS)
-	            // Usamos p.getItbis() porque así se llama en tu clase Pago
-	            float subtotal = p.getMontoTotal() - p.getItbis();
+		Cliente client = Altice.getInstance().buscarClienteByCedula(cedula);
 
-	            // 3. Agregar a la tabla con los nombres exactos de tus getters
-	            model.addRow(new Object[]{
-	                p.getIdFactura(), // Coincide con tu getIdFactura()
-	                "RD$ " + String.format("%.2f", subtotal),
-	                metodo,
-	                "RD$ " + String.format("%.2f", p.getItbis()), // Coincide con tu getItbis()
-	                "RD$ " + String.format("%.2f", p.getMontoTotal())
-	            });
-	        }
-	    }
+		if (client != null && client.getMisPagos() != null) {
+			for (Pago p : client.getMisPagos()) {
+
+				String metodo = "Otro";
+				if (p.getMetodoUtilizado() instanceof Efectivo) {
+					metodo = "Efectivo";
+				} else if (p.getMetodoUtilizado() instanceof Tarjeta) {
+					metodo = "Tarjeta";
+				} else if (p.getMetodoUtilizado() instanceof Cuenta) {
+					metodo = "Transferencia";
+				}
+
+
+				float subtotal = p.getMontoTotal() - p.getItbis();
+
+				model.addRow(new Object[]{
+						p.getIdFactura(), 
+						"RD$ " + String.format("%.2f", subtotal),
+						metodo,
+						"RD$ " + String.format("%.2f", p.getItbis()), 
+						"RD$ " + String.format("%.2f", p.getMontoTotal())
+				});
+			}
+		}
 	}
 }

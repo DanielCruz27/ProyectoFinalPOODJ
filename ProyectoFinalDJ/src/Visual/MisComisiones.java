@@ -37,24 +37,22 @@ public class MisComisiones extends JDialog {
 		setSize(450, 320);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 450, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("PANEL DE INCENTIVOS COMERCIALES");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- PANEL DE DATOS ---
 		JPanel panelData = new JPanel();
 		panelData.setBackground(Color.WHITE);
 		panelData.setBorder(new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Resumen de Ganancias ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 11), new Color(0, 102, 204)));
@@ -86,7 +84,6 @@ public class MisComisiones extends JDialog {
 		lblMontoComision.setBounds(210, 90, 140, 25);
 		panelData.add(lblMontoComision);
 
-		// --- CARGAR DATOS ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Personal) {
 			comercialLogueado = (Personal) user;
@@ -111,21 +108,19 @@ public class MisComisiones extends JDialog {
 	}
 
 	private void calcularComisiones() {
-	    try {
-	        if (comercialLogueado == null) {
-	            throw new Exception("Vendedor no identificado.");
-	        }
+		try {
+			if (comercialLogueado == null) {
+				throw new Exception("Vendedor no identificado.");
+			}
 
-	        // Llamamos a la lógica centralizada en Altice
-	        double monto = Altice.getInstance().calcularComisionesPorVendedor(comercialLogueado.getIdEmpleado());
-	        int cantVentas = Altice.getInstance().buscarContratoByUser().size();
-	        
-	        // Mostramos en la UI
-	        lblCantVentas.setText(String.valueOf(cantVentas));
-	        lblMontoComision.setText("RD$ " + String.format("%.2f", monto));
+			double monto = Altice.getInstance().calcularComisionesPorVendedor(comercialLogueado.getIdEmpleado());
+			int cantVentas = Altice.getInstance().buscarContratoByUser().size();
 
-	    } catch (Exception e) {
-	        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-	    }
+			lblCantVentas.setText(String.valueOf(cantVentas));
+			lblMontoComision.setText("RD$ " + String.format("%.2f", monto));
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+		}
 	}
 }

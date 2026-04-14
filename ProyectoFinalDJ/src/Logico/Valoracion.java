@@ -8,9 +8,9 @@ public class Valoracion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String idValoracion;
 	private String comentario;
-	private int cantidadEstrellas; // Del 1 al 5
+	private int cantidadEstrellas; 
 	private LocalDate fecha;
-	private Cliente elCliente; // Para saber quién opinó
+	private Cliente elCliente;
 
 	public Valoracion(String idValoracion, String comentario, int cantidadEstrellas, LocalDate fecha, Cliente elCliente) {
 		super();

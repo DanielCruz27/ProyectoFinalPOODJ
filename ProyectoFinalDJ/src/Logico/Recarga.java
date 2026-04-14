@@ -1,14 +1,14 @@
 package Logico;
 
 public class Recarga extends Servicio {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private int vigencia;
 	private float MontoARecargar;
-	
+
 	public Recarga(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio,  int vigencia, float montoARecargar) {
 		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
 		this.vigencia = vigencia;

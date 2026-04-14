@@ -13,13 +13,13 @@ public class RegistrarCliente extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtCodigo, txtNombre, txtApellido, txtDireccion, txtEmail, txtCedula; // <--- Agregado txtCedula
+	private JTextField txtCodigo, txtNombre, txtApellido, txtDireccion, txtEmail, txtCedula; 
 	private JPasswordField txtPassword;
 	private JComboBox<String> cbxVivienda, cbxPlanes;
 	private JTable tableServicios;
 	private DefaultTableModel tableModel;
 	private JLabel lblTotal;
-	
+
 	private ArrayList<Servicio> serviciosParaContrato = new ArrayList<Servicio>();
 
 	public static void main(String[] args) {
@@ -37,27 +37,25 @@ public class RegistrarCliente extends JDialog {
 		setTitle("Altice - Registro de Cliente y Contratación");
 		setModal(true);
 		setResizable(false);
-		setSize(650, 780); // Aumentamos un poco el alto para la cédula
+		setSize(650, 780); 
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 650, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("REGISTRO DE CLIENTE Y CONTRATO");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- DATOS PERSONALES ---
 		JLabel lblId = new JLabel("Código:");
 		lblId.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblId.setBounds(30, 60, 100, 14);
@@ -80,7 +78,6 @@ public class RegistrarCliente extends JDialog {
 		cbxVivienda.setBounds(180, 80, 180, 25);
 		contentPanel.add(cbxVivienda);
 
-		// FILA 2: Nombre y Apellido
 		JLabel lblNom = new JLabel("Nombre:");
 		lblNom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblNom.setBounds(30, 120, 100, 14);
@@ -101,7 +98,6 @@ public class RegistrarCliente extends JDialog {
 		txtApellido.setBounds(310, 140, 250, 25);
 		contentPanel.add(txtApellido);
 
-		// FILA 3: Cédula y Dirección (Dirección ocupa más)
 		JLabel lblCed = new JLabel("Cédula:");
 		lblCed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblCed.setBounds(30, 180, 100, 14);
@@ -122,7 +118,6 @@ public class RegistrarCliente extends JDialog {
 		txtDireccion.setBounds(310, 200, 250, 25);
 		contentPanel.add(txtDireccion);
 
-		// FILA 4: Email y Password
 		JLabel lblEmail = new JLabel("Correo Electrónico:");
 		lblEmail.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblEmail.setBounds(30, 240, 150, 14);
@@ -142,7 +137,6 @@ public class RegistrarCliente extends JDialog {
 		txtPassword.setBounds(310, 260, 250, 25);
 		contentPanel.add(txtPassword);
 
-		// --- PANEL DE CONTRATO ---
 		JPanel panelVenta = new JPanel();
 		panelVenta.setBackground(new Color(250, 250, 250));
 		TitledBorder bordeVenta = new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Configuración del Contrato ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
@@ -187,7 +181,6 @@ public class RegistrarCliente extends JDialog {
 		lblTotal.setBounds(300, 285, 250, 20);
 		panelVenta.add(lblTotal);
 
-		// --- BOTONES INFERIORES ---
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -247,71 +240,67 @@ public class RegistrarCliente extends JDialog {
 	}
 
 	private void realizarRegistro() {
-	    try {
-	        // 1. Validamos los campos de texto
-	        if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
-	            txtDireccion.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty() ||
-	            new String(txtPassword.getPassword()).isEmpty()) {
-	            throw new Exception("Todos los campos obligatorios deben estar llenos.");
-	        }
-	        
-	        // --- NUEVA VALIDACIÓN DE ZONA ---
-	        if (cbxVivienda.getSelectedIndex() <= 0) {
-	            throw new Exception("Debe asignar una zona de vivienda al cliente.");
-	        }
-	        // --------------------------------
+		try {
+			if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
+					txtDireccion.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty() ||
+					new String(txtPassword.getPassword()).isEmpty()) {
+				throw new Exception("Todos los campos obligatorios deben estar llenos.");
+			}
 
-	        String nombre = txtNombre.getText().trim();
-	        String apellido = txtApellido.getText().trim();
-	        String userStr = nombre.toLowerCase().replace(" ", "") + "." + apellido.toLowerCase().replace(" ", "");
-	        
-	        if (!Altice.getInstance().buscarUsuario(userStr)) {
-	            Usuario user = new Usuario(userStr, new String(txtPassword.getPassword()));
-	            
-	            Cliente client = new Cliente(
-	                txtCodigo.getText(),            
-	                nombre,      
-	                apellido,    
-	                txtEmail.getText().trim(),       
-	                txtDireccion.getText().trim(),   
-	                txtCedula.getText().trim(),      
-	                user,                                           
-	                cbxVivienda.getSelectedItem().toString(), 
-	                0,                                              
-	                true,                                          
-	                null,                                           
-	                0.0f,                                           
-	                0,                                              
-	                new ArrayList<Pago>(),          
-	                null                            
-	            );
+			if (cbxVivienda.getSelectedIndex() <= 0) {
+				throw new Exception("Debe asignar una zona de vivienda al cliente.");
+			}
 
-	            Altice.getInstance().InsertaCliente(client);
+			String nombre = txtNombre.getText().trim();
+			String apellido = txtApellido.getText().trim();
+			String userStr = nombre.toLowerCase().replace(" ", "") + "." + apellido.toLowerCase().replace(" ", "");
 
-	            String idVendedor = "V-000";
-	            if (Altice.getInstance().getUsuarioLogueado() instanceof Personal) {
-	                idVendedor = ((Personal)Altice.getInstance().getUsuarioLogueado()).getIdEmpleado();
-	            }
+			if (!Altice.getInstance().buscarUsuario(userStr)) {
+				Usuario user = new Usuario(userStr, new String(txtPassword.getPassword()));
 
-	            for (Servicio s : serviciosParaContrato) {
-	                Altice.getInstance().contratarServicio(client.getIdCliente(), s.getIdServicio(), idVendedor);
-	            }
+				Cliente client = new Cliente(
+						txtCodigo.getText(),            
+						nombre,      
+						apellido,    
+						txtEmail.getText().trim(),       
+						txtDireccion.getText().trim(),   
+						txtCedula.getText().trim(),      
+						user,                                           
+						cbxVivienda.getSelectedItem().toString(), 
+						0,                                              
+						true,                                          
+						null,                                           
+						0.0f,                                           
+						0,                                              
+						new ArrayList<Pago>(),          
+						null                            
+						);
 
-	            JOptionPane.showMessageDialog(this, "Registro Exitoso.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-	            clean();
-	        } else {
-	            JOptionPane.showMessageDialog(this, "El usuario ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	    } catch (Exception ex) {
-	        // Aquí es donde cae el "throw new Exception" que pusimos arriba
-	        JOptionPane.showMessageDialog(this, ex.getMessage(), "Atención", JOptionPane.WARNING_MESSAGE);
-	    }
+				Altice.getInstance().InsertaCliente(client);
+
+				String idVendedor = "V-000";
+				if (Altice.getInstance().getUsuarioLogueado() instanceof Personal) {
+					idVendedor = ((Personal)Altice.getInstance().getUsuarioLogueado()).getIdEmpleado();
+				}
+
+				for (Servicio s : serviciosParaContrato) {
+					Altice.getInstance().contratarServicio(client.getIdCliente(), s.getIdServicio(), idVendedor);
+				}
+
+				JOptionPane.showMessageDialog(this, "Registro Exitoso.\nUsuario: " + userStr, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+			} else {
+				JOptionPane.showMessageDialog(this, "El usuario ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Atención", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	protected void clean() {
 		txtNombre.setText("");
 		txtApellido.setText("");
-		txtCedula.setText(""); // <--- Limpiar cédula
+		txtCedula.setText(""); 
 		txtDireccion.setText("");
 		txtEmail.setText("");
 		txtPassword.setText("");

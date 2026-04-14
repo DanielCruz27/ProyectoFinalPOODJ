@@ -38,7 +38,7 @@ public class Comercial extends Personal {
 		return "comercial";
 	}
 
-	
+
 
 
 }

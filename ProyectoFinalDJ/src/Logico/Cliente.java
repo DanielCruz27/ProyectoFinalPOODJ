@@ -50,7 +50,7 @@ public class Cliente implements Serializable {
 		} else {
 			this.misPagos = misPagos;
 		}
-		
+
 		if (misMetodos == null) {
 			this.misMetodos = new ArrayList<MetodoDePago>();
 
@@ -107,14 +107,14 @@ public class Cliente implements Serializable {
 	public void setEstadoCliente(boolean estadoCliente) {
 		this.estadoCliente = estadoCliente;
 	}
-	
+
 	public ArrayList<Pago> getMisPagos() {
 		return misPagos;
 	}
 	public void setMisPagos(ArrayList<Pago> misPagos) {
 		this.misPagos = misPagos;
 	}
-	
+
 	public float getDeudaPendiente() {
 		return deudaPendiente;
 	}
@@ -133,19 +133,21 @@ public class Cliente implements Serializable {
 	public void setMiCuenta(Usuario miCuenta) {
 		this.miCuenta = miCuenta;
 	}
-	public int getCantidadAtrasos() {
-		int atrasos = 0;
-	    LocalDate hoy = LocalDate.now();
 
-	    if (misPagos != null) {
-	        for (Pago p : misPagos) {
-	            // Un atraso es un pago NO realizado Y cuya fecha ya pasó
-	            if (!p.isEstadoPago() && p.getFechaEmision().isBefore(hoy)) {
-	                atrasos++;
-	            }
-	        }
-	    }
-	    return atrasos;
+	public int getCantidadAtrasos() {
+
+		int atrasos = 0;
+		LocalDate hoy = LocalDate.now();
+
+		if (misPagos != null) {
+			for (Pago p : misPagos) {
+
+				if (!p.isEstadoPago() && p.getFechaEmision().isBefore(hoy)) {
+					atrasos++;
+				}
+			}
+		}
+		return atrasos;
 	}
 	public String getCedula() {
 		return cedula;
@@ -160,24 +162,24 @@ public class Cliente implements Serializable {
 		this.miContrato = miContrato;
 	}
 	public ArrayList<MetodoDePago> getMisMetodos() {
-	    if (misMetodos == null) {
-	        misMetodos = new ArrayList<MetodoDePago>();
-	    }
-	    return misMetodos;
+		if (misMetodos == null) {
+			misMetodos = new ArrayList<MetodoDePago>();
+		}
+		return misMetodos;
 	}
 	public void setMisMetodos(ArrayList<MetodoDePago> misMetodos) {
 		this.misMetodos = misMetodos;
 	}
-	
+
 	public void addMetodoPago(MetodoDePago metodo) {
-	    if (misMetodos == null) {
-	        misMetodos = new ArrayList<MetodoDePago>();
-	    }
-	    this.misMetodos.add(metodo);
+		if (misMetodos == null) {
+			misMetodos = new ArrayList<MetodoDePago>();
+		}
+		this.misMetodos.add(metodo);
 	}
-		
-	
-	
+
+
+
 
 
 }

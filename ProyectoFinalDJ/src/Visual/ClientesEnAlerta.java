@@ -14,7 +14,6 @@ public class ClientesEnAlerta extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
-	private Object[] raw;
 
 	public static void main(String[] args) {
 		try {
@@ -30,28 +29,26 @@ public class ClientesEnAlerta extends JDialog {
 	public ClientesEnAlerta() {
 		setTitle("Altice - Monitor de Clientes en Alerta");
 		setResizable(false);
-		setSize(800, 500); // Un poco más ancho para que se vea profesional
+		setSize(800, 500); 
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA ESTILO ALTICE ---
 		JPanel panelHeader = new JPanel();
-		panelHeader.setBackground(new Color(0, 102, 204)); // Azul Altice
+		panelHeader.setBackground(new Color(0, 102, 204)); 
 		panelHeader.setBounds(0, 0, 800, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("CLIENTES EN ALERTA");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA ESTILIZADA ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 60, 745, 340);
 		contentPanel.add(scrollPane);
@@ -62,7 +59,7 @@ public class ClientesEnAlerta extends JDialog {
 			@Override
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		
+
 		table = new JTable(model);
 		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -72,12 +69,11 @@ public class ClientesEnAlerta extends JDialog {
 		table.setRowHeight(25);
 		scrollPane.setViewportView(table);
 
-		// --- BOTÓN CERRAR ---
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBackground(new Color(245, 245, 245));
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-		
+
 		JButton btnCerrar = new JButton("Cerrar ");
 		btnCerrar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
 		btnCerrar.addActionListener(new ActionListener() {
@@ -91,21 +87,20 @@ public class ClientesEnAlerta extends JDialog {
 	}
 
 	private void loadClientesAtrasados() {
-	    model.setRowCount(0);
-	    for (Cliente client : Altice.getInstance().getListaClientes()) {
-	        int atrasos = Altice.getInstance().calcularAtrasosReales(client);
-	        float deudaDinero = Altice.getInstance().calcularMontoDeudaReal(client);
+		model.setRowCount(0);
+		for (Cliente client : Altice.getInstance().getListaClientes()) {
+			int atrasos = Altice.getInstance().calcularAtrasosReales(client);
+			float deudaDinero = Altice.getInstance().calcularMontoDeudaReal(client);
 
-	        // Si el cliente debe dinero o tiene más de un mes de atraso
-	        if (atrasos > 1 || deudaDinero > 0) {
-	            Object[] row = new Object[5];
-	            row[0] = client.getCedula();
-	            row[1] = client.getNombreCliente() + " " + client.getApellidoCliente();
-	            row[2] = (atrasos > 2) ? "Suspendido" : "Activo";
-	            row[3] = "RD$ " + deudaDinero;
-	            row[4] = atrasos;
-	            model.addRow(row);
-	        }
-	    }
+			if (atrasos > 1 || deudaDinero > 0) {
+				Object[] row = new Object[5];
+				row[0] = client.getCedula();
+				row[1] = client.getNombreCliente() + " " + client.getApellidoCliente();
+				row[2] = (atrasos > 2) ? "Suspendido" : "Activo";
+				row[3] = "RD$ " + deudaDinero;
+				row[4] = atrasos;
+				model.addRow(row);
+			}
+		}
 	}
 }

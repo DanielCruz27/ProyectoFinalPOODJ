@@ -48,18 +48,17 @@ public class RegRecarga extends JDialog {
 		setSize(300, 250);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- ESTILO ALTICE ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 300, 35);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblT = new JLabel("RECARGA ");
 		lblT.setForeground(Color.WHITE);
 		lblT.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
@@ -75,7 +74,7 @@ public class RegRecarga extends JDialog {
 		txtNumeroTelefonico.setBorder(new LineBorder(new Color(0, 102, 204)));
 		txtNumeroTelefonico.setBounds(30, 70, 220, 25);
 		contentPanel.add(txtNumeroTelefonico);
-		
+
 		JLabel lblMins = new JLabel("Monto / Minutos a recargar:");
 		lblMins.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		lblMins.setBounds(30, 110, 200, 14);
@@ -86,7 +85,7 @@ public class RegRecarga extends JDialog {
 		spnMinutos.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		spnMinutos.setBounds(30, 130, 100, 25);
 		contentPanel.add(spnMinutos);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(new Color(245, 245, 245));
@@ -101,14 +100,14 @@ public class RegRecarga extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						String numero = txtNumeroTelefonico.getText().trim();
 						int cantidad = (Integer) spnMinutos.getValue();
-						
+
 						if(numero.isEmpty()) {
 							JOptionPane.showMessageDialog(null, "Debe ingresar un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 
 						Servicio service = Altice.getInstance().realizarRecarga(numero, cantidad);
-						
+
 						if(service != null) {
 							String mensaje = "";
 							if(service instanceof PlanHogar) {

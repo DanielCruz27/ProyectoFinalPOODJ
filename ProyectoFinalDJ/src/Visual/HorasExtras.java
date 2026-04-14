@@ -46,24 +46,22 @@ public class HorasExtras extends JDialog {
 		setSize(400, 250);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 400, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("REGISTRAR HORAS EXTRAS");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- CUERPO ---
 		JPanel panelRegistro = new JPanel();
 		panelRegistro.setBackground(Color.WHITE);
 		panelRegistro.setBorder(new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Registro ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 11), new Color(0, 102, 204)));
@@ -75,12 +73,10 @@ public class HorasExtras extends JDialog {
 		lblTxt.setBounds(20, 40, 200, 14);
 		panelRegistro.add(lblTxt);
 
-		// Spinner para las horas (Mínimo 1, Máximo 8, Paso 1)
 		spnHoras = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
 		spnHoras.setBounds(230, 37, 70, 22);
 		panelRegistro.add(spnHoras);
 
-		// --- CARGAR TECNICO ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Tecnico) {
 			tecnicoLogueado = (Tecnico) user;
@@ -93,11 +89,9 @@ public class HorasExtras extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnGuardar = new JButton("Registrar");
-				// --- CAMBIOS DE COLOR AQUÍ ---
-				btnGuardar.setBackground(new Color(0, 153, 51)); // Verde oscuro
-				btnGuardar.setForeground(Color.WHITE);          // Texto blanco
-				btnGuardar.setFocusPainted(false);             // Quita el cuadrito feo al hacer click
-				// ------------------------------
+				btnGuardar.setBackground(new Color(0, 153, 51)); 
+				btnGuardar.setForeground(Color.WHITE);          
+				btnGuardar.setFocusPainted(false);            
 				btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 11));
 				btnGuardar.addActionListener(new ActionListener() {
 					@Override
@@ -127,17 +121,16 @@ public class HorasExtras extends JDialog {
 			}
 
 			int horasNuevas = (int) spnHoras.getValue();
-			
-			// Sumamos a las horas que ya tiene el técnico
+
 			int horasActuales = tecnicoLogueado.getHorasExtrasTrabajadas();
 			tecnicoLogueado.setHorasExtrasTrabajadas(horasActuales + horasNuevas);
-			
+
 			JOptionPane.showMessageDialog(this, 
-				"Se han registrado " + horasNuevas + " horas extras correctamente.\nTotal acumulado: " + tecnicoLogueado.getHorasExtrasTrabajadas() + " h", 
-				"Éxito", JOptionPane.INFORMATION_MESSAGE);
-			
+					"Se han registrado " + horasNuevas + " horas extras correctamente.\nTotal acumulado: " + tecnicoLogueado.getHorasExtrasTrabajadas() + " h", 
+					"Éxito", JOptionPane.INFORMATION_MESSAGE);
+
 			dispose();
-			
+
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

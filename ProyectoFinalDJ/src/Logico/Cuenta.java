@@ -1,7 +1,7 @@
 package Logico;
 
 public class Cuenta extends MetodoDePago {
-	
+
 	/**
 	 * 
 	 */
@@ -9,7 +9,7 @@ public class Cuenta extends MetodoDePago {
 	private double numeroCuenta;
 	private String tipoDeCuenta;
 	private String banco;
-	
+
 	public Cuenta(String nombreTitular, String idMetodo, double numeroCuenta, String tipoDeCuenta, String banco) {
 		super(nombreTitular, idMetodo);
 		this.numeroCuenta = numeroCuenta;
@@ -34,11 +34,11 @@ public class Cuenta extends MetodoDePago {
 	public void setBanco(String banco) {
 		this.banco = banco;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return "Banco: " + banco + " - No. " + numeroCuenta;
+		return "Banco: " + banco + " - No. " + numeroCuenta;
 	}
-	
+
 
 }

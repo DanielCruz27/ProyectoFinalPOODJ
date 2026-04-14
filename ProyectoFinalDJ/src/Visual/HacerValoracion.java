@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 
 import Logico.Altice;
 import Logico.Cliente;
+import Logico.Valoracion;
 
 public class HacerValoracion extends JDialog {
 
@@ -37,38 +38,35 @@ public class HacerValoracion extends JDialog {
 		setSize(450, 380);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 450, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("TU OPINIÓN NOS IMPORTA");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- CUERPO ---
 		JLabel lblPregunta = new JLabel("¿Cómo calificaría nuestro servicio?");
 		lblPregunta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPregunta.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblPregunta.setBounds(25, 60, 385, 20);
 		contentPanel.add(lblPregunta);
 
-		// Combo de Estrellas (Usando emojis para que se vea nítido)
 		String[] estrellas = {
-			"Seleccionar...", 
-			"⭐ (Muy Malo)", 
-			"⭐⭐ (Regular)", 
-			"⭐⭐⭐ (Bueno)", 
-			"⭐⭐⭐⭐ (Muy Bueno)", 
-			"⭐⭐⭐⭐⭐ (Excelente)"
+				"Seleccionar...", 
+				"⭐ (Muy Malo)", 
+				"⭐⭐ (Regular)", 
+				"⭐⭐⭐ (Bueno)", 
+				"⭐⭐⭐⭐ (Muy Bueno)", 
+				"⭐⭐⭐⭐⭐ (Excelente)"
 		};
 		cbxEstrellas = new JComboBox<>(estrellas);
 		cbxEstrellas.setBounds(100, 90, 235, 30);
@@ -89,7 +87,6 @@ public class HacerValoracion extends JDialog {
 		txtComentario.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		scrollPane.setViewportView(txtComentario);
 
-		// Cargar usuario
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Cliente) {
 			clienteLogueado = (Cliente) user;
@@ -130,19 +127,25 @@ public class HacerValoracion extends JDialog {
 			return;
 		}
 
-		// Aquí podrías guardar esto en una lista de Valoraciones en Altice si quieres reportes después
-		String puntuacion = cbxEstrellas.getSelectedItem().toString();
+		int estrellas = cbxEstrellas.getSelectedIndex(); 
 		String comentario = txtComentario.getText().trim();
 
-		// Simulación de guardado
-		System.out.println("Nueva valoración de: " + clienteLogueado.getNombreCliente());
-		System.out.println("Puntuación: " + puntuacion);
-		System.out.println("Comentario: " + (comentario.isEmpty() ? "Sin comentario" : comentario));
+		String idVal = "VAL-" + Altice.getInstance().getcodigoValoracion();
+
+		Valoracion nuevaVal = new Valoracion(
+				idVal, 
+				comentario, 
+				estrellas, 
+				java.time.LocalDate.now(), 
+				clienteLogueado
+				);
+
+		Altice.getInstance().registrarValoracion(nuevaVal);
 
 		JOptionPane.showMessageDialog(this, 
-			"¡Gracias por tu valoración!\nTu feedback nos ayuda a mejorar día a día.", 
-			"Valoración Recibida", JOptionPane.INFORMATION_MESSAGE);
-		
+				"¡Gracias " + clienteLogueado.getNombreCliente() + "!\nTu valoración ha sido guardada con éxito.", 
+				"Éxito", JOptionPane.INFORMATION_MESSAGE);
+
 		dispose();
 	}
 }

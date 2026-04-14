@@ -37,24 +37,22 @@ public class MisFacturas extends JDialog {
 		setSize(600, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 600, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("HISTORIAL DE FACTURAS");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA DE FACTURAS ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 60, 545, 300);
 		contentPanel.add(scrollPane);
@@ -67,13 +65,12 @@ public class MisFacturas extends JDialog {
 				return false;
 			}
 		};
-		
+
 		tableFacturas = new JTable(model);
 		tableFacturas.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tableFacturas.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12));
 		scrollPane.setViewportView(tableFacturas);
 
-		// --- CARGAR DATOS DEL CLIENTE ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Cliente) {
 			clienteLogueado = (Cliente) user;
@@ -88,7 +85,6 @@ public class MisFacturas extends JDialog {
 			{
 				JButton btnCerrar = new JButton("Cerrar");
 				btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 11));
-				// Estilo tradicional sin lambdas
 				btnCerrar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -101,12 +97,10 @@ public class MisFacturas extends JDialog {
 
 	private void cargarMisFacturas() {
 		model.setRowCount(0);
-		
-		// Verificamos que el cliente y su lista de pagos existan
+
 		if (clienteLogueado != null && clienteLogueado.getMisPagos() != null) {
 			for (Pago p : clienteLogueado.getMisPagos()) {
-				
-				// 1. Identificar el nombre del método de pago para que no salga el objeto raro
+
 				String nombreMetodo = "Otro";
 				if (p.getMetodoUtilizado() instanceof Tarjeta) {
 					nombreMetodo = "Tarjeta";
@@ -116,13 +110,12 @@ public class MisFacturas extends JDialog {
 					nombreMetodo = "Transferencia";
 				}
 
-				// 2. Formatear los montos con RD$ y 2 decimales
 				Object[] fila = {
-					p.getIdFactura(),
-					p.getFechaEmision().toString(),
-					nombreMetodo,
-					"RD$ " + String.format("%.2f", p.getItbis()),
-					"RD$ " + String.format("%.2f", p.getMontoTotal())
+						p.getIdFactura(),
+						p.getFechaEmision().toString(),
+						nombreMetodo,
+						"RD$ " + String.format("%.2f", p.getItbis()),
+						"RD$ " + String.format("%.2f", p.getMontoTotal())
 				};
 				model.addRow(fila);
 			}

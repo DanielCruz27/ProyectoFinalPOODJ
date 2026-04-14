@@ -11,33 +11,30 @@ import Logico.Altice;
 
 public class reporteTicket extends JDialog {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public reporteTicket() {
-        setTitle("Altice - Análisis de Reportes y Averías");
-        setSize(700, 500);
-        setLocationRelativeTo(null);
-        setModal(true);
+		setTitle("Altice - Análisis de Reportes y Averías");
+		setSize(700, 500);
+		setLocationRelativeTo(null);
+		setModal(true);
 
-        // 1. Obtener datos
-        DefaultPieDataset dataset = Altice.getInstance().obtenerDatosTickets();
+		DefaultPieDataset dataset = Altice.getInstance().obtenerDatosTickets();
 
-        // 2. Crear gráfico de pastel
-        JFreeChart chart = ChartFactory.createPieChart(
-            "TIPOS DE TICKETS GENERADOS", 
-            dataset, 
-            true, 
-            true, 
-            false
-        );
+		JFreeChart chart = ChartFactory.createPieChart(
+				"TIPOS DE TICKETS GENERADOS", 
+				dataset, 
+				true, 
+				true, 
+				false
+				);
 
-        chart.setBackgroundPaint(Color.WHITE);
-        
-        // 3. Panel
-        ChartPanel panel = new ChartPanel(chart);
-        getContentPane().add(panel, BorderLayout.CENTER);
-    }
+		chart.setBackgroundPaint(Color.WHITE);
+
+		ChartPanel panel = new ChartPanel(chart);
+		getContentPane().add(panel, BorderLayout.CENTER);
+	}
 }

@@ -37,24 +37,22 @@ public class ReclamarBono extends JDialog {
 		setSize(400, 280);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 400, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("RECLAMAR BONIFICACIÓN");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- CUERPO ---
 		JPanel panelMonto = new JPanel();
 		panelMonto.setBackground(new Color(240, 248, 255));
 		panelMonto.setBorder(new TitledBorder(new LineBorder(new Color(0, 102, 204)), " Resumen de Pago ", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 11), new Color(0, 102, 204)));
@@ -74,7 +72,6 @@ public class ReclamarBono extends JDialog {
 		lblMontoReclamar.setBounds(10, 50, 295, 40);
 		panelMonto.add(lblMontoReclamar);
 
-		// --- CARGAR DATOS ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Tecnico) {
 			tecnicoLogueado = (Tecnico) user;
@@ -117,10 +114,7 @@ public class ReclamarBono extends JDialog {
 		try {
 			ArrayList<Ticket> tickets = Altice.getInstance().getListaTickets();
 			for (Ticket t : tickets) {
-				// Contamos tickets que: 
-				// 1. Estén finalizados (1)
-				// 2. Sean del técnico logueado
-				// 3. NO hayan sido cobrados todavía (Asumiendo que agregaste el boolean o atributo)
+
 				if (t.getEstado() == 1 && t.getTecnicoAsignado() != null) {
 					if (t.getTecnicoAsignado().getIdEmpleado().equalsIgnoreCase(tecnicoLogueado.getIdEmpleado())) {
 						contadorTickets++;
@@ -129,7 +123,7 @@ public class ReclamarBono extends JDialog {
 			}
 			bonoCalculado = contadorTickets * 250.0;
 			lblMontoReclamar.setText("RD$ " + bonoCalculado);
-			
+
 		} catch (Exception e) {
 			lblMontoReclamar.setText("Error");
 		}
@@ -147,21 +141,19 @@ public class ReclamarBono extends JDialog {
 
 		if (confirm == JOptionPane.YES_OPTION) {
 			try {
-				// Aquí está la lógica para "limpiar" el bono
 				ArrayList<Ticket> tickets = Altice.getInstance().getListaTickets();
 				for (Ticket t : tickets) {
 					if (t.getEstado() == 1 && t.getTecnicoAsignado() != null) {
 						if (t.getTecnicoAsignado().getIdEmpleado().equalsIgnoreCase(tecnicoLogueado.getIdEmpleado())) {
-							// Cambiamos el estado a 2 para indicar "Cobrado/Histórico"
-							// O podrías tener un t.setBonoCobrado(true)
+
 							t.setEstado(2); 
 						}
 					}
 				}
-				
+
 				JOptionPane.showMessageDialog(this, "¡Felicidades! Bono reclamado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
-				
+
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Error al procesar el reclamo.", "Error", JOptionPane.ERROR_MESSAGE);
 			}

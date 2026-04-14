@@ -15,7 +15,7 @@ public class Ticket implements Serializable {
 	private LocalDate horaGeneracion;
 	private int estado;
 	private Tecnico tecnicoAsignado;
-	
+
 	public Ticket(String idTicket, Cliente elCliente, String areaAtencion, LocalDate horaGeneracion, int estado, Tecnico tecnicoAsignado) {
 		super();
 		this.idTicket = idTicket;
@@ -23,7 +23,7 @@ public class Ticket implements Serializable {
 		this.areaAtencion = areaAtencion;
 		this.horaGeneracion = horaGeneracion;
 		this.estado = estado;
-		this.tecnicoAsignado = null; // Nadie lo tiene al empezar
+		this.tecnicoAsignado = null; 
 	}
 
 	public String getIdTicket() {
@@ -74,5 +74,5 @@ public class Ticket implements Serializable {
 		this.tecnicoAsignado = tecnicoAsignado;
 	}
 
-	
+
 }

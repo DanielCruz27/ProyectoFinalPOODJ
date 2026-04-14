@@ -34,24 +34,22 @@ public class ConsumoMin extends JDialog {
 		setSize(500, 400);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 500, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("ESTADO DE MINUTOS DISPONIBLES");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 60, 435, 230);
 		contentPanel.add(scrollPane);
@@ -64,11 +62,9 @@ public class ConsumoMin extends JDialog {
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
 
-		// --- CARGAR DATOS ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Cliente) {
 			clienteLogueado = (Cliente) user;
-			// Simulamos consumo para que la data cambie
 			Altice.getInstance().simularConsumoAleatorio(clienteLogueado);
 			cargarTabla();
 		}
@@ -80,7 +76,6 @@ public class ConsumoMin extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnCerrar = new JButton("Cerrar");
-				// Clase anónima tradicional (Sin lambdas)
 				btnCerrar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();

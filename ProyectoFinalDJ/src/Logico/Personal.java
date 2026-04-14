@@ -15,8 +15,8 @@ public abstract class Personal implements Serializable{
 	protected Usuario miCuenta;
 	protected int estado;
 
-	
-	
+
+
 	public Personal(String idEmpleado, String nombre, String apellido, String cedula, float salarioBase, Usuario miCuenta) {
 		super();
 		this.idEmpleado = idEmpleado;
@@ -26,7 +26,7 @@ public abstract class Personal implements Serializable{
 		this.salarioBase = salarioBase;
 		this.miCuenta = miCuenta;
 		this.estado = 1;
-	
+
 	}
 	public String getIdEmpleado() {
 		return idEmpleado;
@@ -46,7 +46,7 @@ public abstract class Personal implements Serializable{
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-	
+
 	public String getCedula() {
 		return cedula;
 	}
@@ -59,17 +59,17 @@ public abstract class Personal implements Serializable{
 	public void setSalarioBase(float salarioBase) {
 		this.salarioBase = salarioBase;
 	}
-	
+
 	public Usuario getMiCuenta() {
 		return miCuenta;
 	}
 	public void setMiCuenta(Usuario miCuenta) {
 		this.miCuenta = miCuenta;
 	}
-	
-	
-	
+
+
 	protected abstract float calcularSueldoNeto();
+
 	public int getEstado() {
 		return estado;
 	}
@@ -77,9 +77,9 @@ public abstract class Personal implements Serializable{
 		this.estado = estado;
 	}
 	public abstract String getRol();
-	
-	
-	
-	
-	
+
+
+
+
+
 }

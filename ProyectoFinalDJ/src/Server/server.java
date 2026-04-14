@@ -22,7 +22,7 @@ public class server extends Thread{
 			JOptionPane.showMessageDialog(null,"Conexion rechazada"+ioe, "Error", JOptionPane.WARNING_MESSAGE);
 			System.exit(1);
 		}
-		
+
 		while (true)
 		{
 			try {
@@ -36,7 +36,7 @@ public class server extends Thread{
 						escritor.write(Byte);
 					oos.close();
 					escritor.close();
-					
+
 				}catch (IOException e) {
 					e.printStackTrace();
 				}

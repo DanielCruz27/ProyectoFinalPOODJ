@@ -19,7 +19,7 @@ public class ListarServicios extends JDialog {
 	private JPanel panelEditar;
 	private JButton btnGuardar; 
 	private Servicio seleccionado = null;
-	
+
 	private JCheckBox chkWa, chkIg, chkFb, chkTk, chkYt;
 	private JCheckBox chkNetflix, chkHBO, chkDisney, chkPrime, chkAlticeTV;
 	private JPanel panelChecks;
@@ -41,7 +41,7 @@ public class ListarServicios extends JDialog {
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -51,7 +51,7 @@ public class ListarServicios extends JDialog {
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 1000, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("GESTIÓN DE CATÁLOGO DE PLANES");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
@@ -66,7 +66,7 @@ public class ListarServicios extends JDialog {
 			@Override
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		
+
 		table = new JTable(model);
 		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		table.getTableHeader().setBackground(new Color(0, 102, 204));
@@ -81,26 +81,37 @@ public class ListarServicios extends JDialog {
 		contentPanel.add(panelEditar);
 
 		JLabel l1 = new JLabel("Nombre:");
-		l1.setBounds(20, 30, 80, 14); panelEditar.add(l1);
-		txtNombre = new JTextField(); txtNombre.setBounds(20, 50, 270, 25); panelEditar.add(txtNombre);
+		l1.setBounds(20, 30, 80, 14); 
+		panelEditar.add(l1);
+		txtNombre = new JTextField();
+		txtNombre.setBounds(20, 50, 270, 25); 
+		panelEditar.add(txtNombre);
 
 		JLabel l2 = new JLabel("Precio Base:");
-		l2.setBounds(20, 85, 100, 14); panelEditar.add(l2);
-		txtPrecio = new JTextField(); txtPrecio.setBounds(20, 105, 120, 25); panelEditar.add(txtPrecio);
+		l2.setBounds(20, 85, 100, 14); 
+		panelEditar.add(l2);
+		txtPrecio = new JTextField(); 
+		txtPrecio.setBounds(20, 105, 120, 25);
+		panelEditar.add(txtPrecio);
 
 		lblEspecial1 = new JLabel("Dato 1:");
-		lblEspecial1.setBounds(20, 145, 150, 14); panelEditar.add(lblEspecial1);
+		lblEspecial1.setBounds(20, 145, 150, 14); 
+		panelEditar.add(lblEspecial1);
 		spnEspecial1 = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-		spnEspecial1.setBounds(20, 165, 100, 25); panelEditar.add(spnEspecial1);
+		spnEspecial1.setBounds(20, 165, 100, 25);
+		panelEditar.add(spnEspecial1);
 
 		lblEspecial2 = new JLabel("Dato 2:");
-		lblEspecial2.setBounds(170, 145, 150, 14); panelEditar.add(lblEspecial2);
+		lblEspecial2.setBounds(170, 145, 150, 14); 
+		panelEditar.add(lblEspecial2);
 		spnEspecial2 = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-		spnEspecial2.setBounds(170, 165, 100, 25); panelEditar.add(spnEspecial2);
+		spnEspecial2.setBounds(170, 165, 100, 25);
+		panelEditar.add(spnEspecial2);
 
 		lblStreaming = new JLabel("Inclusiones:");
 		lblStreaming.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lblStreaming.setBounds(20, 205, 250, 14); panelEditar.add(lblStreaming);
+		lblStreaming.setBounds(20, 205, 250, 14); 
+		panelEditar.add(lblStreaming);
 
 		panelChecks = new JPanel();
 		panelChecks.setBackground(new Color(250, 250, 250));
@@ -109,18 +120,45 @@ public class ListarServicios extends JDialog {
 		panelEditar.add(panelChecks);
 		panelChecks.setLayout(null);
 
-		// Inicializar todos los Checks
-		chkWa = new JCheckBox("WhatsApp"); chkWa.setBounds(5, 5, 120, 20); chkWa.setBackground(new Color(250,250,250));
-		chkIg = new JCheckBox("Instagram"); chkIg.setBounds(5, 30, 120, 20); chkIg.setBackground(new Color(250,250,250));
-		chkFb = new JCheckBox("Facebook"); chkFb.setBounds(5, 55, 120, 20); chkFb.setBackground(new Color(250,250,250));
-		chkTk = new JCheckBox("TikTok"); chkTk.setBounds(135, 5, 120, 20); chkTk.setBackground(new Color(250,250,250));
-		chkYt = new JCheckBox("YouTube"); chkYt.setBounds(135, 30, 120, 20); chkYt.setBackground(new Color(250,250,250));
+		chkWa = new JCheckBox("WhatsApp"); 
+		chkWa.setBounds(5, 5, 120, 20);
+		chkWa.setBackground(new Color(250,250,250));
 
-		chkNetflix = new JCheckBox("Netflix"); chkNetflix.setBounds(5, 5, 120, 20); chkNetflix.setBackground(new Color(250,250,250));
-		chkHBO = new JCheckBox("HBO Max"); chkHBO.setBounds(5, 30, 120, 20); chkHBO.setBackground(new Color(250,250,250));
-		chkDisney = new JCheckBox("Disney+"); chkDisney.setBounds(5, 55, 120, 20); chkDisney.setBackground(new Color(250,250,250));
-		chkPrime = new JCheckBox("Prime Video"); chkPrime.setBounds(135, 5, 120, 20); chkPrime.setBackground(new Color(250,250,250));
-		chkAlticeTV = new JCheckBox("Altice TV"); chkAlticeTV.setBounds(135, 30, 120, 20); chkAlticeTV.setBackground(new Color(250,250,250));
+		chkIg = new JCheckBox("Instagram"); 
+		chkIg.setBounds(5, 30, 120, 20); 
+		chkIg.setBackground(new Color(250,250,250));
+
+		chkFb = new JCheckBox("Facebook"); 
+		chkFb.setBounds(5, 55, 120, 20);
+		chkFb.setBackground(new Color(250,250,250));
+
+		chkTk = new JCheckBox("TikTok"); 
+		chkTk.setBounds(135, 5, 120, 20);
+		chkTk.setBackground(new Color(250,250,250));
+
+		chkYt = new JCheckBox("YouTube"); 
+		chkYt.setBounds(135, 30, 120, 20); 
+		chkYt.setBackground(new Color(250,250,250));
+
+		chkNetflix = new JCheckBox("Netflix");
+		chkNetflix.setBounds(5, 5, 120, 20); 
+		chkNetflix.setBackground(new Color(250,250,250));
+
+		chkHBO = new JCheckBox("HBO Max"); 
+		chkHBO.setBounds(5, 30, 120, 20); 
+		chkHBO.setBackground(new Color(250,250,250));
+
+		chkDisney = new JCheckBox("Disney+"); 
+		chkDisney.setBounds(5, 55, 120, 20); 
+		chkDisney.setBackground(new Color(250,250,250));
+
+		chkPrime = new JCheckBox("Prime Video"); 
+		chkPrime.setBounds(135, 5, 120, 20); 
+		chkPrime.setBackground(new Color(250,250,250));
+
+		chkAlticeTV = new JCheckBox("Altice TV"); 
+		chkAlticeTV.setBounds(135, 30, 120, 20); 
+		chkAlticeTV.setBackground(new Color(250,250,250));
 
 		btnGuardar = new JButton("Guardar Cambios");
 		btnGuardar.setBackground(new Color(0, 153, 51));
@@ -134,10 +172,12 @@ public class ListarServicios extends JDialog {
 			public void mouseClicked(MouseEvent e) { cargarDatosSeleccionado(); }
 		});
 
-		// Ocultar al inicio
-		lblEspecial1.setVisible(false); spnEspecial1.setVisible(false);
-		lblEspecial2.setVisible(false); spnEspecial2.setVisible(false);
-		lblStreaming.setVisible(false); panelChecks.setVisible(false);
+		lblEspecial1.setVisible(false);
+		spnEspecial1.setVisible(false);
+		lblEspecial2.setVisible(false); 
+		spnEspecial2.setVisible(false);
+		lblStreaming.setVisible(false); 
+		panelChecks.setVisible(false);
 
 		cargarTabla();
 	}
@@ -151,71 +191,75 @@ public class ListarServicios extends JDialog {
 	}
 
 	private void cargarDatosSeleccionado() {
-	    int fila = table.getSelectedRow();
-	    if (fila >= 0) {
-	        String id = (String) table.getValueAt(fila, 0);
-	        seleccionado = Altice.getInstance().buscarServicioById(id);
-	        
-	        if (seleccionado != null) {
-	            txtNombre.setText(seleccionado.getNombreServicio());
-	            txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
-	            
-	            panelChecks.removeAll();
-	            panelChecks.setVisible(true); 
-	            lblStreaming.setVisible(true);
+		int fila = table.getSelectedRow();
+		if (fila >= 0) {
+			String id = (String) table.getValueAt(fila, 0);
+			seleccionado = Altice.getInstance().buscarServicioById(id);
 
-	            if (seleccionado instanceof PlanMovil) {
-	                PlanMovil pm = (PlanMovil) seleccionado;
-	                lblEspecial1.setText("Mins. Incluidos:");
-	                lblEspecial1.setVisible(true);
-	                spnEspecial1.setVisible(true);
-	                spnEspecial1.setValue(pm.getMinutosIncluidos());
-	                lblEspecial2.setVisible(false); spnEspecial2.setVisible(false);
-	                
-	                lblStreaming.setText("Redes Sociales:");
-	                
-	                // --- AQUÍ MARCAMOS LOS CHECKS SEGÚN LOS DATOS ---
-	                String redes = pm.getRedesLibresIncluidas();
-	                chkWa.setSelected(redes.contains("WhatsApp"));
-	                chkIg.setSelected(redes.contains("Instagram"));
-	                chkFb.setSelected(redes.contains("Facebook"));
-	                chkTk.setSelected(redes.contains("TikTok"));
-	                chkYt.setSelected(redes.contains("YouTube"));
-	                
-	                panelChecks.add(chkWa); panelChecks.add(chkIg); panelChecks.add(chkFb);
-	                panelChecks.add(chkTk); panelChecks.add(chkYt);
-	                
-	            } else {
-	                PlanHogar ph = (PlanHogar) seleccionado;
-	                lblEspecial1.setText("Velocidad Mbps:");
-	                lblEspecial1.setVisible(true);
-	                spnEspecial1.setVisible(true);
-	                spnEspecial1.setValue(ph.getVelocidadInternet());
-	                
-	                lblEspecial2.setText("Mins. Fijo:");
-	                lblEspecial2.setVisible(true); spnEspecial2.setVisible(true);
-	                spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
-	                
-	                lblStreaming.setText("Servicios Streaming:");
-	                
-	                // --- AQUÍ MARCAMOS LOS CHECKS SEGÚN LOS DATOS ---
-	                String st = ph.getStreamingIncluido();
-	                chkNetflix.setSelected(st.contains("Netflix"));
-	                chkHBO.setSelected(st.contains("HBO Max"));
-	                chkDisney.setSelected(st.contains("Disney+"));
-	                chkPrime.setSelected(st.contains("Prime Video"));
-	                chkAlticeTV.setSelected(st.contains("Altice TV"));
-	                
-	                panelChecks.add(chkNetflix); panelChecks.add(chkHBO); panelChecks.add(chkDisney);
-	                panelChecks.add(chkPrime); panelChecks.add(chkAlticeTV);
-	            }
-	            
-	            panelChecks.revalidate();
-	            panelChecks.repaint();
-	            panelEditar.revalidate();
-	            panelEditar.repaint();
-	        }
-	    }
+			if (seleccionado != null) {
+				txtNombre.setText(seleccionado.getNombreServicio());
+				txtPrecio.setText(String.valueOf(seleccionado.getPrecioBase()));
+
+				panelChecks.removeAll();
+				panelChecks.setVisible(true); 
+				lblStreaming.setVisible(true);
+
+				if (seleccionado instanceof PlanMovil) {
+					PlanMovil pm = (PlanMovil) seleccionado;
+					lblEspecial1.setText("Mins. Incluidos:");
+					lblEspecial1.setVisible(true);
+					spnEspecial1.setVisible(true);
+					spnEspecial1.setValue(pm.getMinutosIncluidos());
+					lblEspecial2.setVisible(false); spnEspecial2.setVisible(false);
+
+					lblStreaming.setText("Redes Sociales:");
+
+					String redes = pm.getRedesLibresIncluidas();
+					chkWa.setSelected(redes.contains("WhatsApp"));
+					chkIg.setSelected(redes.contains("Instagram"));
+					chkFb.setSelected(redes.contains("Facebook"));
+					chkTk.setSelected(redes.contains("TikTok"));
+					chkYt.setSelected(redes.contains("YouTube"));
+
+					panelChecks.add(chkWa); 
+					panelChecks.add(chkIg); 
+					panelChecks.add(chkFb);
+					panelChecks.add(chkTk);
+					panelChecks.add(chkYt);
+
+				} else {
+					PlanHogar ph = (PlanHogar) seleccionado;
+					lblEspecial1.setText("Velocidad Mbps:");
+					lblEspecial1.setVisible(true);
+					spnEspecial1.setVisible(true);
+					spnEspecial1.setValue(ph.getVelocidadInternet());
+
+					lblEspecial2.setText("Mins. Fijo:");
+					lblEspecial2.setVisible(true); spnEspecial2.setVisible(true);
+					spnEspecial2.setValue(ph.getMinutosTelefonoHogar());
+
+					lblStreaming.setText("Servicios Streaming:");
+
+					String st = ph.getStreamingIncluido();
+					chkNetflix.setSelected(st.contains("Netflix"));
+					chkHBO.setSelected(st.contains("HBO Max"));
+					chkDisney.setSelected(st.contains("Disney+"));
+					chkPrime.setSelected(st.contains("Prime Video"));
+					chkAlticeTV.setSelected(st.contains("Altice TV"));
+
+					panelChecks.add(chkNetflix);
+					panelChecks.add(chkHBO);
+					panelChecks.add(chkDisney);
+					panelChecks.add(chkPrime); 
+					panelChecks.add(chkAlticeTV);
+				}
+
+				panelChecks.revalidate();
+				panelChecks.repaint();
+				panelEditar.revalidate();
+				panelEditar.repaint();
+			}
+		}
 	}
 
 	private void guardarCambios() {

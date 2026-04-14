@@ -37,35 +37,33 @@ public class GenerarTicket extends JDialog {
 		setSize(480, 400);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- HEADER ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 480, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("GENERAR NUEVO TICKET DE SOPORTE");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- FORMULARIO ---
 		JLabel lbl1 = new JLabel("¿Qué problema presenta?");
 		lbl1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lbl1.setBounds(30, 60, 200, 14);
 		contentPanel.add(lbl1);
 
 		String[] problemas = {
-			"<< Seleccione >>", 
-			"Internet lento", 
-			"Cable roto", 
-			"Poste inclinado", 
-			"Instalación de equipo"
+				"<< Seleccione >>", 
+				"Internet lento", 
+				"Cable roto", 
+				"Poste inclinado", 
+				"Instalación de equipo"
 		};
 		cbxProblema = new JComboBox<>(problemas);
 		cbxProblema.setBounds(30, 80, 400, 25);
@@ -85,7 +83,6 @@ public class GenerarTicket extends JDialog {
 		txtDescripcion.setWrapStyleWord(true);
 		scrollPane.setViewportView(txtDescripcion);
 
-		// --- INFO DE ZONA (Visual) ---
 		Object user = Altice.getInstance().getUsuarioLogueado();
 		if (user instanceof Cliente) {
 			clienteLogueado = (Cliente) user;
@@ -106,7 +103,6 @@ public class GenerarTicket extends JDialog {
 				btnEnviar.setBackground(new Color(0, 153, 51));
 				btnEnviar.setForeground(Color.WHITE);
 				btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 11));
-				// Estilo tradicional sin lambdas
 				btnEnviar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						enviarTicket();
@@ -133,14 +129,13 @@ public class GenerarTicket extends JDialog {
 		}
 
 		String problemaSeleccionado = cbxProblema.getSelectedItem().toString();
-		
-		// Llamamos al método de Altice que hace el ruteo por departamentos
+
 		Altice.getInstance().generarTicket(clienteLogueado, problemaSeleccionado);
-		
+
 		JOptionPane.showMessageDialog(this, 
-			"Ticket generado con éxito.\nUn técnico de la zona " + clienteLogueado.getZonaVivienda() + " revisará su caso.", 
-			"Ticket Registrado", JOptionPane.INFORMATION_MESSAGE);
-		
+				"Ticket generado con éxito.\nUn técnico de la zona " + clienteLogueado.getZonaVivienda() + " revisará su caso.", 
+				"Ticket Registrado", JOptionPane.INFORMATION_MESSAGE);
+
 		dispose();
 	}
 }

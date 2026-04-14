@@ -3,7 +3,7 @@ package Logico;
 import java.time.LocalDate;
 
 public class Tarjeta extends MetodoDePago {
-	
+
 	/**
 	 * 
 	 */
@@ -12,7 +12,7 @@ public class Tarjeta extends MetodoDePago {
 	private LocalDate fechaVencimiento;
 	private String tipoTarjeta;
 	private int codigoSeguridad;
-	
+
 	public Tarjeta(String nombreTitular, String idMetodo, double numeroTarjeta, LocalDate fechaVencimiento,
 			String tipoTarjeta, int codigoSeguridad) {
 		super(nombreTitular, idMetodo);
@@ -45,10 +45,10 @@ public class Tarjeta extends MetodoDePago {
 	public void setCodigoSeguridad(int codigoSeguridad) {
 		this.codigoSeguridad = codigoSeguridad;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return "Número: " + numeroTarjeta; // O lo que quieras mostrar en la tabla
+		return "Número: " + numeroTarjeta; 
 	}
 
 }

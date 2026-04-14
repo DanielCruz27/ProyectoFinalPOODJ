@@ -20,7 +20,7 @@ public class ListarPersonal extends JDialog {
 	private JLabel lblEspecial, lblZ; 
 	private JPanel panelEditar; 
 	private Personal seleccionado = null;
-	private JButton btnGuardar; // Lo volvemos variable de clase para controlarlo
+	private JButton btnGuardar; 
 
 	private JLabel lblDatoExtra1, lblDatoExtra2, lblDatoExtra3;
 
@@ -41,33 +41,32 @@ public class ListarPersonal extends JDialog {
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 900, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("LISTADO Y MODIFICACIÓN DE PERSONAL");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 60, 550, 560);
 		contentPanel.add(scrollPane);
 
 		String[] columnas = {"ID", "Nombre", "Apellido", "Rol", "Salario", "Estado"}; 
 		model = new DefaultTableModel(null, columnas) {
-		    private static final long serialVersionUID = 1L;
-		    @Override
-		    public boolean isCellEditable(int row, int column) { return false; }
+
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) { return false; }
 		};
 		table = new JTable(model);
 		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
@@ -76,64 +75,100 @@ public class ListarPersonal extends JDialog {
 		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
-		// --- PANEL DE EDICIÓN ---
 		panelEditar = new JPanel(); 
 		panelEditar.setBackground(Color.WHITE);
 		panelEditar.setLayout(null);
 		TitledBorder borde = BorderFactory.createTitledBorder(
-			new LineBorder(new Color(0, 102, 204), 1, true), " Detalles del Empleado ",
-			TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
+				new LineBorder(new Color(0, 102, 204), 1, true), " Detalles del Empleado ",
+				TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
 		panelEditar.setBorder(borde);
 		panelEditar.setBounds(590, 60, 280, 560);
 		contentPanel.add(panelEditar);
 
-		// Campos básicos
-		JLabel l1 = new JLabel("Nombre:"); l1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l1.setBounds(20, 25, 80, 14); panelEditar.add(l1);
-		txtNombre = new JTextField(); txtNombre.setEditable(false); txtNombre.setBounds(20, 42, 240, 25); panelEditar.add(txtNombre);
+		JLabel l1 = new JLabel("Nombre:"); 
+		l1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		l1.setBounds(20, 25, 80, 14);
+		panelEditar.add(l1);
+		txtNombre = new JTextField(); 
+		txtNombre.setEditable(false); 
+		txtNombre.setBounds(20, 42, 240, 25); 
+		panelEditar.add(txtNombre);
 
-		JLabel l2 = new JLabel("Apellido:"); l2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l2.setBounds(20, 72, 80, 14); panelEditar.add(l2);
-		txtApellido = new JTextField(); txtApellido.setEditable(false); txtApellido.setBounds(20, 89, 240, 25); panelEditar.add(txtApellido);
+		JLabel l2 = new JLabel("Apellido:"); 
+		l2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		l2.setBounds(20, 72, 80, 14);
+		panelEditar.add(l2);
+		txtApellido = new JTextField(); 
+		txtApellido.setEditable(false);
+		txtApellido.setBounds(20, 89, 240, 25);
+		panelEditar.add(txtApellido);
 
-		JLabel lCed = new JLabel("Cédula:"); lCed.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lCed.setBounds(20, 119, 150, 14); panelEditar.add(lCed);
-		txtCedula = new JTextField(); txtCedula.setEditable(false); txtCedula.setBackground(new Color(245, 245, 245));
-		txtCedula.setBounds(20, 136, 240, 25); panelEditar.add(txtCedula);
+		JLabel lCed = new JLabel("Cédula:"); 
+		lCed.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lCed.setBounds(20, 119, 150, 14);
+		panelEditar.add(lCed);
+		txtCedula = new JTextField();
+		txtCedula.setEditable(false);
+		txtCedula.setBackground(new Color(245, 245, 245));
+		txtCedula.setBounds(20, 136, 240, 25);
+		panelEditar.add(txtCedula);
 
-		JLabel lUser = new JLabel("Usuario del Sistema:"); lUser.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lUser.setBounds(20, 166, 150, 14); panelEditar.add(lUser);
+		JLabel lUser = new JLabel("Usuario del Sistema:"); 
+		lUser.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lUser.setBounds(20, 166, 150, 14); 
+		panelEditar.add(lUser);
 		txtUsuario = new JTextField(); 
 		txtUsuario.setEditable(false); 
 		txtUsuario.setBackground(new Color(245, 245, 245)); 
-		txtUsuario.setBounds(20, 183, 240, 25); panelEditar.add(txtUsuario);
+		txtUsuario.setBounds(20, 183, 240, 25);
+		panelEditar.add(txtUsuario);
 
-		JLabel l3 = new JLabel("Salario Base:"); l3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l3.setBounds(20, 213, 120, 14); panelEditar.add(l3);
-		txtSalario = new JTextField(); txtSalario.setBounds(20, 230, 240, 25); panelEditar.add(txtSalario);
+		JLabel l3 = new JLabel("Salario Base:"); 
+		l3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		l3.setBounds(20, 213, 120, 14); 
+		panelEditar.add(l3);
+		txtSalario = new JTextField(); 
+		txtSalario.setBounds(20, 230, 240, 25); 
+		panelEditar.add(txtSalario);
 
-		lblEspecial = new JLabel("Dato Especial:"); lblEspecial.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		lblEspecial.setBounds(20, 260, 200, 14); panelEditar.add(lblEspecial);
-		cmbEspecial = new JComboBox<>(); cmbEspecial.setBounds(20, 277, 240, 25); panelEditar.add(cmbEspecial);
+		lblEspecial = new JLabel("Dato Especial:"); 
+		lblEspecial.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		lblEspecial.setBounds(20, 260, 200, 14);
+		panelEditar.add(lblEspecial);
+		cmbEspecial = new JComboBox<>(); 
+		cmbEspecial.setBounds(20, 277, 240, 25); 
+		panelEditar.add(cmbEspecial);
 
 		lblZ = new JLabel("Zona Asignada:"); lblZ.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		lblZ.setBounds(20, 307, 150, 14); panelEditar.add(lblZ);
+		lblZ.setBounds(20, 307, 150, 14); 
+		panelEditar.add(lblZ);
 		cmbZona = new JComboBox<>(new String[]{"Metropolitana", "Norte", "Sur", "Este"});
-		cmbZona.setBounds(20, 324, 240, 25); panelEditar.add(cmbZona);
+		cmbZona.setBounds(20, 324, 240, 25);
+		panelEditar.add(cmbZona);
 
 		chkLicencia = new JCheckBox("Licencia al día");
 		chkLicencia.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		chkLicencia.setBackground(Color.WHITE);
-		chkLicencia.setBounds(20, 354, 200, 25); panelEditar.add(chkLicencia);
+		chkLicencia.setBounds(20, 354, 200, 25); 
+		panelEditar.add(chkLicencia);
 
-		lblDatoExtra1 = new JLabel("Extra 1"); lblDatoExtra1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lblDatoExtra1.setBounds(25, 385, 240, 20); lblDatoExtra1.setVisible(false); panelEditar.add(lblDatoExtra1);
+		lblDatoExtra1 = new JLabel("Extra 1"); 
+		lblDatoExtra1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lblDatoExtra1.setBounds(25, 385, 240, 20); 
+		lblDatoExtra1.setVisible(false); 
+		panelEditar.add(lblDatoExtra1);
 
-		lblDatoExtra2 = new JLabel("Extra 2"); lblDatoExtra2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lblDatoExtra2.setBounds(25, 410, 240, 20); lblDatoExtra2.setVisible(false); panelEditar.add(lblDatoExtra2);
+		lblDatoExtra2 = new JLabel("Extra 2"); 
+		lblDatoExtra2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lblDatoExtra2.setBounds(25, 410, 240, 20); 
+		lblDatoExtra2.setVisible(false); 
+		panelEditar.add(lblDatoExtra2);
 
-		lblDatoExtra3 = new JLabel("Extra 3"); lblDatoExtra3.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		lblDatoExtra3.setBounds(25, 435, 240, 20); lblDatoExtra3.setVisible(false); panelEditar.add(lblDatoExtra3);
+		lblDatoExtra3 = new JLabel("Extra 3"); 
+		lblDatoExtra3.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
+		lblDatoExtra3.setBounds(25, 435, 240, 20); 
+		lblDatoExtra3.setVisible(false); 
+		panelEditar.add(lblDatoExtra3);
 
 		btnGuardar = new JButton("Guardar Cambios");
 		btnGuardar.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
@@ -166,92 +201,88 @@ public class ListarPersonal extends JDialog {
 			}
 		});
 
-		toggleCamposEdicion(false); // Iniciar bloqueado
+		toggleCamposEdicion(false); 
 		cargarTabla();
 	}
 
 	private void cargarTabla() {
-	    model.setRowCount(0);
-	    for (Personal p : Altice.getInstance().getListaEmpleados()) {
-	        String rol = p.getClass().getSimpleName();
-	        String estadoTexto = (p.getEstado() == 1) ? "Activo" : "De Baja";
-	        model.addRow(new Object[]{p.getIdEmpleado(), p.getNombre(), p.getApellido(), rol, p.getSalarioBase(), estadoTexto});
-	    }
+		model.setRowCount(0);
+		for (Personal p : Altice.getInstance().getListaEmpleados()) {
+			String rol = p.getClass().getSimpleName();
+			String estadoTexto = (p.getEstado() == 1) ? "Activo" : "De Baja";
+			model.addRow(new Object[]{p.getIdEmpleado(), p.getNombre(), p.getApellido(), rol, p.getSalarioBase(), estadoTexto});
+		}
 	}
 
 	private void cargarDatosSeleccionado() {
-	    int fila = table.getSelectedRow();
-	    if (fila >= 0) {
-	        String id = (String) table.getValueAt(fila, 0);
-	        seleccionado = Altice.getInstance().buscarEmpleadoPorId(id);
-	        
-	        if (seleccionado != null) {
-	            // --- PROTECCIÓN DE SEGURIDAD ---
-	            boolean estaActivo = (seleccionado.getEstado() == 1);
-	            
-	            txtNombre.setText(seleccionado.getNombre());
-	            txtApellido.setText(seleccionado.getApellido());
-	            txtCedula.setText(seleccionado.getCedula());
-	            txtUsuario.setText(seleccionado.getMiCuenta().getNombreUsuario());
-	            txtSalario.setText(String.valueOf(seleccionado.getSalarioBase()));
-	            
-	            cmbEspecial.removeAllItems();
-	            lblDatoExtra1.setVisible(false); lblDatoExtra2.setVisible(false); lblDatoExtra3.setVisible(false);
+		int fila = table.getSelectedRow();
+		if (fila >= 0) {
+			String id = (String) table.getValueAt(fila, 0);
+			seleccionado = Altice.getInstance().buscarEmpleadoPorId(id);
 
-	            // Lógica según ROL (Como ya la tenías)
-	            if (seleccionado instanceof Administrativo) {
-	                lblEspecial.setText("Departamento:");
-	                lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
-	                cmbEspecial.setModel(new DefaultComboBoxModel<>(new String[]{"Base de Datos", "Redes", "Finanzas", "Seguridad"}));
-	                cmbEspecial.setSelectedItem(((Administrativo) seleccionado).getDepartamento());
-	                lblZ.setVisible(false); cmbZona.setVisible(false); chkLicencia.setVisible(false);
-	            } 
-	            else if (seleccionado instanceof Tecnico) {
-	                Tecnico t = (Tecnico) seleccionado;
-	                lblEspecial.setText("Tipo de Técnico:");
-	                lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
-	                cmbEspecial.setModel(new DefaultComboBoxModel<>(new String[]{"Instalacion", "Planta externa", "Infraestructura", "Soporte tecnico"}));
-	                cmbEspecial.setSelectedItem(t.getTipoTecnico());
-	                lblZ.setVisible(true); cmbZona.setVisible(true);
-	                cmbZona.setSelectedItem(t.getZonAsignada());
-	                chkLicencia.setVisible(true); chkLicencia.setSelected(t.isLicencia());
+			if (seleccionado != null) {
+				boolean estaActivo = (seleccionado.getEstado() == 1);
 
-	                lblDatoExtra1.setText("H. Extras Acum.: " + t.getHorasExtrasTrabajadas());
-	                lblDatoExtra2.setText("Cant. Instalaciones: " + t.getCantidadInstalaciones());
-	                lblDatoExtra3.setText("Bono Acumulado: RD$ " + (t.getCantidadInstalaciones() * 250));
-	                lblDatoExtra1.setVisible(true); lblDatoExtra2.setVisible(true); lblDatoExtra3.setVisible(true);
-	            } 
-	            else if (seleccionado instanceof Comercial) {
-	                Comercial c = (Comercial) seleccionado;
-	                lblEspecial.setVisible(false); cmbEspecial.setVisible(false);
-	                lblZ.setVisible(false); cmbZona.setVisible(false); chkLicencia.setVisible(false);
+				txtNombre.setText(seleccionado.getNombre());
+				txtApellido.setText(seleccionado.getApellido());
+				txtCedula.setText(seleccionado.getCedula());
+				txtUsuario.setText(seleccionado.getMiCuenta().getNombreUsuario());
+				txtSalario.setText(String.valueOf(seleccionado.getSalarioBase()));
 
-	                lblDatoExtra1.setText("Ventas Realizadas: " + c.getVentasRealizadas());
-	                lblDatoExtra2.setText("Comisión Acum.: RD$ " + c.getComisiones());
-	                lblDatoExtra1.setVisible(true); lblDatoExtra2.setVisible(true);
-	            }
+				cmbEspecial.removeAllItems();
+				lblDatoExtra1.setVisible(false); lblDatoExtra2.setVisible(false); lblDatoExtra3.setVisible(false);
 
-	            // --- APLICAR BLOQUEO SI ESTÁ DE BAJA ---
-	            if (estaActivo) {
-	                toggleCamposEdicion(true);
-	            } else {
-	                toggleCamposEdicion(false);
-	                JOptionPane.showMessageDialog(this, "EMPLEADO DE BAJA: El expediente está congelado. Debe reactivarlo para modificar datos.", "Aviso de Seguridad", JOptionPane.WARNING_MESSAGE);
-	            }
-	            
-	            panelEditar.revalidate();
-	            panelEditar.repaint();
-	        }
-	    }
+				if (seleccionado instanceof Administrativo) {
+					lblEspecial.setText("Departamento:");
+					lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
+					cmbEspecial.setModel(new DefaultComboBoxModel<>(new String[]{"Base de Datos", "Redes", "Finanzas", "Seguridad"}));
+					cmbEspecial.setSelectedItem(((Administrativo) seleccionado).getDepartamento());
+					lblZ.setVisible(false); cmbZona.setVisible(false); chkLicencia.setVisible(false);
+				} 
+				else if (seleccionado instanceof Tecnico) {
+					Tecnico t = (Tecnico) seleccionado;
+					lblEspecial.setText("Tipo de Técnico:");
+					lblEspecial.setVisible(true); cmbEspecial.setVisible(true);
+					cmbEspecial.setModel(new DefaultComboBoxModel<>(new String[]{"Instalacion", "Planta externa", "Infraestructura", "Soporte tecnico"}));
+					cmbEspecial.setSelectedItem(t.getTipoTecnico());
+					lblZ.setVisible(true); cmbZona.setVisible(true);
+					cmbZona.setSelectedItem(t.getZonAsignada());
+					chkLicencia.setVisible(true); chkLicencia.setSelected(t.isLicencia());
+
+					lblDatoExtra1.setText("H. Extras Acum.: " + t.getHorasExtrasTrabajadas());
+					lblDatoExtra2.setText("Cant. Instalaciones: " + t.getCantidadInstalaciones());
+					lblDatoExtra3.setText("Bono Acumulado: RD$ " + (t.getCantidadInstalaciones() * 250));
+					lblDatoExtra1.setVisible(true); lblDatoExtra2.setVisible(true); lblDatoExtra3.setVisible(true);
+				} 
+				else if (seleccionado instanceof Comercial) {
+					Comercial c = (Comercial) seleccionado;
+					lblEspecial.setVisible(false); cmbEspecial.setVisible(false);
+					lblZ.setVisible(false); cmbZona.setVisible(false); chkLicencia.setVisible(false);
+
+					lblDatoExtra1.setText("Ventas Realizadas: " + c.getVentasRealizadas());
+					lblDatoExtra2.setText("Comisión Acum.: RD$ " + c.getComisiones());
+					lblDatoExtra1.setVisible(true); lblDatoExtra2.setVisible(true);
+				}
+
+				if (estaActivo) {
+					toggleCamposEdicion(true);
+				} else {
+					toggleCamposEdicion(false);
+					JOptionPane.showMessageDialog(this, "EMPLEADO DE BAJA: El expediente está congelado. Debe reactivarlo para modificar datos.", "Aviso de Seguridad", JOptionPane.WARNING_MESSAGE);
+				}
+
+				panelEditar.revalidate();
+				panelEditar.repaint();
+			}
+		}
 	}
 
 	private void toggleCamposEdicion(boolean valor) {
-	    txtSalario.setEnabled(valor);
-	    cmbEspecial.setEnabled(valor);
-	    cmbZona.setEnabled(valor);
-	    chkLicencia.setEnabled(valor);
-	    btnGuardar.setEnabled(valor);
-	    // Nota: Nombre, Apellido, Cédula y Usuario son siempre FALSE por diseño previo
+		txtSalario.setEnabled(valor);
+		cmbEspecial.setEnabled(valor);
+		cmbZona.setEnabled(valor);
+		chkLicencia.setEnabled(valor);
+		btnGuardar.setEnabled(valor);
 	}
 
 	private void guardarCambios() {

@@ -8,7 +8,7 @@ public class PlanMovil extends Servicio {
 	private String numeroTelefonico;
 	private int minutosIncluidos;
 	private String redesLibresIncluidas;
-	
+
 	public PlanMovil(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio, String numeroTelefonico,
 			int minutosIncluidos, String redesLibresIncluidas) {
 		super(idServicio, nombreServicio, precioBase, estadoDelServicio);
@@ -40,7 +40,7 @@ public class PlanMovil extends Servicio {
 	public void setRedesLibresIncluidas(String redesLibresIncluidas) {
 		this.redesLibresIncluidas = redesLibresIncluidas;
 	}
-	
-	
-	
+
+
+
 }

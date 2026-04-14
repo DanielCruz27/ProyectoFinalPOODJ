@@ -33,20 +33,19 @@ public class verVentasRealizadas extends JDialog {
 	public verVentasRealizadas() {
 		setTitle("Altice - Mis Ventas Realizadas");
 		setModal(true);
-		setSize(600, 400); // Un poco más grande para que se vea bien
+		setSize(600, 400); 
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 
-		// --- HEADER AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		getContentPane().add(panelHeader, BorderLayout.NORTH);
-		
+
 		JLabel lblTitulo = new JLabel("RESUMEN DE CONTRATOS CERRADOS");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
@@ -59,18 +58,18 @@ public class verVentasRealizadas extends JDialog {
 				model = new DefaultTableModel() {
 					@Override
 					public boolean isCellEditable(int row, int column) {
-						return false; // No editable
+						return false; 
 					}
 				};
-				
+
 				String headers[] = { "Cédula Cliente", "Nombre Cliente", "Cant. Servicios", "Fecha de Firma"};
 				model.setColumnIdentifiers(headers);
-				
+
 				table = new JTable(model);
 				table.setAutoCreateRowSorter(true);
 				table.getTableHeader().setReorderingAllowed(false);
 				scrollPane.setViewportView(table);
-				
+
 				loadContrato();
 			}
 		}
@@ -96,9 +95,8 @@ public class verVentasRealizadas extends JDialog {
 		raw = new Object[model.getColumnCount()];
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		// Este método en Altice ya filtra por el vendedor logueado
 		ArrayList<Contrato> contra = Altice.getInstance().buscarContratoByUser();
-		
+
 		for(Contrato aux : contra) {
 			if (aux != null && aux.getElTitular() != null) {
 				raw[0] = aux.getElTitular().getCedula();

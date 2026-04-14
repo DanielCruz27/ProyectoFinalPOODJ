@@ -3,7 +3,7 @@ package Logico;
 import java.io.Serializable;
 
 public abstract class Servicio implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -12,7 +12,7 @@ public abstract class Servicio implements Serializable {
 	protected String nombreServicio;
 	protected float precioBase;
 	protected boolean estadoDelServicio;
-	
+
 	public Servicio(String idServicio, String nombreServicio, float precioBase, boolean estadoDelServicio) {
 		super();
 		this.idServicio = idServicio;

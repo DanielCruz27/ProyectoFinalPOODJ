@@ -15,7 +15,7 @@ public class SuspenderCliente extends JDialog {
 	private DefaultTableModel model;
 	private JLabel lblNombreCompleto, lblCedula, lblID, lblEstado;
 	private Cliente seleccionado = null;
-	private JButton btnAccion; // Botón dinámico
+	private JButton btnAccion; 
 
 	public static void main(String[] args) {
 		try {
@@ -34,24 +34,22 @@ public class SuspenderCliente extends JDialog {
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA ---
 		JPanel panelHeader = new JPanel();
-		panelHeader.setBackground(new Color(0, 102, 204)); // Azul para gestión general
+		panelHeader.setBackground(new Color(0, 102, 204)); 
 		panelHeader.setBounds(0, 0, 850, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("SUSPENDER / REACTIVAR CLIENTES");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA DE TODOS LOS CLIENTES ---
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 60, 500, 350);
 		contentPanel.add(scrollPane);
@@ -69,12 +67,11 @@ public class SuspenderCliente extends JDialog {
 		table.getTableHeader().setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		scrollPane.setViewportView(table);
 
-		// --- PANEL DE DETALLES ---
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBackground(new Color(250, 250, 250));
 		TitledBorder borde = BorderFactory.createTitledBorder(
-			new LineBorder(Color.GRAY, 1, true), " Gestión de Estado ", 
-			TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 13), Color.BLACK);
+				new LineBorder(Color.GRAY, 1, true), " Gestión de Estado ", 
+				TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 13), Color.BLACK);
 		panelInfo.setBorder(borde);
 		panelInfo.setBounds(540, 60, 270, 350);
 		contentPanel.add(panelInfo);
@@ -83,15 +80,15 @@ public class SuspenderCliente extends JDialog {
 		lblID = new JLabel("ID: -"); 
 		lblID.setBounds(20, 40, 230, 20); 
 		panelInfo.add(lblID);
-		
+
 		lblNombreCompleto = new JLabel("Cliente: -"); 
 		lblNombreCompleto.setBounds(20, 80, 230, 20); 
 		panelInfo.add(lblNombreCompleto);
-		
+
 		lblCedula = new JLabel("Cédula: -"); 
 		lblCedula.setBounds(20, 120, 230, 20); 
 		panelInfo.add(lblCedula);
-		
+
 		lblEstado = new JLabel("Estado: -"); 
 		lblEstado.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		lblEstado.setBounds(20, 160, 230, 20); 
@@ -105,10 +102,10 @@ public class SuspenderCliente extends JDialog {
 		btnAccion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (seleccionado.isEstadoCliente()) {
-					ejecutarReactivacion();
-				} else {
+				if (seleccionado.isEstadoCliente()) { 
 					ejecutarSuspension();
+				} else { 
+					ejecutarReactivacion(); 
 				}
 			}
 		});
@@ -124,7 +121,7 @@ public class SuspenderCliente extends JDialog {
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-		
+
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.addActionListener(new ActionListener() {
 			@Override
@@ -138,7 +135,7 @@ public class SuspenderCliente extends JDialog {
 	private void cargarTablaClientes() {
 		model.setRowCount(0);
 		for (Cliente c : Altice.getInstance().getListaClientes()) {
-			String est = c.isEstadoCliente() ? "SUSPENDIDO" : "ACTIVO";
+			String est = c.isEstadoCliente() ? "ACTIVO" : "SUSPENDIDO";
 			model.addRow(new Object[]{c.getIdCliente(), c.getNombreCliente() + " " + c.getApellidoCliente(), c.getCedula(), est});
 		}
 	}
@@ -152,18 +149,18 @@ public class SuspenderCliente extends JDialog {
 				lblID.setText("ID: " + seleccionado.getIdCliente());
 				lblNombreCompleto.setText("Cliente: " + seleccionado.getNombreCliente());
 				lblCedula.setText("Cédula: " + seleccionado.getCedula());
-				
+
 				btnAccion.setEnabled(true);
-				if (seleccionado.isEstadoCliente()) {
-					lblEstado.setText("Estado: SUSPENDIDO");
-					lblEstado.setForeground(Color.RED);
-					btnAccion.setText("REACTIVAR CLIENTE");
-					btnAccion.setBackground(new Color(0, 153, 51)); // Verde para reactivar
-				} else {
+				if (seleccionado.isEstadoCliente()) { 
 					lblEstado.setText("Estado: ACTIVO");
 					lblEstado.setForeground(new Color(0, 153, 51));
 					btnAccion.setText("SUSPENDER CLIENTE");
-					btnAccion.setBackground(new Color(204, 0, 0)); // Rojo para suspender
+					btnAccion.setBackground(new Color(204, 0, 0));
+				} else {
+					lblEstado.setText("Estado: SUSPENDIDO");
+					lblEstado.setForeground(Color.RED);
+					btnAccion.setText("REACTIVAR CLIENTE");
+					btnAccion.setBackground(new Color(0, 153, 51));
 				}
 			}
 		}
@@ -171,8 +168,8 @@ public class SuspenderCliente extends JDialog {
 
 	private void ejecutarSuspension() {
 		int confirm = JOptionPane.showConfirmDialog(this, 
-			"¿Desea suspender a " + seleccionado.getNombreCliente() + "?",
-			"Confirmar", JOptionPane.YES_NO_OPTION);
+				"¿Desea suspender a " + seleccionado.getNombreCliente() + "?",
+				"Confirmar", JOptionPane.YES_NO_OPTION);
 
 		if (confirm == JOptionPane.YES_OPTION) {
 			seleccionado.setEstadoCliente(true);
@@ -183,20 +180,19 @@ public class SuspenderCliente extends JDialog {
 	}
 
 	private void ejecutarReactivacion() {
-		// VALIDACIÓN CLAVE: No reactivar si debe dinero
 		String deuda = Altice.getInstance().comprobarSiHayDeuda(seleccionado.getIdCliente());
-		
+
 		if (deuda.equalsIgnoreCase("Si")) {
 			JOptionPane.showMessageDialog(this, 
-				"No se puede reactivar: El cliente tiene deudas pendientes.\nDebe saldar su cuenta primero.", 
-				"Bloqueo Financiero", JOptionPane.ERROR_MESSAGE);
+					"No se puede reactivar: El cliente tiene deudas pendientes.\nDebe saldar su cuenta primero.", 
+					"Bloqueo Financiero", JOptionPane.ERROR_MESSAGE);
 		} else {
 			int confirm = JOptionPane.showConfirmDialog(this, 
-				"¿Desea reactivar los servicios de " + seleccionado.getNombreCliente() + "?",
-				"Confirmar", JOptionPane.YES_NO_OPTION);
+					"¿Desea reactivar los servicios de " + seleccionado.getNombreCliente() + "?",
+					"Confirmar", JOptionPane.YES_NO_OPTION);
 
 			if (confirm == JOptionPane.YES_OPTION) {
-				seleccionado.setEstadoCliente(false); // false = Activo
+				seleccionado.setEstadoCliente(false); 
 				JOptionPane.showMessageDialog(this, "El cliente ha sido reactivado satisfactoriamente.");
 				cargarTablaClientes();
 				limpiarLabels();

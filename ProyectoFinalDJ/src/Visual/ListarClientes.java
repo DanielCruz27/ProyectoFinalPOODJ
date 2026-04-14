@@ -39,34 +39,34 @@ public class ListarClientes extends JDialog {
 		setLocationRelativeTo(null);
 		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 1250, 40);
 		contentPanel.add(panelHeader);
-		
+
 		JLabel lblTitulo = new JLabel("LISTADO DE CLIENTES Y MODIFICACIÓN");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- TABLA DE CLIENTES ---
 		JScrollPane scrollTable = new JScrollPane();
 		scrollTable.setBounds(20, 60, 850, 550);
 		contentPanel.add(scrollTable);
 
-		// Columna "Fecha Reg." agregada en la posición 3
 		String[] columnas = {"ID", "Nombre", "Zona", "Fecha Reg.", "Servicios", "Puntos", "Deuda", "Atrasos", "Estado"};
 		modelClientes = new DefaultTableModel(null, columnas) {
+
 			private static final long serialVersionUID = 1L;
 			@Override
-			public boolean isCellEditable(int row, int column) { return false; }
+			public boolean isCellEditable(int row, int column) { 
+				return false;
+			}
 		};
 		tableClientes = new JTable(modelClientes);
 		tableClientes.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
@@ -76,72 +76,92 @@ public class ListarClientes extends JDialog {
 		tableClientes.setRowHeight(22);
 		scrollTable.setViewportView(tableClientes);
 
-		// --- PANEL DE EDICIÓN ---
 		panelEditar = new JPanel();
 		panelEditar.setBackground(Color.WHITE);
 		panelEditar.setLayout(null);
 		TitledBorder borde = BorderFactory.createTitledBorder(
-			new LineBorder(new Color(0, 102, 204), 1, true), " Detalles del Cliente ",
-			TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
+				new LineBorder(new Color(0, 102, 204), 1, true), " Detalles del Cliente ",
+				TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
 		panelEditar.setBorder(borde);
 		panelEditar.setBounds(890, 60, 330, 550);
 		contentPanel.add(panelEditar);
 
 		JLabel l1 = new JLabel("Nombre:");
 		l1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l1.setBounds(20, 30, 80, 14); panelEditar.add(l1);
-		txtNombre = new JTextField(); txtNombre.setEditable(false);
-		txtNombre.setBounds(20, 48, 140, 25); panelEditar.add(txtNombre);
+		l1.setBounds(20, 30, 80, 14); 
+		panelEditar.add(l1);
+		txtNombre = new JTextField(); 
+		txtNombre.setEditable(false);
+		txtNombre.setBounds(20, 48, 140, 25); 
+		panelEditar.add(txtNombre);
 
 		JLabel l2 = new JLabel("Apellido:");
 		l2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l2.setBounds(175, 30, 80, 14); panelEditar.add(l2);
-		txtApellido = new JTextField(); txtApellido.setEditable(false);
-		txtApellido.setBounds(175, 48, 140, 25); panelEditar.add(txtApellido);
+		l2.setBounds(175, 30, 80, 14); 
+		panelEditar.add(l2);
+		txtApellido = new JTextField(); 
+		txtApellido.setEditable(false);
+		txtApellido.setBounds(175, 48, 140, 25); 
+		panelEditar.add(txtApellido);
 
 		JLabel lCed = new JLabel("Cédula:");
 		lCed.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
-		lCed.setBounds(20, 78, 100, 14); panelEditar.add(lCed);
-		txtCedula = new JTextField(); txtCedula.setEditable(false);
+		lCed.setBounds(20, 78, 100, 14); 
+		panelEditar.add(lCed);
+		txtCedula = new JTextField(); 
+		txtCedula.setEditable(false);
 		txtCedula.setBackground(new Color(245, 245, 245));
-		txtCedula.setBounds(20, 95, 295, 25); panelEditar.add(txtCedula);
+		txtCedula.setBounds(20, 95, 295, 25); 
+		panelEditar.add(txtCedula);
 
 		JLabel lUsuario = new JLabel("Usuario de Acceso:");
 		lUsuario.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 11));
-		lUsuario.setBounds(20, 125, 150, 14); panelEditar.add(lUsuario);
-		txtUsuarioAuto = new JTextField(); txtUsuarioAuto.setEditable(false);
+		lUsuario.setBounds(20, 125, 150, 14); 
+		panelEditar.add(lUsuario);
+		txtUsuarioAuto = new JTextField(); 
+		txtUsuarioAuto.setEditable(false);
 		txtUsuarioAuto.setBackground(new Color(245, 245, 245));
-		txtUsuarioAuto.setBounds(20, 142, 295, 25); panelEditar.add(txtUsuarioAuto);
+		txtUsuarioAuto.setBounds(20, 142, 295, 25);
+		panelEditar.add(txtUsuarioAuto);
 
 		JLabel l3 = new JLabel("Dirección:");
 		l3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l3.setBounds(20, 175, 100, 14); panelEditar.add(l3);
+		l3.setBounds(20, 175, 100, 14); 
+		panelEditar.add(l3);
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(20, 192, 295, 25); panelEditar.add(txtDireccion);
+		txtDireccion.setBounds(20, 192, 295, 25); 
+		panelEditar.add(txtDireccion);
 
 		JLabel l4 = new JLabel("Zona:");
 		l4.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l4.setBounds(20, 222, 100, 14); panelEditar.add(l4);
+		l4.setBounds(20, 222, 100, 14); 
+		panelEditar.add(l4);
 		cbxZona = new JComboBox<String>(new String[]{"Metropolitana", "Norte", "Sur", "Este"});
-		cbxZona.setBounds(20, 240, 140, 25); panelEditar.add(cbxZona);
+		cbxZona.setBounds(20, 240, 140, 25); 
+		panelEditar.add(cbxZona);
 
 		JLabel l5 = new JLabel("Email:");
 		l5.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l5.setBounds(175, 222, 100, 14); panelEditar.add(l5);
+		l5.setBounds(175, 222, 100, 14); 
+		panelEditar.add(l5);
 		txtEmail = new JTextField();
-		txtEmail.setBounds(175, 240, 140, 25); panelEditar.add(txtEmail);
+		txtEmail.setBounds(175, 240, 140, 25); 
+		panelEditar.add(txtEmail);
 
 		JSeparator sep = new JSeparator();
-		sep.setBounds(20, 275, 300, 2); panelEditar.add(sep);
+		sep.setBounds(20, 275, 300, 2); 
+		panelEditar.add(sep);
 
 		JLabel l6 = new JLabel("Planes Activos:");
 		l6.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 12));
-		l6.setBounds(20, 282, 300, 14); panelEditar.add(l6);
+		l6.setBounds(20, 282, 300, 14); 
+		panelEditar.add(l6);
 
 		listModel = new DefaultListModel<String>();
 		listPlanes = new JList<String>(listModel);
 		JScrollPane scrollP = new JScrollPane(listPlanes);
-		scrollP.setBounds(20, 300, 295, 80); panelEditar.add(scrollP);
+		scrollP.setBounds(20, 300, 295, 80); 
+		panelEditar.add(scrollP);
 
 		btnEliminarPlan = new JButton("Quitar Plan Seleccionado");
 		btnEliminarPlan.setFont(new Font("Arial Narrow", Font.BOLD, 11));
@@ -154,11 +174,13 @@ public class ListarClientes extends JDialog {
 
 		JLabel l7 = new JLabel("Vender Nuevo Plan:");
 		l7.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		l7.setBounds(20, 415, 200, 14); panelEditar.add(l7);
+		l7.setBounds(20, 415, 200, 14); 
+		panelEditar.add(l7);
 
 		cbxNuevosPlanes = new JComboBox<String>();
 		llenarComboPlanes();
-		cbxNuevosPlanes.setBounds(20, 432, 200, 25); panelEditar.add(cbxNuevosPlanes);
+		cbxNuevosPlanes.setBounds(20, 432, 200, 25);
+		panelEditar.add(cbxNuevosPlanes);
 
 		btnAgregarPlan = new JButton("Añadir");
 		btnAgregarPlan.setBounds(230, 432, 85, 25);
@@ -198,36 +220,33 @@ public class ListarClientes extends JDialog {
 	}
 
 	private void cargarTabla() {
-	    modelClientes.setRowCount(0);
-	    for (Cliente c : Altice.getInstance().getListaClientes()) {
-	        int totalServ = Altice.getInstance().contarCantServiciosDeCliente(c.getIdCliente());
-	        
-	        // Lógica de atrasos y deuda real según la fecha de la PC
-	        int atrasosReales = Altice.getInstance().calcularAtrasosReales(c);
-	        float montoDeuda = Altice.getInstance().calcularMontoDeudaReal(c);
-	        
-	        // Obtener fecha del contrato único
-	        String fechaReg = "N/A";
-	        if (c.getMiContrato() != null) {
-	            fechaReg = c.getMiContrato().getFechaFirma().toString();
-	        }
-	        
-	        String deudaStr = (montoDeuda > 0) ? "RD$ " + montoDeuda : "No";
-	     // Lo correcto: Si debe más de 2 meses O el estado es falso (inactivo), entonces Suspendido
-	        String estado = (atrasosReales > 2 || !c.isEstadoCliente()) ? "Suspendido" : "Activo";
+		modelClientes.setRowCount(0);
+		for (Cliente c : Altice.getInstance().getListaClientes()) {
+			int totalServ = Altice.getInstance().contarCantServiciosDeCliente(c.getIdCliente());
 
-	        modelClientes.addRow(new Object[]{
-	            c.getIdCliente(), 
-	            c.getNombreCliente() + " " + c.getApellidoCliente(), 
-	            c.getZonaVivienda(), 
-	            fechaReg,
-	            totalServ,
-	            c.getPuntosAcumulados(),
-	            deudaStr,
-	            atrasosReales,
-	            estado
-	        });
-	    }
+			int atrasosReales = Altice.getInstance().calcularAtrasosReales(c);
+			float montoDeuda = Altice.getInstance().calcularMontoDeudaReal(c);
+
+			String fechaReg = "N/A";
+			if (c.getMiContrato() != null) {
+				fechaReg = c.getMiContrato().getFechaFirma().toString();
+			}
+
+			String deudaStr = (montoDeuda > 0) ? "RD$ " + montoDeuda : "No";
+			String estado = (atrasosReales > 2 || !c.isEstadoCliente()) ? "Suspendido" : "Activo";
+
+			modelClientes.addRow(new Object[]{
+					c.getIdCliente(), 
+					c.getNombreCliente() + " " + c.getApellidoCliente(), 
+					c.getZonaVivienda(), 
+					fechaReg,
+					totalServ,
+					c.getPuntosAcumulados(),
+					deudaStr,
+					atrasosReales,
+					estado
+			});
+		}
 	}
 
 	private void cargarDatosSeleccionado() {
@@ -238,11 +257,10 @@ public class ListarClientes extends JDialog {
 
 			if (seleccionado != null) {
 				int atrasosActuales = Altice.getInstance().calcularAtrasosReales(seleccionado);
-				
-				// --- LÓGICA CORREGIDA AQUÍ ---
-				// Se suspende si (Atrasos > 2) O si (Estado es Falso)
+
+
 				boolean estaSuspendido = (atrasosActuales > 2 || !seleccionado.isEstadoCliente());
-				
+
 				txtNombre.setText(seleccionado.getNombreCliente());
 				txtApellido.setText(seleccionado.getApellidoCliente());
 				txtEmail.setText(seleccionado.getEmailCliente());
@@ -252,12 +270,12 @@ public class ListarClientes extends JDialog {
 				cbxZona.setSelectedItem(seleccionado.getZonaVivienda());
 
 				actualizarListaPlanes();
-				
+
 				if (estaSuspendido) {
-					toggleCampos(false); // Bloquea los botones de edición
+					toggleCampos(false); 
 					JOptionPane.showMessageDialog(this, "CLIENTE SUSPENDIDO: Verifique deudas o estado administrativo.", "Aviso", JOptionPane.WARNING_MESSAGE);
 				} else {
-					toggleCampos(true); // Habilita la edición si todo está bien
+					toggleCampos(true);
 				}
 			}
 		}
@@ -274,22 +292,20 @@ public class ListarClientes extends JDialog {
 	}
 
 	private void actualizarListaPlanes() {
-	    listModel.clear();
-	    if (seleccionado != null && seleccionado.getMiContrato() != null) {
-	        // Recorremos los servicios del único contrato que tiene el cliente
-	        for (Servicio s : seleccionado.getMiContrato().getMisServicios()) {
-	            String infoPlan = s.getIdServicio() + " - " + s.getNombreServicio();
-	            
-	            // --- AQUÍ ESTÁ EL TRUCO PARA EL TELÉFONO ---
-	            if (s instanceof PlanMovil) {
-	                infoPlan += " [Tel: " + ((PlanMovil) s).getNumeroTelefonico() + "]";
-	            } else if (s instanceof PlanHogar) {
-	                infoPlan += " [Tel: " + ((PlanHogar) s).getNumeroTelefonico() + "]";
-	            }
-	            
-	            listModel.addElement(infoPlan);
-	        }
-	    }
+		listModel.clear();
+		if (seleccionado != null && seleccionado.getMiContrato() != null) {
+			for (Servicio s : seleccionado.getMiContrato().getMisServicios()) {
+				String infoPlan = s.getIdServicio() + " - " + s.getNombreServicio();
+
+				if (s instanceof PlanMovil) {
+					infoPlan += " [Tel: " + ((PlanMovil) s).getNumeroTelefonico() + "]";
+				} else if (s instanceof PlanHogar) {
+					infoPlan += " [Tel: " + ((PlanHogar) s).getNumeroTelefonico() + "]";
+				}
+
+				listModel.addElement(infoPlan);
+			}
+		}
 	}
 
 	private void agregarNuevoPlan() {
@@ -303,7 +319,7 @@ public class ListarClientes extends JDialog {
 				String idPlan = cbxNuevosPlanes.getSelectedItem().toString().split(" - ")[0];
 				String idVend = (Altice.getInstance().getUsuarioLogueado() instanceof Personal) ? 
 						((Personal) Altice.getInstance().getUsuarioLogueado()).getIdEmpleado() : "V-000";
-				
+
 				Altice.getInstance().contratarServicio(seleccionado.getIdCliente(), idPlan, idVend);
 				actualizarListaPlanes();
 				cargarTabla();
@@ -312,22 +328,21 @@ public class ListarClientes extends JDialog {
 	}
 
 	private void quitarPlan() {
-	    int index = listPlanes.getSelectedIndex();
-	    if (seleccionado != null && seleccionado.getMiContrato() != null && index >= 0) {
-	        String idServicio = listModel.getElementAt(index).split(" - ")[0];
-	        
-	        // Buscamos el servicio en el contrato único
-	        ArrayList<Servicio> servicios = seleccionado.getMiContrato().getMisServicios();
-	        for (int i = 0; i < servicios.size(); i++) {
-	            if (servicios.get(i).getIdServicio().equals(idServicio)) {
-	                servicios.remove(i);
-	                JOptionPane.showMessageDialog(this, "Plan removido exitosamente.");
-	                actualizarListaPlanes();
-	                cargarTabla();
-	                return;
-	            }
-	        }
-	    }
+		int index = listPlanes.getSelectedIndex();
+		if (seleccionado != null && seleccionado.getMiContrato() != null && index >= 0) {
+			String idServicio = listModel.getElementAt(index).split(" - ")[0];
+
+			ArrayList<Servicio> servicios = seleccionado.getMiContrato().getMisServicios();
+			for (int i = 0; i < servicios.size(); i++) {
+				if (servicios.get(i).getIdServicio().equals(idServicio)) {
+					servicios.remove(i);
+					JOptionPane.showMessageDialog(this, "Plan removido exitosamente.");
+					actualizarListaPlanes();
+					cargarTabla();
+					return;
+				}
+			}
+		}
 	}
 
 	private void toggleCampos(boolean valor) {

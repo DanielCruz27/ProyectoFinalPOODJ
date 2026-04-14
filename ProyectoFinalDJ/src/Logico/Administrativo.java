@@ -6,7 +6,7 @@ public class Administrativo extends Personal {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String departamento;
-	
+
 	public Administrativo(String idEmpleado, String nombre, String apellido, String cedula, float salarioBase, Usuario miCuenta, String departamento) {
 		super(idEmpleado, nombre,apellido, cedula, salarioBase, miCuenta);
 		this.departamento = departamento;
@@ -17,7 +17,7 @@ public class Administrativo extends Personal {
 	public void setDepartamento(String departamento) {
 		this.departamento = departamento;
 	}
-	
+
 	@Override
 	protected float calcularSueldoNeto() {
 		return getSalarioBase();
@@ -27,8 +27,8 @@ public class Administrativo extends Personal {
 		// TODO Auto-generated method stub
 		return "administrador";
 	}
-	
-	
-	
-	
+
+
+
+
 }

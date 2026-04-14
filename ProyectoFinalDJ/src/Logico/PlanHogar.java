@@ -9,8 +9,8 @@ public class PlanHogar extends Servicio {
 	private int velocidadInternet;
 	private String StreamingIncluido;
 	private int minutosTelefonoHogar;
-	
-	
+
+
 
 	public PlanHogar(String idServicio, String nombreServicio, float precioBase,boolean estadoDelServicio, String numeroTelefonico,
 			int velocidadInternet, String streamingIncluido, int minutosTelefonoHogar) {
@@ -68,10 +68,10 @@ public class PlanHogar extends Servicio {
 	public void setMinutosTelefonoHogar(int minutosTelefonoHogar) {
 		this.minutosTelefonoHogar = minutosTelefonoHogar;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 }

@@ -42,7 +42,6 @@ public class RegistrarPersonal extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		// --- CABECERA AZUL ---
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0, 102, 204));
 		panelHeader.setBounds(0, 0, 500, 40);
@@ -53,7 +52,6 @@ public class RegistrarPersonal extends JDialog {
 		lblTitulo.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 14));
 		panelHeader.add(lblTitulo);
 
-		// --- CAMPOS GENERALES ---
 		JLabel lblId = new JLabel("ID Empleado:");
 		lblId.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblId.setBounds(30, 60, 100, 14);
@@ -106,7 +104,6 @@ public class RegistrarPersonal extends JDialog {
 		spnSalarioBase.setBounds(30, 200, 120, 25);
 		contentPanel.add(spnSalarioBase);
 
-		// --- SELECTOR DE ROL ---
 		JPanel panelRoles = new JPanel();
 		TitledBorder borderRoles = new TitledBorder(new LineBorder(new Color(192, 192, 192)), "Tipo de Empleado", 
 				TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial Rounded MT Bold", Font.BOLD, 12), new Color(0, 102, 204));
@@ -119,11 +116,11 @@ public class RegistrarPersonal extends JDialog {
 		rbAdministrativo = new JRadioButton("Administrativo");
 		rbAdministrativo.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		rbAdministrativo.setBackground(Color.WHITE);
-		
+
 		rbTecnico = new JRadioButton("Técnico");
 		rbTecnico.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		rbTecnico.setBackground(Color.WHITE);
-		
+
 		rbComercial = new JRadioButton("Comercial");
 		rbComercial.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		rbComercial.setBackground(Color.WHITE);
@@ -132,7 +129,6 @@ public class RegistrarPersonal extends JDialog {
 		grupo.add(rbAdministrativo); grupo.add(rbTecnico); grupo.add(rbComercial);
 		panelRoles.add(rbAdministrativo); panelRoles.add(rbTecnico); panelRoles.add(rbComercial);
 
-		// --- PANEL DINÁMICO ---
 		panelEspecializado = new JPanel();
 		panelEspecializado.setBackground(new Color(252, 252, 252));
 		TitledBorder bordeTitulo = BorderFactory.createTitledBorder(
@@ -144,13 +140,12 @@ public class RegistrarPersonal extends JDialog {
 		panelEspecializado.setLayout(null);
 		panelEspecializado.setVisible(false);
 
-		// Componentes del panel dinámico con fuente aplicada
 		cmbTipo = new JComboBox<>(new String[]{"<<Tipo de Técnico>>", "Instalacion", "Planta externa", "Infraestructura", "Soporte tecnico"});
 		cmbTipo.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		
+
 		cmbZona = new JComboBox<>(new String[]{"<<Zona Asignada>>", "Metropolitana", "Norte", "Sur", "Este"});
 		cmbZona.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		
+
 		chkbxLicencia = new JCheckBox("Licencia al día");
 		chkbxLicencia.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		chkbxLicencia.setBackground(new Color(252, 252, 252));
@@ -158,7 +153,6 @@ public class RegistrarPersonal extends JDialog {
 		cmbDepartamento = new JComboBox<>(new String[]{"<<Departamento>>", "Base de Datos", "Redes", "Finanzas", "Seguridad"});
 		cmbDepartamento.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 
-		// --- EVENTO CAMBIO DE ROL ---
 		ActionListener rolListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -198,7 +192,6 @@ public class RegistrarPersonal extends JDialog {
 		rbTecnico.addActionListener(rolListener);
 		rbComercial.addActionListener(rolListener);
 
-		// --- PANEL USUARIO ---
 		JLabel lblPass = new JLabel("Contraseña de Acceso:");
 		lblPass.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		lblPass.setBounds(30, 420, 150, 14);
@@ -208,7 +201,6 @@ public class RegistrarPersonal extends JDialog {
 		txtPassword.setBounds(30, 445, 200, 25);
 		contentPanel.add(txtPassword);
 
-		// --- BOTONES ---
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -239,7 +231,7 @@ public class RegistrarPersonal extends JDialog {
 	private void realizarRegistro() {
 		try {
 			if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || 
-				txtCedula.getText().trim().isEmpty() || new String(txtPassword.getPassword()).isEmpty()) {
+					txtCedula.getText().trim().isEmpty() || new String(txtPassword.getPassword()).isEmpty()) {
 				throw new Exception("Todos los campos obligatorios deben estar llenos.");
 			}
 
